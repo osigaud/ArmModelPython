@@ -2,7 +2,7 @@
 
 
 # Name of the project (also the name of the output)
-PROJECT = codyco
+PROJECT = codyco_version
 
 # Other folder to compile
 DIRS =
