@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: codyco.aux
+The style file: plos2009.bst
+Database file #1: codyco.bib
+You've used 49 entries,
+            2441 wiz_defined-function locations,
+            870 strings with 13146 characters,
+and the built_in function-call counts, 39822 in all, are:
+= -- 3786
+> -- 508
+< -- 5
++ -- 254
+- -- 127
+* -- 3395
+:= -- 4721
+add.period$ -- 103
+call.type$ -- 49
+change.case$ -- 59
+chr.to.int$ -- 0
+cite$ -- 98
+duplicate$ -- 3943
+empty$ -- 4189
+format.name$ -- 165
+if$ -- 8924
+int.to.chr$ -- 0
+int.to.str$ -- 49
+missing$ -- 480
+newline$ -- 260
+num.names$ -- 49
+pop$ -- 587
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 308
+stack$ -- 0
+substring$ -- 5893
+swap$ -- 988
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 267
+width$ -- 51
+write$ -- 558

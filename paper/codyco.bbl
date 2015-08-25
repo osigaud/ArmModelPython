@@ -1,0 +1,312 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\bibAnnoteFile}[1]{%
+  \IfFileExists{#1}{\begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ \input{#1}\end{quotation}}{}}
+\providecommand{\bibAnnote}[2]{%
+  \begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ #2\end{quotation}}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{shadmehr10}
+Shadmehr R, Orban~de Xivry JJ, Xu-Wilson M, Shih TY (2010) Temporal discounting
+  of reward and the cost of time in motor control.
+\newblock Journal of Neuroscience 30: 10507--10516.
+\bibAnnoteFile{shadmehr10}
+
+\bibitem{rigoux12}
+Rigoux L, Guigon E (2012) A model of reward- and effort-based optimal decision
+  making and motor control.
+\newblock PLoS Computational Biology .
+\bibAnnoteFile{rigoux12}
+
+\bibitem{fitts54_JEP}
+Fitts PM (1954) The information capacity of the human motor system in
+  controlling the amplitude of movement.
+\newblock Journal of Experimental Psychology 47: 381--91.
+\bibAnnoteFile{fitts54_JEP}
+
+\bibitem{Dean2007}
+Dean M, Wu SW, Maloney LT (2007) Trading off speed and accuracy in rapid,
+  goal-directed movements.
+\newblock Journal of Vision 7: 1-12.
+\bibAnnoteFile{Dean2007}
+
+\bibitem{harris98_N}
+Harris CM, Wolpert DM (1998) Signal-dependent noise determines motor planning.
+\newblock Nature 394: 780-784.
+\bibAnnoteFile{harris98_N}
+
+\bibitem{todorov02_NN}
+Todorov E, Jordan MI (2002) Optimal feedback control as a theory of motor
+  coordination.
+\newblock Nature Neurosciences 5: 1226-1235.
+\bibAnnoteFile{todorov02_NN}
+
+\bibitem{todorov04_NN}
+Todorov E (2004) Optimality principles in sensorimotor control.
+\newblock Nature Neurosciences 7: 907-915.
+\bibAnnoteFile{todorov04_NN}
+
+\bibitem{todorov05_NC}
+Todorov E (2005) {Stochastic Optimal Control and Estimation Methods Adapted to
+  the Noise Characteristics of the Sensorimotor System}.
+\newblock Neural Computation 17: 1084--1108.
+\bibAnnoteFile{todorov05_NC}
+
+\bibitem{li2006}
+Li W (2006) Optimal control for biological movement systems.
+\newblock Ph.D. thesis, University of California, San Diego.
+\bibAnnoteFile{li2006}
+
+\bibitem{faisal08}
+Faisal AA, Selen LPJ, Wolpert DM (2008) Noise in the nervous system.
+\newblock Nature Reviews Neuroscience 9: 292--303.
+\bibAnnoteFile{faisal08}
+
+\bibitem{selen06b}
+Selen LP, Beek PJ, van Dieen JH (2006) Impedance is modulated to meet accuracy
+  demands during goal-directed arm movements.
+\newblock Experimental Brain Research 172: 129--138.
+\bibAnnoteFile{selen06b}
+
+\bibitem{Soechting1984}
+Soechting JF (1984) {Effect of Target Size on Spatial and Temporal
+  Characteristics of a Pointing Movement in Man}.
+\newblock Experimental Brain Research 54: 121--132.
+\bibAnnoteFile{Soechting1984}
+
+\bibitem{Bootsma1994}
+Bootsma RJ, Marteniuk RG, MacKenzie CL, Zaal FT (1994) {The speed-accuracy
+  trade-off in manual prehension: effects of movement amplitude, object size
+  and object width on kinematic characteristics.}
+\newblock Experimental Brain Research 98: 535--41.
+\bibAnnoteFile{Bootsma1994}
+
+\bibitem{Laurent1994}
+Laurent M (1994) {Fitts' law in two-dimensional task space}.
+\newblock Experimental Brain Research 100: 144--148.
+\bibAnnoteFile{Laurent1994}
+
+\bibitem{Plamondon1997}
+Plamondon R, Alimi AM (1997) {Speed/accuracy trade-offs in target-directed
+  movements.}
+\newblock The Behavioral and brain sciences 20: 279--303; discussion 303--49.
+\bibAnnoteFile{Plamondon1997}
+
+\bibitem{Smyrnis2000}
+Smyrnis N, Evdokimidis I, Constantinidis T, Kastrinakis G (2000)
+  {Speed-accuracy trade-off in the performance of pointing movements in
+  different directions in two-dimensional space}.
+\newblock Experimental Brain Research 134: 21--31.
+\bibAnnoteFile{Smyrnis2000}
+
+\bibitem{Bootsma2004}
+Bootsma RJ, Fernandez L, Mottet D (2004) {Behind Fitts’ law: kinematic
+  patterns in goal-directed movements}.
+\newblock International Journal of Human-Computer Studies 61: 811--821.
+\bibAnnoteFile{Bootsma2004}
+
+\bibitem{crossman1983}
+Crossman ER, Goodeve PJ (1983) Feedback control of hand-movement and fitts'
+  law.
+\newblock The Quarterly Journal of Experimental Psychology 35: 251--278.
+\bibAnnoteFile{crossman1983}
+
+\bibitem{mackenzie1989}
+Scott~MacKenzie I (1989) A note on the information-theoretic basis for fitts’
+  law.
+\newblock Journal of Motor Behavior 21: 323--330.
+\bibAnnoteFile{mackenzie1989}
+
+\bibitem{gordon94}
+Gordon J, Ghilardi MF, Cooper SE, Ghez C (1994) Accuracy of planar reaching
+  movements.
+\newblock Experimental Brain Research 99: 112--130.
+\bibAnnoteFile{gordon94}
+
+\bibitem{shadmehr94}
+Shadmehr R, Mussa-Ivaldi FA (1994) Adaptive representation of the dynamics
+  during learning of a motor task.
+\newblock Journal of Neuroscience 14: 3208-3324.
+\bibAnnoteFile{shadmehr94}
+
+\bibitem{guigon07a}
+Guigon E, Baraduc P, Desmurget M (2007) Computational motor control: Redudancy
+  and invariance.
+\newblock Journal of Neurophysiology 97: 331-347.
+\bibAnnoteFile{guigon07a}
+
+\bibitem{liu07}
+Liu D, Todorov E (2007) Evidence for the flexible sensorimotor strategies
+  predicted by optimal feedback control.
+\newblock The Journal of Neuroscience 27: 9354--9368.
+\bibAnnoteFile{liu07}
+
+\bibitem{guigon08b}
+Guigon E, Baraduc P, Desmurget M (2008) Computational motor control: Feedback
+  and accuracy.
+\newblock European Journal of Neuroscience 27: 1003-1016.
+\bibAnnoteFile{guigon08b}
+
+\bibitem{watanabe03}
+Watanabe K, Lauwereyns J, Hikosaka O (2003) Effects of motivational conflicts
+  on visually elicited saccades in monkeys.
+\newblock Experimental Brain Research 152: 361--367.
+\bibAnnoteFile{watanabe03}
+
+\bibitem{rudebeck06}
+Rudebeck PH, Walton ME, Smyth AN, Bannerman DM, Rushworth MF (2006) Separate
+  neural pathways process different decision costs.
+\newblock Nature neuroscience 9: 1161--1168.
+\bibAnnoteFile{rudebeck06}
+
+\bibitem{Trommershauser2003a}
+Trommersh\"{a}user J, Maloney LT, Landy MS (2003) {Statistical decision theory
+  and the selection of rapid, goal-directed movements.}
+\newblock Journal of the Optical Society of America A, Optics, image science,
+  and vision 20: 1419-1433.
+\bibAnnoteFile{Trommershauser2003a}
+
+\bibitem{Trommershauser2005}
+Trommersh\"{a}user J, Gepshtein S, Maloney LT, Landy MS, Banks MS (2005)
+  {Optimal compensation for changes in task-relevant movement variability.}
+\newblock The Journal of Neuroscience 25: 7169--78.
+\bibAnnoteFile{Trommershauser2005}
+
+\bibitem{Trommershauser2009}
+Trommersh\"{a}user J, Maloney LT, Landy MS (2009) The expected utility of
+  movement.
+\newblock In: Neuroeconomics: Decision Making and the Brain, Elsevier, 8. pp.
+  99--111.
+\bibAnnoteFile{Trommershauser2009}
+
+\bibitem{cos11}
+Cos I, B{\'e}langer N, Cisek P (2011) The influence of predicted arm
+  biomechanics on decision making.
+\newblock Journal of neurophysiology 105: 3022--3033.
+\bibAnnoteFile{cos11}
+
+\bibitem{prevost10}
+Pr{\'e}vost C, Pessiglione M, M{\'e}t{\'e}reau E, Cl{\'e}ry-Melin M, Dreher J
+  (2010) Separate valuation subsystems for delay and effort decision costs.
+\newblock The Journal of Neuroscience 30: 14080--14090.
+\bibAnnoteFile{prevost10}
+
+\bibitem{green96}
+Green L, Myerson J (1996) Exponential versus hyperbolic discounting of delayed
+  outcomes: Risk and waiting time.
+\newblock American Zoologist 36: 496--505.
+\bibAnnoteFile{green96}
+
+\bibitem{Trommershauser2003b}
+Trommersh\"{a}user J, Maloney LT, Landy MS (2003) Statistical decision theory
+  and trade-offs in the control of motor response.
+\newblock Spatial vision 16: 255-275.
+\bibAnnoteFile{Trommershauser2003b}
+
+\bibitem{Battaglia2007}
+Battaglia PW, Schrater PR (2007) Humans trade off vieweing time and movement
+  duration to improve visuomotor accuracy in a fast reaching taks.
+\newblock Journal of Neuroscience 27: 6984--6994.
+\bibAnnoteFile{Battaglia2007}
+
+\bibitem{rigoux_these}
+Rigoux L (2011) Compromis entre efforts et r\'ecompenses : Un mod\`ele unifi\'e
+  de la d\'ecision et de la motricit\'e.
+\newblock Th\`ese de doctorat, Universit\'e Pierre et Marie Curie, 4 place
+  Jussieu 75005 Paris.
+\bibAnnoteFile{rigoux_these}
+
+\bibitem{wilson2001}
+Wilson SW (2001) Function approximation with a classifier system.
+\newblock In: Proceedings of the Genetic and Evolutionary Computation
+  Conference (GECCO-2001). San Francisco, California, USA: Morgan Kaufmann, pp.
+  974--981.
+\bibAnnoteFile{wilson2001}
+
+\bibitem{wilson2002}
+Wilson SW (2002) {C}lassifiers that {A}pproximate {F}unctions.
+\newblock Natural Computing 1: 211-234.
+\bibAnnoteFile{wilson2002}
+
+\bibitem{butz2004}
+Butz MV, Kovacs T, Lanzi PL, Wilson SW (2004) Toward a theory of generalization
+  and learning in {XCS}.
+\newblock IEEE Transactions on Evolutionary Computation 8: 28--46.
+\bibAnnoteFile{butz2004}
+
+\bibitem{butz2008}
+Butz MV, Herbort O (2008) Context-dependent predictions and cognitive arm
+  control with {XCSF}.
+\newblock In: Proceedings of the 10th annual conference on Genetic and
+  evolutionary computation. {ACM} New York, {NY,} {USA}, pp. 1357-1364.
+\bibAnnoteFile{butz2008}
+
+\bibitem{sigaud11_ras}
+Sigaud O, Salaun C, Padois V (2011) On-line regression algorithms for learning
+  mechanical models of robots: a survey.
+\newblock Robotics and Autonomous Systems 59: 1115-1129.
+\bibAnnoteFile{sigaud11_ras}
+
+\bibitem{marin11_gecco}
+Marin D, Decock J, Rigoux L, Sigaud O (2011) Learning cost-efficient control
+  policies with {XCSF}: generalization capabilities and further improvement.
+\newblock In: Proceedings of the 13th annual Conference on Genetic and
+  Evolutionary Computation. ACM, pp. 1235--1242.
+\bibAnnoteFile{marin11_gecco}
+
+\bibitem{Rubinstein97}
+Rubinstein RY (1997) Optimization of computer simulation models with rare
+  events.
+\newblock European Journal of Operational Research 99: 89--112.
+\bibAnnoteFile{Rubinstein97}
+
+\bibitem{Stalph2009}
+Stalph PO, Butz MV (2009) Documentation of {JavaXCSF}.
+\newblock Technical report, COBOSLAB.
+\bibAnnoteFile{Stalph2009}
+
+\bibitem{katayama93}
+Katayama M, Kawato M (1993) {Virtual trajectory and stiffness ellipse during
+  multijoint arm movement predicted by neural inverse models}.
+\newblock Biological Cybernetics 69: 353--362.
+\bibAnnoteFile{katayama93}
+
+\bibitem{mitrovic08_SAB}
+Mitrovic D, Klanke S, Vijayakumar S (2008) Adaptive optimal control for
+  redundantly actuated arms.
+\newblock In: Proceedings of the Tenth International Conference on Simulation
+  of Adaptive Behavior. pp. 93--102.
+\bibAnnoteFile{mitrovic08_SAB}
+
+\bibitem{Kambara2009}
+Kambara H, Kim K, Shin D, Sato M, Koike Y (2009) {Learning and generation of
+  goal-directed arm reaching from scratch.}
+\newblock Neural networks 22: 348--61.
+\bibAnnoteFile{Kambara2009}
+
+\bibitem{guigon08a}
+Guigon E, Baraduc P, Desmurget M (2008) Optimality, stochasticity and
+  variability in motor behavior.
+\newblock Journal of Computational Neuroscience 24: 57-68.
+\bibAnnoteFile{guigon08a}
+
+\bibitem{kitazawa98}
+Kitazawa S, Kimura T, Yin PB (1998) Cerebellar complex spikes encode both
+  destinations and errors in arm movements.
+\newblock Nature 392: 494--497.
+\bibAnnoteFile{kitazawa98}
+
+\bibitem{Hudson2008}
+Hudson TE, Maloney LT, Landy MS (2008) Optimal compensation for temporal
+  uncertainty in movement planning.
+\newblock PLoS Computational Biology 4: e1000130.
+\bibAnnoteFile{Hudson2008}
+
+\end{thebibliography}
