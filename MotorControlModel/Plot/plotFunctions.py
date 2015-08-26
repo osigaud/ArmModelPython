@@ -541,7 +541,7 @@ def plotFittsLaw(folderName, rbfn = False):
     for el in timeDistWidth:
         plt.scatter(np.log2(el[0]/el[1]), el[2])
     plt.plot(DI, yLR)
-    plt.title(str("a = " + str(slope) + " b = " + str(intercept) + " r^2 = " + r_value**2))
+    plt.title("a = " + str(slope) + " b = " + str(intercept) + " r^2 = " + str(r_value**2))
     plt.xlabel("log(D/W)/log(2)")
     plt.ylabel("Movement time (s)")
     plt.savefig("ImageBank/fitts.png", bbox_inches='tight')
