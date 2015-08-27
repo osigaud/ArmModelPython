@@ -25,6 +25,7 @@ class ArmParameters:
         self.massMatrix()
         self.AMatrix()
         self.BMatrix()
+        self.readStops()
         
     def readSetupFile(self):
         '''
@@ -110,6 +111,19 @@ class ArmParameters:
         a12 = float((allsByLign[23].split(":"))[1])
         #matrix definition
         self.At = np.array([[a1,a2,a3,a4,a5,a6], [a7,a8,a9,a10,a11,a12]])
+
+    def readStops(self):
+        with open(self.pathSetupFile, "r") as file:
+            alls = file.read()
+        allsByLign = alls.split("\n")
+        #line 25, Shoulder upper bound
+        self.sub = float((allsByLign[24].split(":"))[1])
+        #line 26, Shoulder lower bound
+        self.slb = float((allsByLign[25].split(":"))[1])
+        #line 27, Elbow upper bound
+        self.eub = float((allsByLign[26].split(":"))[1])
+        #line 28, Elbow lower bound
+        self.elb = float((allsByLign[27].split(":"))[1])
 
     
     

@@ -23,7 +23,7 @@ from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedX
 from Utils.ReadSetupFile import ReadSetupFile
 from Utils.NiemRoot import tronquerNB
 
-from ArmModel.Arm import Arm
+from ArmModel.Arm import Arm, getDotQAndQFromStateVector
 
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
@@ -32,7 +32,7 @@ from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 def trajectoriesAnimation(what, folderName = "None", targetSize = "0.05"):
     rs = ReadSetupFile()
     if what == "CMAES":
-        name = rs.CMAESpath + targetSize + folderName + "/Log/"
+        name = rs.CMAESpath + targetSize + "/" + folderName + "/Log/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
     else:
@@ -84,6 +84,7 @@ def trajectoriesAnimation(what, folderName = "None", targetSize = "0.05"):
 def plotVelocityProfile(what, folderName = "None"):
     rs = ReadSetupFile()
     plt.figure(1, figsize=(16,9))
+    arm = Arm()
 
     if what == "CMAES":
         for i in range(4):
@@ -94,8 +95,11 @@ def plotVelocityProfile(what, folderName = "None"):
                 index, speed = [], []
                 if  rd.random()<0.06:#what == "RBFN" or
                     for j in range(len(v)):
-                        index.append(j)
-                        speed.append(np.linalg.norm([v[j][0],v[j][1]]))
+                        index.append(j*rs.dt)
+                        qdot,q = getDotQAndQFromStateVector(v[j])
+                        J = arm.jacobian(q)
+                        vecspeed = np.dot(J,qdot)
+                        speed.append(np.linalg.norm(vecspeed))
                 ax.plot(index, speed, c ='b')
                 ax.set_xlabel("time (s)")
                 ax.set_ylabel("Instantaneous velocity (m/s)")
@@ -111,8 +115,11 @@ def plotVelocityProfile(what, folderName = "None"):
             index, speed = [], []
             if rd.random()<0.06:#what == "RBFN" or
                  for j in range(len(v)):
-                    index.append(j)
-                    speed.append(np.linalg.norm([v[j][0],v[j][1]]))
+                    index.append(j*rs.dt)
+                    qdot,q = getDotQAndQFromStateVector(v[j])
+                    J = arm.jacobian(q)
+                    vecspeed = np.dot(J,qdot)
+                    speed.append(np.linalg.norm(vecspeed))
                     plt.plot(index, speed, c ='b')
         plt.xlabel("time (s)")
         plt.ylabel("Instantaneous velocity (m/s)")
@@ -645,7 +652,7 @@ def plotExperimentSetup():
         if el[1] == np.min(posIni, axis = 0)[1] and t == 0:
             t += 1
             a, b = arm.mgi(el[0], el[1])
-            a1, b1 = arm.mgd(np.array([[a], [b]]))
+            a1, b1 = arm.mgdFull(np.array([[a], [b]]))
             xb.append(a1[0])
             xb.append(b1[0])
             yb.append(a1[1])
@@ -655,7 +662,7 @@ def plotExperimentSetup():
     pos = []
     for i in range(len(q1)):
         for j in range(len(q2)):
-            coordEl, coordHa = arm.mgd(np.array([[q1[i]], [q2[j]]]))
+            coordHa = arm.mgdEndEffector(np.array([[q1[i]], [q2[j]]]))
             pos.append(coordHa)
     x, y = [], []
     for el in pos:

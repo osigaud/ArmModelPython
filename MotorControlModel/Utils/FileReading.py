@@ -22,7 +22,7 @@ def loadStateCommandPairsByStartCoords(foldername):
     dataOut = {}
     for el in os.listdir(foldername):
             data = np.loadtxt(foldername + el)
-            coordElbow, coordHand = arm.mgd(np.array([[data[0,10]], [data[0,11]]]))
+            coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]]]))
             x,y = str(coordHand[0][0]), str(coordHand[1][0])
             if not y in dataOut.keys():
                 dataOut[y] = {}
@@ -72,10 +72,9 @@ def getInitPos(foldername):
     xy = {}
     for el in os.listdir(foldername):
             data = np.loadtxt(foldername + el)
-            coordElbow, coordHand = arm.mgd(np.array([[data[0,10]], [data[0,11]]]))
+            coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]]]))
             #if coordHand[1]<0.58:
             xy[el] = (coordHand[0], coordHand[1])
- 
     return xy
   
 def getStateAndCommandData(foldername):
@@ -160,7 +159,7 @@ def getXYHandData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordElbow, coordHand = arm.mgd(np.array([[data[i][10]], [data[i][11]]]))
+           coordHand = arm.mgdEndEffector(np.array([[data[i][10]], [data[i][11]]]))
            xy[el].append((coordHand[0], coordHand[1]))
     return xy
 
@@ -176,7 +175,7 @@ def getXYElbowData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordElbow, coordHand = arm.mgd(np.array([[data[i][10]], [data[i][11]]]))
+           coordElbow, coordHand = arm.mgdFull(np.array([[data[i][10]], [data[i][11]]]))
            xy[el].append((coordElbow[0], coordElbow[1]))
     return xy
 
@@ -206,7 +205,7 @@ def getEstimatedXYHandData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-            coordElbow, coordHand = arm.mgd(np.array([[data[i][6]], [data[i][7]]]))
+            coordHand = arm.mgdEndEffector(np.array([[data[i][6]], [data[i][7]]]))
             xy[el].append((coordHand[0], coordHand[1]))
     return xy
     
