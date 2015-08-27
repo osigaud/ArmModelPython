@@ -78,6 +78,36 @@ def trajectoriesAnimation(what, folderName = "None", targetSize = "0.05"):
     ani = animation.FuncAnimation(fig, animate, init_func=init, frames=len(xEl), blit=True, interval=20, repeat=True)
     plt.show(block = True)
 
+def makeInitPlot(rs):
+    x0 = []
+    y0 = []
+    posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+    for el in posIni:
+        x0.append(el[0])
+        y0.append(el[1])
+        #print "distance to target: " + str(rs.getDistanceToTarget(el[0],el[1]))
+
+    xy = getInitPos(BrentTrajectoriesFolder)
+    x, y = [], []
+    aa, keyy = [], []
+    for key, el in xy.items():
+        x.append(el[0])
+        y.append(el[1])
+        
+    plt.scatter(x, y, c = "b", marker=u'o', s=10, cmap=cm.get_cmap('RdGrBu'))
+    plt.scatter(rs.XTarget, rs.YTarget, c = "r", marker=u'*', s = 100)
+    plt.scatter(x0, y0, c = "r", marker=u'o', s=25)  
+
+def plotInitPos():
+    '''
+    Plots the initial position of trajectories present in the Brent directory
+    '''
+    plt.figure()
+    rs = ReadSetupFile()
+    makeInitPlot(rs)
+    
+    plt.show(block = True)
+
 #----------------------------------------------------------------------------------------------------------------------------
 #Functions related to velocity profiles
 
@@ -277,34 +307,6 @@ def plotMuscularActivations(what, folderName = "None", targetSize = "0.05"):
 
     plt.show(block = True)
 
-def makeInitPlot(rs):
-    x0 = []
-    y0 = []
-    posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    for el in posIni:
-        x0.append(el[0])
-        y0.append(el[1])
-    xy = getInitPos(BrentTrajectoriesFolder)
-    x, y = [], []
-    aa, keyy = [], []
-    for key, el in xy.items():
-        x.append(el[0])
-        y.append(el[1])
-        
-    plt.scatter(x, y, c = "b", marker=u'o', s=10, cmap=cm.get_cmap('RdGrBu'))
-    plt.scatter(rs.XTarget, rs.YTarget, c = "r", marker=u'*', s = 100)
-    plt.scatter(x0, y0, c = "r", marker=u'o', s=25)  
-
-def plotInitPos():
-    '''
-    Plots the initial position of trajectories present in the Brent directory
-    '''
-    plt.figure()
-    rs = ReadSetupFile()
-    makeInitPlot(rs)
-    
-    plt.show(block = True)
-
 #-------------------------- cost maps ----------------------------------------------
 
 def plotCostColorMap(what, folderName = "None", targetSize = "All"):
@@ -328,13 +330,12 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
 
             for k, v in costs.items():
                 for j in range(len(v)):
-                    #if rs.getDistanceToTarget(v[j][0],v[j][1])<0.6 and rs.getDistanceToTarget(v[j][0],v[j][1])>0.3 :
-                        x0.append(v[j][0])
-                        y0.append(v[j][1])
-                        cost.append(v[j][2])
+                    x0.append(v[j][0])
+                    y0.append(v[j][1])
+                    cost.append(v[j][2])
 
-            xi = np.linspace(-0.25,0.25,100)
-            yi = np.linspace(0.35,0.5,100)
+            xi = np.linspace(-0.3,0.3,100)
+            yi = np.linspace(0.25,0.58,100)
             zi = griddata(x0, y0, cost, xi, yi)
 
             t1 = ax.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdGrBu'))
@@ -362,13 +363,12 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
 
         for k, v in costs.items():
             for j in range(len(v)):
-                #if rs.getDistanceToTarget(v[j][0],v[j][1])<0.6 and rs.getDistanceToTarget(v[j][0],v[j][1])>0.3 :
-                    x0.append(v[j][0])
-                    y0.append(v[j][1])
-                    cost.append(v[j][2])
+                x0.append(v[j][0])
+                y0.append(v[j][1])
+                cost.append(v[j][2])
 
-        xi = np.linspace(-0.25,0.25,100)
-        yi = np.linspace(0.35,0.5,100)
+        xi = np.linspace(-0.3,0.3,100)
+        yi = np.linspace(0.25,0.58,100)
         zi = griddata(x0, y0, cost, xi, yi)
     
         t1 = plt.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdGrBu'))
@@ -410,8 +410,8 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
                     y0.append(v[j][1])
                     time.append(v[j][2])
 
-            xi = np.linspace(-0.25,0.25,100)
-            yi = np.linspace(0.35,0.5,100)
+            xi = np.linspace(-0.3,0.3,100)
+            yi = np.linspace(0.25,0.58,100)
             zi = griddata(x0, y0, time, xi, yi)
 
             t1 = ax.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdGrBu'))
@@ -443,8 +443,8 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
                 y0.append(v[j][1])
                 time.append(v[j][2])
 
-        xi = np.linspace(-0.25,0.25,100)
-        yi = np.linspace(0.35,0.5,100)
+        xi = np.linspace(-0.3,0.3,100)
+        yi = np.linspace(0.25,0.58,100)
         zi = griddata(x0, y0, time, xi, yi)
     
         t1 = plt.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdGrBu'))

@@ -78,7 +78,7 @@ class rbfn():
         maxInputData = np.max(self.inputData, axis = 0)
         rangeForEachDim = maxInputData - minInputData
         #set the sigmas
-        widthConstant = 2.2*rangeForEachDim / self.nbFeat
+        widthConstant = 2.3*rangeForEachDim / self.nbFeat
         #create the diagonal matrix of sigmas to compute the gaussian
         self.widths = np.diag(widthConstant)
          #coef for Gaussian features

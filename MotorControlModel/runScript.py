@@ -7,6 +7,7 @@ Module: runScript
 
 Description: main script to run what we want in the project
 '''
+import numpy as np
 
 from Main.Main import generateFromRBFN, generateFromCMAES, generateCostMapFromRBFN, generateCostMapFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
@@ -16,6 +17,8 @@ from Regression.RunRegressionRBFN import runRBFN, UnitTest, UnitTestRBFNControll
 from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESCostProgress
 
 from Utils.Chrono import Chrono
+from Utils.ReadSetupFile import ReadSetupFile
+from GlobalVariables import pathDataFolder
 
 #----------------------------- main list of available actions ----------------------------------------------------------------------
 
@@ -99,7 +102,7 @@ def chooseFunction(choix):
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
-            plotXYPositions("RBFN",nameF,"All",True)
+            plotXYPositions("RBFN",nameF,"All",False)#True)
         else:
             plotArticularPositions("RBFN",nameF)
     elif choix == 9:
@@ -210,9 +213,41 @@ def chooseFunction(choix):
         generateCostMapFromCMAES(nbret, nameTheta, name)
         c.stop()
 
+def generateInitialPositions():
+    rs=ReadSetupFile()
+    filename = pathDataFolder + "PosCircu15"
+    data = []
+    for i in range(3):
+        point = [rs.XTarget+ 0.0975*np.cos((-i-1)*np.pi/4), rs.YTarget+ 0.0975*np.sin((-i-1)*np.pi/4)]
+        print point
+        data.append(point)
+    print "------------------"
+    for i in range(5):
+        point = [rs.XTarget+ 0.243*np.cos(-i*np.pi/8-np.pi/4), rs.YTarget+ 0.243*np.sin(-i*np.pi/8-np.pi/4)]
+        print point
+        data.append(point)
+    print "------------------"
+    for i in range(7):
+        point = [rs.XTarget+ 0.39*np.cos(-i*np.pi/12-np.pi/4), rs.YTarget+ 0.39*np.sin(-i*np.pi/12-np.pi/4)]
+        print point
+        data.append(point)
+    np.savetxt(filename,data)
+
+    print "------- **** -----------"
+    filename2 = pathDataFolder + "PosCircu210"
+    data2 = []
+    for j in range(10):
+        for i in range(21):
+            point = [rs.XTarget+ (0.1+j*0.03)*np.cos(-i*np.pi/40-np.pi/4), rs.YTarget+ (0.1+j*0.03)*np.sin(-i*np.pi/40-np.pi/4)]
+            print point
+            data2.append(point)
+    np.savetxt(filename2,data2)
+
+
 #plotInitPos()  
 #runAuto()
 #generateFromRBFN(nbret, nameC)
+#generateInitialPositions()
 runChoice()
 
 #UnitTest()

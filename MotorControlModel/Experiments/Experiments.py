@@ -94,8 +94,8 @@ class Experiments:
             
     def runTrajectoriesForCostMap(self, repeat):
         globCost = []
-        xy = getInitPos(BrentTrajectoriesFolder)
-        for key, el in xy.items():
+        xy = np.loadtxt(pathDataFolder + "PosCircu210")
+        for el in xy:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
                 costAll[i], trajTimeAll[i]  = self.runOneTrajectory(el[0], el[1]) 
