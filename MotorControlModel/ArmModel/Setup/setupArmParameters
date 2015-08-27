@@ -22,3 +22,7 @@ Moment arm matrix, a9:0.025
 Moment arm matrix, a10:-0.025
 Moment arm matrix, a11:0.028
 Moment arm matrix, a12:-0.035
+Shoulder upper bound(float):2.6
+Shoulder lower bound(float):-0.6
+Elbow upper bound(float):3.0
+Elbow lower bound(float):-0.2

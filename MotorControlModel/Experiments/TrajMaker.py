@@ -96,7 +96,7 @@ class TrajMaker:
         #print("coord init ",[x,y])
 
         #computes the coordinates of the hand and the elbow from the position vector
-        coordElbow, coordHand = self.arm.mgd(q)
+        coordElbow, coordHand = self.arm.mgdFull(q)
         #assert(coordHand[0]==x and coordHand[1]==y), "Erreur de MGD" does not work because of rounding effects
 
         #initializes parameters for the trajectory
@@ -157,7 +157,7 @@ class TrajMaker:
                 dataStore.append(row)
 
             estimState = estimNextState
-            coordElbow, coordHand = self.arm.mgd(q)
+            coordElbow, coordHand = self.arm.mgdFull(q)
             i += 1
             t += self.rs.dt
 

@@ -29,26 +29,6 @@ def getDotQAndQFromStateVector(state):
       q = np.array([state[2], state[3]])
       return dotq, q
 
-def jointStop(q):
-      '''
-      Articular stop for the human arm
-      Shoulder: -0.6 <= q1 <= 2.6
-      Elbow: -0.2 <= q2 <= 3.0
-    
-      Inputs:    -q: (2,1) numpy array
-    
-      Outputs:    -q: (2,1) numpy array
-      '''
-      if q[0] < -0.6:
-        q[0] = -0.6
-      elif q[0] > 2.6:
-        q[0] = 2.6
-      if q[1] < -0.2:
-        q[1] = -0.2
-      elif q[1] > 3.0:
-        q[1] = 3.0
-      return q
-
 #-----------------------------------------------------------------------------
 
 class Arm:
@@ -110,11 +90,36 @@ class Arm:
     dotq += ddotq*self.dt
     q += dotq*self.dt
     #save the real state to compute the state at the next step with the real previous state
-    q = jointStop(q)
+    q = self.jointStop(q)
     nextState = np.array([dotq[0], dotq[1], q[0], q[1]])
     return nextState
+
+  def jointStop(self,q):
+      '''
+      Articular stop for the human arm
+      The stops are included in the arm parameters file
+      Shoulder: -0.6 <= q1 <= 2.6
+      Elbow: -0.2 <= q2 <= 3.0
     
-  def mgd(self, q):
+      Inputs:    -q: (2,1) numpy array
+    
+      Outputs:    -q: (2,1) numpy array
+      '''
+      if q[0] < self.armP.slb:
+        q[0] = self.armP.slb
+        print "*"
+      elif q[0] > self.armP.sub:
+        q[0] = self.armP.sub
+        print "-"
+      if q[1] < self.armP.elb:
+        q[1] = self.armP.elb
+        print "w"
+      elif q[1] > self.armP.eub:
+        q[1] = self.armP.eub
+        print "+"
+      return q
+    
+  def mgdFull(self, q):
       '''
       Direct geometric model of the arm
     
@@ -125,8 +130,29 @@ class Arm:
       -coordHand: hand coordinate
       '''
       coordElbow = [self.armP.l1*np.cos(q[0]), self.armP.l1*np.sin(q[0])]
-      coordHand = [self.armP.l2*np.cos(q[1] + q[0]) + self.armP.l1*np.cos(q[0]), self.armP.l2*np.sin(q[1] + q[0]) + self.armP.l1*np.sin(q[0])]
+      coordHand = [self.armP.l1*np.cos(q[0])+self.armP.l2*np.cos(q[0] + q[1]), self.armP.l1*np.sin(q[0]) + self.armP.l2*np.sin(q[0] + q[1])]
       return coordElbow, coordHand
+    
+  def jacobian(self, q):
+        J = np.array([
+                    [-self.armP.l1*np.sin(q[0]) - self.armP.l2*np.sin(q[0] + q[1]),
+                     -self.armP.l2*np.sin(q[0] + q[1])],
+                    [self.armP.l1*np.cos(q[0]) + self.armP.l2*np.cos(q[0] + q[1]),
+                     self.armP.l2*np.cos(q[0] + q[1])]])
+        return J
+
+
+  def mgdEndEffector(self, q):
+      '''
+      Direct geometric model of the arm
+    
+      Inputs:     -q: (2,1) numpy array, the joint coordinates
+    
+      Outputs:
+      -coordHand: hand coordinate
+      '''
+      coordHand = [self.armP.l1*np.cos(q[0])+self.armP.l2*np.cos(q[0] + q[1]), self.armP.l1*np.sin(q[0]) + self.armP.l2*np.sin(q[0] + q[1])]
+      return coordHand
 
   def mgi(self, xi, yi):
       '''
