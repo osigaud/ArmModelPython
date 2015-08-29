@@ -20,7 +20,7 @@ from Utils.FileReading import getStateAndCommandData, dicToArray
 from CostComputation import CostComputation
 from StateEstimator import StateEstimator
 
-from GlobalVariables import BrentTrajectoriesFolder
+from GlobalVariables import BrentTrajectoriesFolder,pathDataFolder
 
 def initRBFNController(rs):
     '''
@@ -164,7 +164,8 @@ class TrajMaker:
         #check if the target is reached and give the reward if yes
         if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget:
             cost = self.cc.computeFinalCostReward(cost, t)
-   
+            np.savetxt(pathDataFolder+"Test/TrajRBFN_"+str(coordHand[0])+":"+str(coordHand[1])+"_"+str(cost)+".traj",dataStore)
+
         if self.saveTraj == True:
             np.savetxt(filename,dataStore)
 
