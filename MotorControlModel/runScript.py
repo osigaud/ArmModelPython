@@ -251,7 +251,7 @@ def generateInitialPositions():
 #plotInitPos()  
 #runAuto()
 #generateFromRBFN(nbret, nameC)
-generateInitialPositions()
+#generateInitialPositions()
 runChoice()
 
 #UnitTest()
