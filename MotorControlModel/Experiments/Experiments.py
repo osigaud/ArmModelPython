@@ -94,7 +94,7 @@ class Experiments:
             
     def runTrajectoriesForCostMap(self, repeat):
         globCost = []
-        xy = np.loadtxt(pathDataFolder + "PosCircu210")
+        xy = np.loadtxt(pathDataFolder + "PosCircu540")
         for el in xy:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):

@@ -123,7 +123,8 @@ def plotVelocityProfile(what, folderName = "None"):
             state = getStateData(name)
             for k,v in state.items():
                 index, speed = [], []
-                if  rd.random()<0.06:#what == "RBFN" or
+                factor = min(1, len(state.items)/100)
+                if  rd.random()<factor:
                     for j in range(len(v)):
                         index.append(j*rs.dt)
                         qdot,q = getDotQAndQFromStateVector(v[j])
@@ -143,7 +144,8 @@ def plotVelocityProfile(what, folderName = "None"):
         state = getStateData(name)
         for k,v in state.items():
             index, speed = [], []
-            if rd.random()<0.06:#what == "RBFN" or
+            factor = min(1, len(state.items)/100)
+            if  rd.random()<factor:
                  for j in range(len(v)):
                     index.append(j*rs.dt)
                     qdot,q = getDotQAndQFromStateVector(v[j])
@@ -170,7 +172,8 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
             state = getXYHandData(name)
 
             for k,v in state.items():
-                if rd.random()<0.06:
+                factor = min(1, len(state.items)/100)
+                if  rd.random()<factor:
                     posX, posY = [], []
                     for j in range(len(v)):
                         posX.append(v[j][0])
@@ -180,7 +183,8 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
             if plotEstim==True:
                 estimState = getEstimatedXYHandData(name)
                 for k,v in estimState.items():
-                    if rd.random()<0.06:
+                    factor = min(1, len(estimState.items)/100)
+                    if  rd.random()<factor:
                         eX, eY = [], []
                         for j in range(len(v)):
                             eX.append(v[j][0])
@@ -202,7 +206,8 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
 
             state = getXYHandData(name)
             for k,v in state.items():
-                if rd.random()<0.06 or what != "Brent":
+                factor = min(1, len(state.items)/100)
+                if rd.random()<factor:
                     posX, posY = [], []
                     for j in range(len(v)):
                         posX.append(v[j][0])

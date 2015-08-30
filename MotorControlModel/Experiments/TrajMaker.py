@@ -164,10 +164,12 @@ class TrajMaker:
         #check if the target is reached and give the reward if yes
         if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget:
             cost = self.cc.computeFinalCostReward(cost, t)
-            np.savetxt(pathDataFolder+"Test/TrajRBFN_"+str(coordHand[0])+":"+str(coordHand[1])+"_"+str(cost)+".traj",dataStore)
+            
 
         if self.saveTraj == True:
             np.savetxt(filename,dataStore)
+            if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget and i<220:
+                np.savetxt(filename+".traj",dataStore)
 
         lastX = -1000
         if coordHand[1] >= self.rs.YTarget:

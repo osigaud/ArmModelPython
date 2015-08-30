@@ -219,35 +219,39 @@ def generateInitialPositions():
     data = []
     for i in range(3):
         point = [rs.XTarget+ 0.0975*np.cos((-i-1)*np.pi/4), rs.YTarget+ 0.0975*np.sin((-i-1)*np.pi/4)]
-        print point
         data.append(point)
-    print "------------------"
     for i in range(5):
         point = [rs.XTarget+ 0.243*np.cos(-i*np.pi/8-np.pi/4), rs.YTarget+ 0.243*np.sin(-i*np.pi/8-np.pi/4)]
         print point
         data.append(point)
-    print "------------------"
     for i in range(7):
         point = [rs.XTarget+ 0.39*np.cos(-i*np.pi/12-np.pi/4), rs.YTarget+ 0.39*np.sin(-i*np.pi/12-np.pi/4)]
-        print point
         data.append(point)
     np.savetxt(filename,data)
 
-    print "------- **** -----------"
-    filename2 = pathDataFolder + "PosCircu210"
+    print "------- **** --rayon de 0.1 à 0.6, angle de -pi/3 à ... ---------"
+    filename2 = pathDataFolder + "PosCircu540"
     data2 = []
-    for j in range(10):
-        for i in range(21):
-            point = [rs.XTarget+ (0.1+j*0.03)*np.cos(-i*np.pi/40-np.pi/4), rs.YTarget+ (0.1+j*0.03)*np.sin(-i*np.pi/40-np.pi/4)]
+    for j in range(20):
+        for i in range(27):
+            point = [rs.XTarget+ (0.1+j*0.025)*np.cos(-i*np.pi/40-np.pi/3), rs.YTarget+ (0.1+j*0.025)*np.sin(-i*np.pi/40-np.pi/3)]
             print point
             data2.append(point)
     np.savetxt(filename2,data2)
+
+    filename3 = pathDataFolder + "PosSquare"
+    data3 = []
+    for j in range(20):
+        for i in range(20):
+            point = [rs.XTarget - 0.3 + i*0.03, rs.YTarget - 0.4 + j*0.01]
+            data3.append(point)
+    np.savetxt(filename3,data3)
 
 
 #plotInitPos()  
 #runAuto()
 #generateFromRBFN(nbret, nameC)
-#generateInitialPositions()
+generateInitialPositions()
 runChoice()
 
 #UnitTest()
