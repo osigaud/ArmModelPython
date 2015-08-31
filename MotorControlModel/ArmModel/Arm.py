@@ -174,6 +174,7 @@ class Arm:
         return q1, q2
       except ValueError:
         print("forbidden value")
+        print xi,yi
         return "None"    
 
 

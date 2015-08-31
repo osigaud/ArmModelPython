@@ -9,7 +9,7 @@ Description: main script to run what we want in the project
 '''
 import numpy as np
 
-from Main.Main import generateFromRBFN, generateFromCMAES, generateCostMapFromRBFN, generateCostMapFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.Main import generateFromRBFN, generateFromCMAES, generateRichDataFromRBFN, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Regression.RunRegressionRBFN import runRBFN, UnitTest, UnitTestRBFNController, UnitTestArmModel
 
@@ -202,7 +202,7 @@ def chooseFunction(choix):
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         c = Chrono()
-        generateCostMapFromRBFN(nbret, name, fname)
+        generateRichDataFromRBFN(nbret, name, fname)
         c.stop()
     elif choix == 26:
         nameTheta = raw_input('Name of the controller file: ')
@@ -210,7 +210,7 @@ def chooseFunction(choix):
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
         c = Chrono()
-        generateCostMapFromCMAES(nbret, nameTheta, name)
+        generateRichDataFromCMAES(nbret, nameTheta, name)
         c.stop()
 
 def generateInitialPositions():
@@ -222,20 +222,18 @@ def generateInitialPositions():
         data.append(point)
     for i in range(5):
         point = [rs.XTarget+ 0.243*np.cos(-i*np.pi/8-np.pi/4), rs.YTarget+ 0.243*np.sin(-i*np.pi/8-np.pi/4)]
-        print point
         data.append(point)
     for i in range(7):
         point = [rs.XTarget+ 0.39*np.cos(-i*np.pi/12-np.pi/4), rs.YTarget+ 0.39*np.sin(-i*np.pi/12-np.pi/4)]
         data.append(point)
     np.savetxt(filename,data)
 
-    print "------- **** --rayon de 0.1 à 0.6, angle de -pi/3 à ... ---------"
+    #------- **** --rayon de 0.1 à 0.6, angle de -pi/5 à -4pi/5 ---------
     filename2 = pathDataFolder + "PosCircu540"
     data2 = []
     for j in range(20):
         for i in range(27):
-            point = [rs.XTarget+ (0.1+j*0.025)*np.cos(-i*np.pi/40-np.pi/3), rs.YTarget+ (0.1+j*0.025)*np.sin(-i*np.pi/40-np.pi/3)]
-            print point
+            point = [rs.XTarget+ (0.1+j*0.02)*np.cos(-i*np.pi/40-np.pi/5), rs.YTarget+ (0.1+j*0.02)*np.sin(-i*np.pi/40-np.pi/5)]
             data2.append(point)
     np.savetxt(filename2,data2)
 

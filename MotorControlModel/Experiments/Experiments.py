@@ -24,7 +24,7 @@ def checkIfFolderExists(name):
     if not os.path.isdir(name):
         os.makedirs(name)
 
-def findDataFileName(foldername, name, extension):
+def findDataFilename(foldername, name, extension):
     i = 1
     checkIfFolderExists(foldername)
     tryName = name + "1" + extension
@@ -78,23 +78,23 @@ class Experiments:
         self.setTheta(self.theta)
 
     def saveCost(self):
-        filename = findDataFileName(self.foldername+"Cost/","traj",".cost")
-        filenameTime = findDataFileName(self.foldername+"TrajTime/","traj",".time")
-        filenameX = findDataFileName(self.foldername+"finalX/","x",".last")
+        filename = findDataFilename(self.foldername+"Cost/","traj",".cost")
+        filenameTime = findDataFilename(self.foldername+"TrajTime/","traj",".time")
+        filenameX = findDataFilename(self.foldername+"finalX/","x",".last")
         np.savetxt(filename, self.costStore)
         np.savetxt(filenameTime, self.trajTimeStore)
         np.savetxt(filenameX, self.lastCoord)
          
     def runOneTrajectory(self, x, y):
-        filename = findDataFileName(self.foldername+"Log/","traj",".log")
-        cost, trajTime, lastX = self.tm.runTrajectory(x, y, filename)
+        cost, trajTime, lastX = self.tm.runTrajectory(x, y, self.foldername)
         if lastX != -1000:
             self.lastCoord.append(lastX)
         return cost, trajTime
             
-    def runTrajectoriesForCostMap(self, repeat):
+    def runRichTrajectories(self, repeat):
         globCost = []
         xy = np.loadtxt(pathDataFolder + "PosCircu540")
+        #xy = np.loadtxt(pathDataFolder + "PosSquare")
         for el in xy:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
@@ -143,7 +143,7 @@ class Experiments:
         if meanCost>self.bestCost:
             self.bestCost = meanCost
             extension = ".save" + str(meanCost)
-            filename = findDataFileName(self.foldername+"Theta/", "theta", extension)
+            filename = findDataFilename(self.foldername+"Theta/", "theta", extension)
             np.savetxt(filename, self.theta)
 
         self.call += 1

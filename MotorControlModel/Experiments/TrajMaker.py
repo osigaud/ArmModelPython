@@ -8,6 +8,7 @@ Module: TrajMaker
 Description: Class to generate a trajectory
 '''
 import numpy as np
+import os
 
 from Utils.CreateVectorUtil import createVector
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
@@ -21,6 +22,20 @@ from CostComputation import CostComputation
 from StateEstimator import StateEstimator
 
 from GlobalVariables import BrentTrajectoriesFolder,pathDataFolder
+
+def checkFolder(name):
+    if not os.path.isdir(name):
+        os.makedirs(name)
+
+def findFilename(foldername, name, extension):
+    i = 1
+    checkFolder(foldername)
+    tryName = name + "1" + extension
+    while tryName in os.listdir(foldername):
+        i += 1
+        tryName = name + str(i) + extension
+    filename = foldername + tryName
+    return filename
 
 def initRBFNController(rs):
     '''
@@ -79,7 +94,7 @@ class TrajMaker:
     def setTheta(self, theta):
         self.controller.setTheta(theta)
         
-    def runTrajectory(self, x, y, filename):
+    def runTrajectory(self, x, y, foldername):
         '''
     	Generates trajectory from the initial position (x, y)
     
@@ -164,20 +179,17 @@ class TrajMaker:
         #check if the target is reached and give the reward if yes
         if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget:
             cost = self.cc.computeFinalCostReward(cost, t)
-            
 
         if self.saveTraj == True:
+            filename = findFilename(foldername+"Log/","traj",".log")
             np.savetxt(filename,dataStore)
-            if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget and i<220:
-                np.savetxt(filename+".traj",dataStore)
+            if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget and i<230:
+                foldername = pathDataFolder + "TrajRepository/"
+                name = findFilename(foldername,"Traj",".traj")
+                np.savetxt(name,dataStore)
 
         lastX = -1000
         if coordHand[1] >= self.rs.YTarget:
             lastX = coordHand[0]
         #print "end of trajectory"
         return cost, t, lastX
-
-        
-    
-    
-    

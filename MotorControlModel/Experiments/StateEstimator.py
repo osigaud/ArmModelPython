@@ -45,6 +45,7 @@ class StateEstimator:
             self.stateStore.append(state)
             self.commandStore.append([0] * self.dimCommand)
         #print ("InitStore:", self.stateStore)
+        self.currentEstimState = state
     
     def storeInfo(self, state, command):
         '''
@@ -71,16 +72,20 @@ class StateEstimator:
     	Output:		-stateApprox: the next state approximation, numpy array of dimension (x, 1), here x = 4
     	'''
         #store the state of the arm to feed the filter with a delay on the observation
-        estimState = self.storeInfo(state, command)
+        inferredState = self.storeInfo(state, command)
         for i in range (self.delay-1):
             U = self.commandStore[self.delay-i-1]
             if isNull(U):
                 return state
-            estimState = self.arm.computeNextState(U,estimState)
+            inferredState = self.arm.computeNextState(U,inferredState)
+            '''
             for i in range(2,4):#len(estimState)):
                 estimState[i] = estimState[i]*(1+ np.random.normal(0,0.001))
-
-        return estimState
+            '''
+        newEstimState = self.arm.computeNextState(U,self.currentEstimState)
+        for i in range(4):
+            self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
+        return self.currentEstimState
     
     def debugStore(self):
         state = np.array([1,2,3,4])

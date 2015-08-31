@@ -81,20 +81,22 @@ def trajectoriesAnimation(what, folderName = "None", targetSize = "0.05"):
 def makeInitPlot(rs):
     x0 = []
     y0 = []
-    posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+    #posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+    posIni = np.loadtxt(pathDataFolder + "PosCircu540")
     for el in posIni:
         x0.append(el[0])
         y0.append(el[1])
         #print "distance to target: " + str(rs.getDistanceToTarget(el[0],el[1]))
 
-    xy = getInitPos(BrentTrajectoriesFolder)
+    #xy = getInitPos(BrentTrajectoriesFolder)
+    xy = getInitPos(pathDataFolder+"TrajRepository/")
     x, y = [], []
     aa, keyy = [], []
     for key, el in xy.items():
         x.append(el[0])
         y.append(el[1])
         
-    plt.scatter(x, y, c = "b", marker=u'o', s=10, cmap=cm.get_cmap('RdYlBu'))
+    plt.scatter(x, y, c = "b", marker=u'o', s=10, cmap=cm.get_cmap('RdGrBu'))
     plt.scatter(rs.XTarget, rs.YTarget, c = "r", marker=u'*', s = 100)
     plt.scatter(x0, y0, c = "r", marker=u'o', s=25)  
 
@@ -121,9 +123,9 @@ def plotVelocityProfile(what, folderName = "None"):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/Log/"
             state = getStateData(name)
+            factor = min(1, 100./len(state.items()))
             for k,v in state.items():
                 index, speed = [], []
-                factor = min(1, len(state.items)/100)
                 if  rd.random()<factor:
                     for j in range(len(v)):
                         index.append(j*rs.dt)
@@ -142,9 +144,9 @@ def plotVelocityProfile(what, folderName = "None"):
             name = rs.RBFNpath + folderName + "/Log/"
 
         state = getStateData(name)
+        factor = min(1, 100./len(state.items()))
         for k,v in state.items():
             index, speed = [], []
-            factor = min(1, len(state.items)/100)
             if  rd.random()<factor:
                  for j in range(len(v)):
                     index.append(j*rs.dt)
@@ -159,7 +161,33 @@ def plotVelocityProfile(what, folderName = "None"):
 
     plt.savefig("ImageBank/"+what+'_velocity_profiles.png', bbox_inches='tight')
     plt.show(block = True)
- 
+
+
+# ------------------------- positions, trajectories ---------------------------------
+
+def plotPos(name, media, plotEstim):
+    state = getXYHandData(name)
+    factor = min(1, 100./len(state.items()))
+
+    for k,v in state.items():
+        if  rd.random()<factor:
+            posX, posY = [], []
+            for j in range(len(v)):
+                posX.append(v[j][0])
+                posY.append(v[j][1])
+            media.plot(posX,posY, c ='b')
+
+    if plotEstim==True:
+        estimState = getEstimatedXYHandData(name)
+        factor = min(1, 100./len(estimState.items()))
+        for k,v in estimState.items():
+            if  rd.random()<factor:
+                eX, eY = [], []
+                for j in range(len(v)):
+                    eX.append(v[j][0])
+                    eY.append(v[j][1])
+                media.plot(eX,eY, c ='r')
+
 def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=False):
     rs = ReadSetupFile()
     plt.figure(1, figsize=(16,9))
@@ -168,28 +196,7 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/Log/"
-
-            state = getXYHandData(name)
-
-            for k,v in state.items():
-                factor = min(1, len(state.items)/100)
-                if  rd.random()<factor:
-                    posX, posY = [], []
-                    for j in range(len(v)):
-                        posX.append(v[j][0])
-                        posY.append(v[j][1])
-                    ax.plot(posX,posY, c ='b')
-
-            if plotEstim==True:
-                estimState = getEstimatedXYHandData(name)
-                for k,v in estimState.items():
-                    factor = min(1, len(estimState.items)/100)
-                    if  rd.random()<factor:
-                        eX, eY = [], []
-                        for j in range(len(v)):
-                            eX.append(v[j][0])
-                            eY.append(v[j][1])
-                            ax.plot(eX,eY, c ='r')
+            plotPos(name, ax, plotEstim)
 
             makeInitPlot(rs)
             ax.set_xlabel("X (m)")
@@ -204,33 +211,15 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
         else:
             name = rs.RBFNpath + folderName + "/Log/"
 
-            state = getXYHandData(name)
-            for k,v in state.items():
-                factor = min(1, len(state.items)/100)
-                if rd.random()<factor:
-                    posX, posY = [], []
-                    for j in range(len(v)):
-                        posX.append(v[j][0])
-                        posY.append(v[j][1])
-                    plt.plot(posX,posY, c ='b')
+        plotPos(name, plt, plotEstim)
+        makeInitPlot(rs)
 
-            if plotEstim==True:
-                estimState = getEstimatedXYHandData(name)
-                for k,v in estimState.items():
-                    if rd.random()<0.06 or what != "Brent":
-                        eX, eY = [], []
-                        for j in range(len(v)):
-                            eX.append(v[j][0])
-                            eY.append(v[j][1])
-                            plt.plot(eX,eY, c ='r')
-
-            plt.xlabel("X (m)")
-            plt.ylabel("Y (m)")
-            plt.title("XY Positions for " + what)
-
-            makeInitPlot(rs)
+        plt.xlabel("X (m)")
+        plt.ylabel("Y (m)")
+        plt.title("XY Positions for " + what)
 
     plt.savefig("ImageBank/"+what+'_trajectories.png', bbox_inches='tight')
+    #plt.savefig("ImageBank/"+what+'_trajectories.png')
     plt.show(block = True)
 
 def plotArticularPositions(what, folderName = "None", targetSize = "0.05"):
@@ -258,6 +247,8 @@ def plotArticularPositions(what, folderName = "None", targetSize = "0.05"):
     plt.title("Articular positions for " + what)
     plt.savefig("ImageBank/"+what+'_articular.png', bbox_inches='tight')
     plt.show(block = True)
+
+#------------------ muscular activations --------------------------------
 
 def plotMuscularActivations(what, folderName = "None", targetSize = "0.05"):
     '''
@@ -343,9 +334,9 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
             yi = np.linspace(0.25,0.58,100)
             zi = griddata(x0, y0, cost, xi, yi)
 
-            t1 = ax.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
+            t1 = ax.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdGrBu'))
             ax.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-            CS = ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+            CS = ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdGrBu'))
             fig.colorbar(t1, shrink=0.5, aspect=5)
             t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
             ax.set_xlabel("X (m)")
@@ -376,9 +367,9 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
         yi = np.linspace(0.25,0.58,100)
         zi = griddata(x0, y0, cost, xi, yi)
     
-        t1 = plt.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
+        t1 = plt.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdGrBu'))
         plt.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-        CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+        CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdGrBu'))
         fig.colorbar(t1, shrink=0.5, aspect=5)
         t1 = plt.scatter(x0, y0, c='b', marker=u'o', s=20)
         plt.xlabel("X (m)")
@@ -419,9 +410,9 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
             yi = np.linspace(0.25,0.58,100)
             zi = griddata(x0, y0, time, xi, yi)
 
-            t1 = ax.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdYlBu'))
+            t1 = ax.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdGrBu'))
             ax.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-            CS = ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+            CS = ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdGrBu'))
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
             ax.set_title(str("Time map for target " + str(rs.sizeOfTarget[i])))
@@ -452,9 +443,9 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
         yi = np.linspace(0.25,0.58,100)
         zi = griddata(x0, y0, time, xi, yi)
     
-        t1 = plt.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdYlBu'))
+        t1 = plt.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdGrBu'))
         plt.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-        CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+        CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdGrBu'))
         fig.colorbar(t1, shrink=0.5, aspect=5)
         plt.scatter(x0, y0, c='b', marker=u'o', s=20)
         plt.xlabel("X (m)")
