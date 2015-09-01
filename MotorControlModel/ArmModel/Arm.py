@@ -107,16 +107,12 @@ class Arm:
       '''
       if q[0] < self.armP.slb:
         q[0] = self.armP.slb
-        print "*"
       elif q[0] > self.armP.sub:
         q[0] = self.armP.sub
-        print "-"
       if q[1] < self.armP.elb:
         q[1] = self.armP.elb
-        print "w"
       elif q[1] > self.armP.eub:
         q[1] = self.armP.eub
-        print "+"
       return q
     
   def mgdFull(self, q):

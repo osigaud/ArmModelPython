@@ -112,48 +112,47 @@ def plotInitPos():
 #----------------------------------------------------------------------------------------------------------------------------
 #Functions related to velocity profiles
 
+def makeVelocityData(rs,name,media):
+    arm = Arm()
+    state = getStateData(name)
+    factor = min(1, 100./len(state.items()))
+    for k,v in state.items():
+        index, speed = [], []
+        if  rd.random()<factor:
+            handxy = arm.mgdEndEffector([v[0][2],v[0][3]])
+            distance = round(rs.getDistanceToTarget(handxy[0],handxy[1]),2)
+            for j in range(len(v)):
+                index.append(j*rs.dt)
+                qdot,q = getDotQAndQFromStateVector(v[j])
+                J = arm.jacobian(q)
+                vecspeed = np.dot(J,qdot)
+                speed.append(np.linalg.norm(vecspeed))
+            if distance<=0.15:
+                media.plot(index, speed, c ='blue')
+            elif distance<=0.28:
+                media.plot(index, speed, c ='green')
+            else:
+                media.plot(index, speed, c ='red')
+
 def plotVelocityProfile(what, folderName = "None"):
     rs = ReadSetupFile()
     plt.figure(1, figsize=(16,9))
-    arm = Arm()
 
     if what == "CMAES":
         for i in range(4):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/Log/"
-            state = getStateData(name)
-            factor = min(1, 100./len(state.items()))
-            for k,v in state.items():
-                index, speed = [], []
-                if  rd.random()<factor:
-                    for j in range(len(v)):
-                        index.append(j*rs.dt)
-                        qdot,q = getDotQAndQFromStateVector(v[j])
-                        J = arm.jacobian(q)
-                        vecspeed = np.dot(J,qdot)
-                        speed.append(np.linalg.norm(vecspeed))
-                ax.plot(index, speed, c ='b')
-                ax.set_xlabel("time (s)")
-                ax.set_ylabel("Instantaneous velocity (m/s)")
-                ax.set_title(str("Velocity profiles for target " + str(rs.sizeOfTarget[i])))
+            makeVelocityData(rs,name,ax)
+            ax.set_xlabel("time (s)")
+            ax.set_ylabel("Instantaneous velocity (m/s)")
+            ax.set_title(str("Velocity profiles for target " + str(rs.sizeOfTarget[i])))
     else:
         if what == "Brent":
             name = BrentTrajectoriesFolder
         else:
             name = rs.RBFNpath + folderName + "/Log/"
 
-        state = getStateData(name)
-        factor = min(1, 100./len(state.items()))
-        for k,v in state.items():
-            index, speed = [], []
-            if  rd.random()<factor:
-                 for j in range(len(v)):
-                    index.append(j*rs.dt)
-                    qdot,q = getDotQAndQFromStateVector(v[j])
-                    J = arm.jacobian(q)
-                    vecspeed = np.dot(J,qdot)
-                    speed.append(np.linalg.norm(vecspeed))
-                    plt.plot(index, speed, c ='b')
+        makeVelocityData(rs,name,plt)
         plt.xlabel("time (s)")
         plt.ylabel("Instantaneous velocity (m/s)")
         plt.title("Velocity profiles for " + what)
@@ -178,7 +177,6 @@ def plotPos(name, media, plotEstim):
 
     if plotEstim==True:
         estimState = getEstimatedXYHandData(name)
-        factor = min(1, 100./len(estimState.items()))
         for k,v in estimState.items():
             if  rd.random()<factor:
                 eX, eY = [], []
@@ -341,8 +339,8 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
                     y0.append(v[j][1])
                     cost.append(v[j][2])
 
-            xi = np.linspace(-0.3,0.3,100)
-            yi = np.linspace(0.25,0.58,100)
+            xi = np.linspace(-0.4,0.4,100)
+            yi = np.linspace(0.12,0.58,100)
             zi = griddata(x0, y0, cost, xi, yi)
 
             t1 = ax.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdGrBu'))
@@ -374,8 +372,8 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
                 y0.append(v[j][1])
                 cost.append(v[j][2])
 
-        xi = np.linspace(-0.3,0.3,100)
-        yi = np.linspace(0.25,0.58,100)
+        xi = np.linspace(-0.4,0.4,100)
+        yi = np.linspace(0.12,0.58,100)
         zi = griddata(x0, y0, cost, xi, yi)
     
         t1 = plt.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdGrBu'))
@@ -417,8 +415,8 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
                     y0.append(v[j][1])
                     time.append(v[j][2])
 
-            xi = np.linspace(-0.3,0.3,100)
-            yi = np.linspace(0.25,0.58,100)
+            xi = np.linspace(-0.4,0.4,100)
+            yi = np.linspace(0.12,0.58,100)
             zi = griddata(x0, y0, time, xi, yi)
 
             t1 = ax.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdGrBu'))
@@ -450,8 +448,8 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
                 y0.append(v[j][1])
                 time.append(v[j][2])
 
-        xi = np.linspace(-0.3,0.3,100)
-        yi = np.linspace(0.25,0.58,100)
+        xi = np.linspace(-0.4,0.4,100)
+        yi = np.linspace(0.12,0.58,100)
         zi = griddata(x0, y0, time, xi, yi)
     
         t1 = plt.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdGrBu'))
