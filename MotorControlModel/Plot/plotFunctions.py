@@ -18,7 +18,6 @@ from matplotlib import animation
 from matplotlib.mlab import griddata
 plt.rc("figure", facecolor="white")
 
-
 from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedXYHandData, getXYHandData, getXYElbowData, getCommandData, getNoiselessCommandData, getInitPos, getCostData, getTrajTimeData, getTrajTimeData, getLastXData
 from Utils.ReadSetupFile import ReadSetupFile
 from Utils.NiemRoot import tronquerNB
@@ -187,6 +186,18 @@ def plotPos(name, media, plotEstim):
                     eX.append(v[j][0])
                     eY.append(v[j][1])
                 media.plot(eX,eY, c ='r')
+
+def plotTrajsInRepo():
+    rs = ReadSetupFile()
+    plt.figure(1, figsize=(16,9))
+    plotPos(pathDataFolder+"TrajRepository/", plt, False)
+    plt.xlabel("X (m)")
+    plt.ylabel("Y (m)")
+    plt.title("XY Positions")
+
+    plt.savefig("ImageBank/TrajRepo.png", bbox_inches='tight')
+    #plt.savefig("ImageBank/"+what+'_trajectories.png')
+    plt.show(block = True)
 
 def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=False):
     rs = ReadSetupFile()

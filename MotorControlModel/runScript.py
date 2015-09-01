@@ -14,7 +14,7 @@ from Main.Main import generateFromRBFN, generateFromCMAES, generateRichDataFromR
 from Regression.RunRegressionRBFN import runRBFN, UnitTest, UnitTestRBFNController, UnitTestArmModel
 
 
-from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESCostProgress
+from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESCostProgress, plotTrajsInRepo
 
 from Utils.Chrono import Chrono
 from Utils.ReadSetupFile import ReadSetupFile
@@ -55,6 +55,7 @@ def printMainMenu():
     print('		24 plot CMAES cost progress')
     print('		25 generate rich results from RBFN controller')
     print('		26 generate rich results from CMAES controllers')
+    print('		27 plot successful trajectories in repository')
 
 def runChoice():
     checkL = True
@@ -102,7 +103,7 @@ def chooseFunction(choix):
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
-            plotXYPositions("RBFN",nameF,"All",False)#True)
+            plotXYPositions("RBFN",nameF,"All",True)#False)#
         else:
             plotArticularPositions("RBFN",nameF)
     elif choix == 9:
@@ -183,7 +184,6 @@ def chooseFunction(choix):
             plotScattergram("RBFN",nameF)
         elif rorc == 2:
             plotScattergram("CMAES",nameF)
-
     elif choix == 23:
         name = raw_input('Name of the controller file: ')
         rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
@@ -212,6 +212,8 @@ def chooseFunction(choix):
         c = Chrono()
         generateRichDataFromCMAES(nbret, nameTheta, name)
         c.stop()
+    elif choix == 27:
+        plotTrajsInRepo()
 
 def generateInitialPositions():
     rs=ReadSetupFile()
