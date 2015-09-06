@@ -14,7 +14,7 @@ from Main.Main import generateFromRBFN, generateFromCMAES, generateRichDataFromR
 from Regression.RunRegressionRBFN import runRBFN, UnitTest, UnitTestRBFNController, UnitTestArmModel
 
 
-from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESCostProgress, plotTrajsInRepo
+from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo
 
 from Utils.Chrono import Chrono
 from Utils.ReadSetupFile import ReadSetupFile
@@ -196,7 +196,7 @@ def chooseFunction(choix):
         launchCMAESForSpecificTargetSize(float(tSize),name,save)
         c.stop()
     elif choix == 24:
-        plotCMAESCostProgress()
+        plotCMAESProgress()
     elif choix == 25:
         name = raw_input('Name of the RBFN controller file: ')
         fname = raw_input('Folder where you want to save the results: ')

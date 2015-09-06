@@ -625,6 +625,10 @@ def plotScattergram(what,folderName):
         
 # ---------------- end of hit dispersion ---------------------------------------
 
+def plotCMAESProgress():
+    plotCMAESCostProgress()
+    plotCMAESTimeProgress()
+
 def plotCMAESCostProgress():
     rs = ReadSetupFile()
     fig = plt.figure(1, figsize=(16,9))
@@ -638,8 +642,29 @@ def plotCMAESCostProgress():
         for j in range(len(data)):
             x.append(j)
             y.append(data[j])
-        ax.plot(x, y)
-        ax.set_title(str("Target " + str(rs.sizeOfTarget[i])))
+        ax.plot(x, y, c = 'b')
+
+        ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
+
+    plt.show(block = True)
+
+def plotCMAESTimeProgress():
+    rs = ReadSetupFile()
+    fig = plt.figure(1, figsize=(16,9))
+
+    for i in range(len(rs.sizeOfTarget)):
+        ax = plt.subplot2grid((2,2), (i/2,i%2))
+
+        name = rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesTime.log"
+        data = np.loadtxt(name)
+
+        x,y = [],[]
+        for j in range(len(data)):
+            x.append(j)
+            y.append(data[j])
+        ax.plot(x, y, c = 'r')
+
+        ax.set_title(str("Time Target " + str(rs.sizeOfTarget[i])))
 
     plt.show(block = True)
 

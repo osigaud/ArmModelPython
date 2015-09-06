@@ -55,6 +55,7 @@ class Experiments:
         self.posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
         self.costStore = []
         self.CMAEScostStore = []
+        self.CMAESTimeStore = []
         self.trajTimeStore = []
         self.bestCost = -10000.0
         self.lastCoord = []
@@ -108,6 +109,7 @@ class Experiments:
             
     def runTrajectoriesForResultsGeneration(self, repeat):
         globCost = []
+        globTime = []
         for xy in self.posIni:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
@@ -117,7 +119,8 @@ class Experiments:
             self.costStore.append([xy[0], xy[1], meanCost])
             self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
             globCost.append(meanCost)
-        return np.mean(globCost)
+            globTime.append(meanTrajTime)
+        return np.mean(globCost), np.mean(globTime), 
     
     def runTrajectoriesCMAES(self, theta):
         '''
@@ -132,13 +135,14 @@ class Experiments:
         c = Chrono()
         self.initTheta(theta)
         #compute all the trajectories x times each, x = numberOfRepeat
-        meanCost = self.runTrajectoriesForResultsGeneration(self.numberOfRepeat)
+        meanCost, meanTime = self.runTrajectoriesForResultsGeneration(self.numberOfRepeat)
         c.stop()
 
         print("Indiv #: ", self.call, "\n Cost: ", meanCost)
 
         if meanCost>self.localBestCost:
             self.localBestCost = meanCost
+            self.localTimeBest = meanTime
 
         if meanCost>self.bestCost:
             self.bestCost = meanCost
@@ -151,9 +155,11 @@ class Experiments:
 
         if (self.call==0):
             self.CMAEScostStore.append(self.localBestCost)
+            self.CMAESTimeStore.append(self.localTimeBest)
             costfoldername = self.foldername+"Cost/"
             checkIfFolderExists(costfoldername)
             np.savetxt(costfoldername+"cmaesCost.log",self.CMAEScostStore) #Note: inefficient, should rather add to the file
+            np.savetxt(costfoldername+"cmaesTime.log",self.CMAESTimeStore) #Note: inefficient, should rather add to the file
 
         return (300.0-meanCost)/20.0
     
