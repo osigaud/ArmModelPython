@@ -79,8 +79,8 @@ class StateEstimator:
                 return state
             inferredState = self.arm.computeNextState(U,inferredState)
             '''
-            for i in range(2,4):#len(estimState)):
-                estimState[i] = estimState[i]*(1+ np.random.normal(0,0.001))
+            for i in range(2,4):#len(inferredState)):
+                inferredState[i] = inferredState[i]*(1+ np.random.normal(0,0.001))
             '''
         newEstimState = self.arm.computeNextState(U,self.currentEstimState)
         for i in range(4):
