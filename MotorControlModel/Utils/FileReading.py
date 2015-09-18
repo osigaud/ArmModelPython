@@ -21,6 +21,7 @@ def loadStateCommandPairsByStartCoords(foldername):
     arm = Arm()
     dataOut = {}
     for el in os.listdir(foldername):
+        if rd.random()<0.2:
             data = np.loadtxt(foldername + el)
             coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]]]))
             x,y = str(coordHand[0][0]), str(coordHand[1][0])

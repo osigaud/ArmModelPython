@@ -19,7 +19,7 @@ from Regression.RBFN import rbfn
 from ArmModel.Arm import Arm
 from Experiments.TrajMaker import initRBFNController
 
-from GlobalVariables import BrentTrajectoriesFolder
+from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
 def runRBFN(name):
     ''' 
@@ -30,7 +30,8 @@ def runRBFN(name):
     #stateAll, commandAll = dicToArray(state), dicToArray(command)
     #print ("old:", stateAll[0])
 
-    stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
+    stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "TrajRepository/"))
+    #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
     #print ("len:", len(commandAll[0]))
     stateAll = np.vstack(np.array(stateAll))
     commandAll = np.vstack(np.array(commandAll))

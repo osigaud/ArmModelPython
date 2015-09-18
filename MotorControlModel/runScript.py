@@ -73,6 +73,18 @@ def runAuto():
     for choix in range(21):
         chooseFunction(choix)
 
+def generateRBFNs():
+     for i in range(10):
+        c = Chrono()
+        runRBFN("X"+str(i))
+        c.stop()
+
+def testRBFNs():
+     for i in range(10):
+        c = Chrono()
+        generateFromRBFN(3, "X"+str(i), "SX"+str(i))
+        c.stop()
+
 def chooseFunction(choix):
     if choix == 1:
         plotVelocityProfile("Brent")
@@ -252,6 +264,7 @@ def generateInitialPositions():
 #runAuto()
 #generateFromRBFN(nbret, nameC)
 #generateInitialPositions()
+generateRBFNs()
 runChoice()
 
 #UnitTest()
