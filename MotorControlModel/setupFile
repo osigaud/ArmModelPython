@@ -1,6 +1,6 @@
 Number of features (int):3
 Motor noise (Y or N):Y
-K parameter for motor noise (float):0.3
+K parameter for motor noise (float):0.2
 Gamma parameter in cost function (float):0.8
 Rho parameter in cost function (int):300
 Upsilon parameter in cost function (int):1
@@ -14,7 +14,7 @@ Time step (s) (float):0.002
 Initial positions file:PosCircu39
 Max number of time steps for a trajectoiy:300
 Max final error (not used?):0.001
-Sensory delay in time steps (int):25
+Sensory delay in time steps (int):9
 Number of repetitions in CMAES for each trajectory(int):10
 Input dimension, here position, velocity(int):4
 Output dimension, here muscular activation vector:6

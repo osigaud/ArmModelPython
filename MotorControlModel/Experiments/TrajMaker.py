@@ -183,10 +183,12 @@ class TrajMaker:
         if self.saveTraj == True:
             filename = findFilename(foldername+"Log/","traj",".log")
             np.savetxt(filename,dataStore)
+            '''
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget and i<230:
                 foldername = pathDataFolder + "TrajRepository/"
                 name = findFilename(foldername,"Traj",".traj")
                 np.savetxt(name,dataStore)
+            '''
 
         lastX = -1000
         if coordHand[1] >= self.rs.YTarget:

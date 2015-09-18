@@ -221,7 +221,7 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
             name = rs.RBFNpath + folderName + "/Log/"
 
         plotPos(name, plt, plotEstim)
-        makeInitPlot(rs)
+        #makeInitPlot(rs)
 
         plt.xlabel("X (m)")
         plt.ylabel("Y (m)")
