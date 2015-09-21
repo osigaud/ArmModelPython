@@ -28,14 +28,14 @@ from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
 #--------------------------- trajectory animations ---------------------------------------------------------------------------------------------
 
-def trajectoriesAnimation(what, folderName = "None", targetSize = "0.05"):
+def trajectoriesAnimation(what, foldername = "None", targetSize = "0.05"):
     rs = ReadSetupFile()
     if what == "CMAES":
-        name = rs.CMAESpath + targetSize + "/" + folderName + "/Log/"
+        name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
     else:
-        name = rs.RBFNpath + folderName + "/Log/"
+        name = rs.RBFNpath + foldername + "/Log/"
 
     ec = getXYElbowData(name)
     hc = getXYHandData(name)
@@ -134,14 +134,14 @@ def makeVelocityData(rs,name,media):
             else:
                 media.plot(index, speed, c ='red')
 
-def plotVelocityProfile(what, folderName = "None"):
+def plotVelocityProfile(what, foldername = "None"):
     rs = ReadSetupFile()
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES":
         for i in range(4):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/Log/"
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             makeVelocityData(rs,name,ax)
             ax.set_xlabel("time (s)")
             ax.set_ylabel("Instantaneous velocity (m/s)")
@@ -150,7 +150,7 @@ def plotVelocityProfile(what, folderName = "None"):
         if what == "Brent":
             name = BrentTrajectoriesFolder
         else:
-            name = rs.RBFNpath + folderName + "/Log/"
+            name = rs.RBFNpath + foldername + "/Log/"
 
         makeVelocityData(rs,name,plt)
         plt.xlabel("time (s)")
@@ -197,14 +197,14 @@ def plotTrajsInRepo():
     #plt.savefig("ImageBank/"+what+'_trajectories.png')
     plt.show(block = True)
 
-def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=False):
+def plotXYPositions(what, foldername = "None", targetSize = "All", plotEstim=False):
     rs = ReadSetupFile()
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/Log/"
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             plotPos(name, ax, plotEstim)
 
             makeInitPlot(rs)
@@ -214,11 +214,11 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
 
     else:
         if what == "CMAES":
-            name = rs.CMAESpath + targetSize + "/" + folderName + "/Log/"
+            name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
-            name = rs.RBFNpath + folderName + "/Log/"
+            name = rs.RBFNpath + foldername + "/Log/"
 
         plotPos(name, plt, plotEstim)
         #makeInitPlot(rs)
@@ -227,19 +227,19 @@ def plotXYPositions(what, folderName = "None", targetSize = "All", plotEstim=Fal
         plt.ylabel("Y (m)")
         plt.title("XY Positions for " + what)
 
-    plt.savefig("ImageBank/"+what+'_trajectories.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_trajectories'+foldername+'.png', bbox_inches='tight')
     #plt.savefig("ImageBank/"+what+'_trajectories.png')
     plt.show(block = True)
 
-def plotArticularPositions(what, folderName = "None", targetSize = "0.05"):
+def plotArticularPositions(what, foldername = "None", targetSize = "0.05"):
     rs = ReadSetupFile()
  
     if what == "CMAES":
-        name = rs.CMAESpath + targetSize + "/" + folderName + "/Log/"
+        name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
     else:
-        name = rs.RBFNpath + folderName + "/Log/"
+        name = rs.RBFNpath + foldername + "/Log/"
 
     state = getStateData(name)
 
@@ -259,21 +259,21 @@ def plotArticularPositions(what, folderName = "None", targetSize = "0.05"):
 
 #------------------ muscular activations --------------------------------
 
-def plotMuscularActivations(what, folderName = "None", targetSize = "0.05"):
+def plotMuscularActivations(what, foldername = "None", targetSize = "0.05"):
     '''
     plots the muscular activations from a folder
     
-    input:    -folderName: the folder where the data lies
+    input:    -foldername: the folder where the data lies
               -what: get from Brent, rbfn or from cmaes controllers
 
     '''
     rs = ReadSetupFile()
     if what == "CMAES":
-        name = rs.CMAESpath + targetSize + "/" + folderName + "/Log/"
+        name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
     else:
-        name = rs.RBFNpath + folderName + "/Log/"
+        name = rs.RBFNpath + foldername + "/Log/"
 
     U = getNoiselessCommandData(name)
 
@@ -314,7 +314,7 @@ def plotMuscularActivations(what, folderName = "None", targetSize = "0.05"):
 
 #-------------------------- cost maps ----------------------------------------------
 
-def plotCostColorMap(what, folderName = "None", targetSize = "All"):
+def plotCostColorMap(what, foldername = "None", targetSize = "All"):
     '''
     Cette fonction permet d'afficher le profil de cout des trajectoires
     
@@ -326,7 +326,7 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/Cost/"
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
             costs = getCostData(name)
 
             x0 = []
@@ -354,11 +354,11 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
 
     else:
         if what == "CMAES":
-            name = rs.CMAESpath + targetSize + "/" + folderName + "/Cost/"
+            name = rs.CMAESpath + targetSize + "/" + foldername + "/Cost/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
-            name = rs.RBFNpath + folderName + "/Cost/"
+            name = rs.RBFNpath + foldername + "/Cost/"
 
         costs = getCostData(name)
    
@@ -390,7 +390,7 @@ def plotCostColorMap(what, folderName = "None", targetSize = "All"):
 
 #-------------------------- time maps ----------------------------------------------
 
-def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
+def plotTimeColorMap(what, foldername = "None", targetSize = "All"):
     '''
     Cette fonction permet d'afficher le profil de temps des trajectoires
     
@@ -402,7 +402,7 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/TrajTime/"
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
             times = getTrajTimeData(name)
 
             x0 = []
@@ -430,11 +430,11 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
 
     else:
         if what == "CMAES":
-            name = rs.CMAESpath + targetSize + "/" + folderName + "/TrajTime/"
+            name = rs.CMAESpath + targetSize + "/" + foldername + "/TrajTime/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
-            name = rs.RBFNpath + folderName + "/TrajTime/"
+            name = rs.RBFNpath + foldername + "/TrajTime/"
 
         times = getTrajTimeData(name)
    
@@ -465,13 +465,13 @@ def plotTimeColorMap(what, folderName = "None", targetSize = "All"):
 
 #-----------------------------------------------------------------------------------------------------------
     
-def plotTimeDistanceTarget(folderName):
+def plotTimeDistanceTarget(foldername):
     rs = ReadSetupFile()
 
     dicoTime = {}
  
     for i in range(len(rs.sizeOfTarget)):
-        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/TrajTime/"
+        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
 
         trajTimes = getTrajTimeData(name)
 
@@ -497,12 +497,12 @@ def plotTimeDistanceTarget(folderName):
 
 #-----------------------------------------------------------------------------------------------------------
     
-def plotPerfSizeDist(folderName):
+def plotPerfSizeDist(foldername):
     rs = ReadSetupFile()
     dicoCost = {}
  
     for i in range(len(rs.sizeOfTarget)):
-        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/Cost/"
+        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
 
         costs = getCostData(name)
 
@@ -527,12 +527,12 @@ def plotPerfSizeDist(folderName):
 
 #-----------------------------------------------------------------------------------------------------------
             
-def plotFittsLaw(folderName, rbfn = False):
+def plotFittsLaw(foldername, rbfn = False):
     rs = ReadSetupFile()
 
     timeDistWidth = []
     for i in range(len(rs.sizeOfTarget)):
-        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/TrajTime/"
+        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
 
         trajTimes = getTrajTimeData(name)
 
@@ -561,9 +561,9 @@ def plotFittsLaw(folderName, rbfn = False):
  
 # ---------------- hit dispersion ---------------------------------------
 
-def plotHitDispersion(folderName,sizeT):
+def plotHitDispersion(foldername,sizeT):
     rs = ReadSetupFile()
-    name =  rs.CMAESpath + sizeT + "/" + folderName + "/finalX/"
+    name =  rs.CMAESpath + sizeT + "/" + foldername + "/finalX/"
     data = getLastXData(name)
 
     tabx, taby = [], []
@@ -581,13 +581,13 @@ def plotHitDispersion(folderName,sizeT):
     plt.savefig("ImageBank/hit" + str(sizeT) + ".png", bbox_inches='tight')
     plt.show(block = True)
 
-def plotScattergram(what,folderName):
+def plotScattergram(what,foldername):
     rs = ReadSetupFile()
     data = {}
 
     if what=="CMAES":
         for i in range(len(rs.sizeOfTarget)):
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + folderName + "/finalX/"
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/finalX/"
             tmp = getLastXData(name)
             tabx = []
             for el in tmp.values():
@@ -606,7 +606,7 @@ def plotScattergram(what,folderName):
             ax.set_title(str("Hit Dispersion for Target " + str(rs.sizeOfTarget[i])))
 
     elif what=="RBFN":
-            name =  rs.RBFNpath + folderName + "/finalX/"
+            name =  rs.RBFNpath + foldername + "/finalX/"
             tmp = getLastXData(name)
             tabx = []
             for el in tmp.values():
@@ -704,5 +704,5 @@ def plotExperimentSetup():
     plt.scatter(0, 0.6175, c = "r", marker=u'*', s = 200)
     plt.plot(xb, yb, c = 'r')
     plt.plot([-0.3,0.3], [0.6175, 0.6175], c = 'g')
-    plt.savefig("ImageBank/fitts.png", bbox_inches='tight')
+    plt.savefig("ImageBank/setup.png", bbox_inches='tight')
     plt.show(block = True)

@@ -73,18 +73,6 @@ def runAuto():
     for choix in range(21):
         chooseFunction(choix)
 
-def generateRBFNs():
-     for i in range(10):
-        c = Chrono()
-        runRBFN("X"+str(i))
-        c.stop()
-
-def testRBFNs():
-     for i in range(10):
-        c = Chrono()
-        generateFromRBFN(3, "X"+str(i), "SX"+str(i))
-        c.stop()
-
 def chooseFunction(choix):
     if choix == 1:
         plotVelocityProfile("Brent")
@@ -259,13 +247,42 @@ def generateInitialPositions():
             data3.append(point)
     np.savetxt(filename3,data3)
 
+def generateRBFNs():
+     for i in range(20):
+        c = Chrono()
+        runRBFN("X"+str(i))
+        c.stop()
+
+def testRBFNs():
+     for i in range(3):
+        c = Chrono()
+        generateFromRBFN(3, "R"+str(i), "SR"+str(i))
+        c.stop()
+'''
+     for i in range(12):
+        c = Chrono()
+        generateFromRBFN(3, "X"+str(i), "SX"+str(i))
+        c.stop()
+'''
+
+def plotRBFNs():
+     for i in range(3):
+        plotXYPositions("RBFN","SR"+str(i),"All",True)
+'''
+     for i in range(12):
+        plotXYPositions("RBFN","SX"+str(i),"All",True)
+'''
+
 
 #plotInitPos()  
 #runAuto()
 #generateFromRBFN(nbret, nameC)
 #generateInitialPositions()
-generateRBFNs()
-runChoice()
+#
+#runChoice()
+#generateRBFNs()
+testRBFNs()
+plotRBFNs()
 
 #UnitTest()
 #UnitTestRBFNController()

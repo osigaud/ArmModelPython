@@ -11,7 +11,6 @@ import os
 
 from ArmModel.Arm import Arm
 
-
 def loadStateCommandPairsByStartCoords(foldername):
     '''
     Get all the data from a set of trajectories, sorted by the starting xy coordinates
@@ -20,8 +19,10 @@ def loadStateCommandPairsByStartCoords(foldername):
     '''
     arm = Arm()
     dataOut = {}
+    j = 0
     for el in os.listdir(foldername):
-        if rd.random()<0.2:
+        j = j+1
+        if j>4500 or rd.random()<0.5:
             data = np.loadtxt(foldername + el)
             coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]]]))
             x,y = str(coordHand[0][0]), str(coordHand[1][0])

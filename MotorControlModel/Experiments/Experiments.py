@@ -88,6 +88,7 @@ class Experiments:
          
     def runOneTrajectory(self, x, y):
         cost, trajTime, lastX = self.tm.runTrajectory(x, y, self.foldername)
+        print("Exp local cost: ", cost)
         if lastX != -1000:
             self.lastCoord.append(lastX)
         return cost, trajTime
@@ -109,7 +110,6 @@ class Experiments:
             
     def runTrajectoriesForResultsGeneration(self, repeat):
         globCost = []
-        globTime = []
         for xy in self.posIni:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
@@ -119,8 +119,7 @@ class Experiments:
             self.costStore.append([xy[0], xy[1], meanCost])
             self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
             globCost.append(meanCost)
-            globTime.append(meanTrajTime)
-        return np.mean(globCost), np.mean(globTime), 
+        return np.mean(globCost)
     
     def runTrajectoriesCMAES(self, theta):
         '''
