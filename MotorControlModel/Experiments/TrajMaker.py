@@ -16,7 +16,7 @@ from ArmModel.MuscularActivation import getNoisyCommand
 
 from Regression.RBFN import rbfn
 
-from Utils.FileReading import getStateAndCommandData, dicToArray
+from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords
 
 from CostComputation import CostComputation
 from StateEstimator import StateEstimator
