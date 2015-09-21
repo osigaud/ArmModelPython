@@ -47,9 +47,15 @@ def initRBFNController(rs):
     #Initializes the function approximator with the number of feature used
     fa = rbfn(rs.numfeats,rs.inputDim,rs.outputDim)
     #Get state and command to initializes the controller by putting the features
-    state, command = getStateAndCommandData(BrentTrajectoriesFolder)
+    stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "TrajRepository/"))
+    #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
+    #print ("len:", len(commandAll[0]))
+    stateAll = np.vstack(np.array(stateAll))
+    commandAll = np.vstack(np.array(commandAll))
+
+    #state, command = getStateAndCommandData(BrentTrajectoriesFolder)
     #Transform data from dictionary into array
-    stateAll, commandAll = dicToArray(state), dicToArray(command)
+    #stateAll, commandAll = dicToArray(state), dicToArray(command)
 
     #Set the data for training the RBFN model (actually, we don't train it here, just needed for dimensioning)
     fa.setTrainingData(stateAll, commandAll)
