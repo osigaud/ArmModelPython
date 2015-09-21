@@ -155,18 +155,3 @@ class rbfn():
             tmp = self.computeAllWeights(inputVal)
             output.append(np.dot(tmp, self.theta[i]))
         return output
-    
-        '''
-        #if more than one sample
-        else:
-            for i in range(inputData.shape[0]):
-                x_u = np.array([inputData[i]]).T - self.centersInEachDimensions.T
-                x_u_s = np.dot(x_u.T, np.linalg.pinv(self.widths))
-                x = x_u_s * (x_u.T)
-                xf = np.sum(x, axis = 1)
-                xfe = self.norma*np.exp(-0.5*xf)
-                if i == 0:
-                    phi = np.array([xfe]).T
-                else:
-                    phi = np.hstack((phi, np.array([xfe]).T))
-        '''
