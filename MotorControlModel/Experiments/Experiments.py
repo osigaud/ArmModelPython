@@ -110,6 +110,7 @@ class Experiments:
             
     def runTrajectoriesForResultsGeneration(self, repeat):
         globCost = []
+        globTime = []
         for xy in self.posIni:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
@@ -119,7 +120,8 @@ class Experiments:
             self.costStore.append([xy[0], xy[1], meanCost])
             self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
             globCost.append(meanCost)
-        return np.mean(globCost)
+            globTime.append(meanTrajTime)
+        return np.mean(globCost), np.mean(globTime)
     
     def runTrajectoriesCMAES(self, theta):
         '''

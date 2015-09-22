@@ -30,8 +30,9 @@ def copyRBFNtoCMAES(rs, name, size):
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile)
-    cost = exp.runTrajectoriesForResultsGeneration(repeat)
+    cost, time = exp.runTrajectoriesForResultsGeneration(repeat)
     print("Average cost: ", cost)
+    print("Average time: ", time)
     print("foldername : ", foldername)
     if (save):
         exp.saveCost()
