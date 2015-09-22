@@ -21,7 +21,6 @@ class rbfn():
 
         '''
         self.nbFeat = nbFeatures
-        self.title = "rbfn"
         self.inputDimension = inputDim
         self.outputDimension = outputDim
         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
@@ -40,12 +39,27 @@ class rbfn():
         Records theta under numpy format
         
         Input:    -fileName: name of the file where theta will be recorded
-              -theta: recorded theta
         '''
-        #print ("theta SAVE:", self.theta)
         np.savetxt(fileName, self.theta)
 
-    def setTrainingData(self, inputData, outputData):
+    def saveFeatures(self,fileName):
+        '''
+        Records the RBFN structure under numpy format
+        
+        Input:    -fileName: name of the file where theta will be recorded
+        '''
+        struct = []
+        struct.append(self.minInputData)
+        struct.append(self.maxInputData)
+        np.savetxt(fileName,struct)
+
+    def loadFeatures(self,filename):
+        struct = np.loadtxt(filename)
+        self.minInputData = struct[0]
+        self.maxInputData = struct[1]
+        self.setCentersAndWidths()
+
+    def getTrainingData(self, inputData, outputData):
         '''
         Verifies the validity of the given input and output data
         Data should be organized by columns
@@ -66,7 +80,8 @@ class rbfn():
         assert(len(outputData[0]) == self.outputDimension), "Mismatch in output dimension"
 
         self.numberOfSamples = numberOfInputSamples
-        self.setCentersAndWidths()
+        self.minInputData = np.min(self.inputData, axis = 0)
+        self.maxInputData = np.max(self.inputData, axis = 0)
            
     def setCentersAndWidths(self):
         '''
@@ -74,11 +89,9 @@ class rbfn():
         Uses linspace to evenly distribute the features.
         '''
         #get max and min of the input data
-        minInputData = np.min(self.inputData, axis = 0)
-        maxInputData = np.max(self.inputData, axis = 0)
-        rangeForEachDim = maxInputData - minInputData
+        rangeForEachDim = self.maxInputData - self.minInputData
         #set the sigmas
-        widthConstant = 2.3*rangeForEachDim / self.nbFeat
+        widthConstant = 2.0*rangeForEachDim / self.nbFeat
         #create the diagonal matrix of sigmas to compute the gaussian
         self.widths = np.diag(widthConstant)
          #coef for Gaussian features
@@ -88,7 +101,7 @@ class rbfn():
         linspaceForEachDim = []
         #set the number of gaussian used and allocate them in each dimensions
         for i in range(self.inputDimension):
-            linspaceForEachDim.append(np.linspace(minInputData[i], maxInputData[i], self.nbFeat))
+            linspaceForEachDim.append(np.linspace(self.minInputData[i], self.maxInputData[i], self.nbFeat))
             #get matrix with all the possible combinations to find each centers
         self.centersInEachDimensions = cartesian(linspaceForEachDim)
         self.nbFeatures = len(self.centersInEachDimensions)

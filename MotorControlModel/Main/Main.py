@@ -21,10 +21,12 @@ from ArmModel.Arm import Arm
 from Experiments.Experiments import Experiments, checkIfFolderExists
 
 def copyRBFNtoCMAES(rs, name, size):
-    savename = rs.RBFNpath + name
+    savenametheta = rs.RBFNpath + name + ".theta"
+    savenamestruct = rs.RBFNpath + name + ".struct"
     cmaname =  rs.CMAESpath + str(size) + "/"
     checkIfFolderExists(cmaname)
-    copyfile(savename, cmaname + name)
+    copyfile(savenametheta, cmaname + name + ".theta")
+    copyfile(savenamestruct, cmaname + name + ".struct")
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile)

@@ -21,7 +21,7 @@ from Experiments.TrajMaker import initRBFNController
 
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
-def runRBFN(name):
+def runRBFN(name,fromStruct):
     ''' 
     Takes the Brent trajectories as input, shuffles them, and then runs the RBFN regression algorithm
     '''
@@ -46,14 +46,21 @@ def runRBFN(name):
 
     print("nombre d'echantillons: ", len(stateAll))
     fa = rbfn(rs.numfeats,rs.inputDim,rs.outputDim)
-    fa.setTrainingData(stateAll, commandAll)
+    fa.getTrainingData(stateAll, commandAll)
+    if fromStruct == True:
+        initFromExistingStruct(fa,rs.RBFNpath+name+".struct")
+    else:
+        initFromData(fa,rs.RBFNpath+name+".struct")
     fa.train_rbfn()
-    saveThetaControllers(rs,name,fa)
+    fa.saveTheta(rs.RBFNpath + name+".theta")
     #test(fa, stateAll)
 
-def saveThetaControllers(rs, name, fa):
-    savename = rs.RBFNpath + name
-    fa.saveTheta(savename)
+def initFromData(fa,name):
+    fa.saveFeatures(name)
+    fa.setCentersAndWidths()    
+
+def initFromExistingStruct(fa,name):
+    fa.loadFeatures(name)
     
 def test(fa, state):
     for el in state:
@@ -69,11 +76,13 @@ def UnitTest():
         x,y = rd.random(), rd.random()
         input.append([x,y])
         output.append([x*y, x-y, x+y])
-    fa.setTrainingData(np.vstack(np.array(input)), np.vstack(np.array(output)))
+    fa.getTrainingData(np.vstack(np.array(input)), np.vstack(np.array(output)))
+    fa.saveFeatures("test.struct")
+    fa.setCentersAndWidths()
     fa.train_rbfn()
-    fa.saveTheta("test")
+    fa.saveTheta("test.theta")
 
-    fa.loadTheta("test")
+    fa.loadTheta("test.theta")
     for i in range(20):
         x,y = 3*rd.random(), 3*rd.random()
         approx = fa.computeOutput(np.array([x,y]))
@@ -89,7 +98,6 @@ def UnitTestRBFNController():
     fa = initRBFNController(rs)
     fa.train_rbfn()
     fa.saveTheta("test")
-
     fa.loadTheta("test")
 
     state, command = {}, {}

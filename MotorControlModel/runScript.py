@@ -82,12 +82,13 @@ def chooseFunction(choix):
         plotXYPositions("Brent")
     elif choix == 4:
         plotMuscularActivations("Brent")
+
+#------------------------------------------- RBFN
     elif choix == 5:
         name = raw_input('Name of file to save the RBFN controller: ')
         c = Chrono()
-        runRBFN(name)
+        runRBFN(name,True)
         c.stop()
-
     elif choix == 6:
         name = raw_input('Name of the RBFN controller file: ')
         fname = raw_input('Folder where you want to save the results: ')
@@ -112,6 +113,8 @@ def chooseFunction(choix):
     elif choix == 10:
         nameF = raw_input('Folder where the results are saved: ')
         plotCostColorMap("RBFN",nameF)
+
+#------------------------------------------- CMAES
     elif choix == 11:
         rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
         save = False
@@ -250,7 +253,7 @@ def generateInitialPositions():
 def generateRBFNs():
      for i in range(20):
         c = Chrono()
-        runRBFN("X"+str(i))
+        runRBFN("X"+str(i),True)
         c.stop()
 
 def testRBFNs():
@@ -278,13 +281,18 @@ def plotRBFNs():
 #runAuto()
 #generateFromRBFN(nbret, nameC)
 #generateInitialPositions()
-#
-#runChoice()
+
 #generateRBFNs()
-testRBFNs()
-plotRBFNs()
+#testRBFNs()
+#plotRBFNs()
 
 #UnitTest()
 #UnitTestRBFNController()
 #UnitTestArmModel()
 #plotExperimentSetup()
+
+#runRBFN("Full",False)
+#generateFromRBFN(3, "Full", "SFull")
+#plotXYPositions("RBFN","SFull","All",True)
+
+runChoice()

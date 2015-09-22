@@ -37,7 +37,7 @@ def findFilename(foldername, name, extension):
     filename = foldername + tryName
     return filename
 
-def initRBFNController(rs):
+def initRBFNController(rs,filename):
     '''
 	Initializes the controller allowing to compute the output from the input and the vector of parameters theta
 	
@@ -46,20 +46,7 @@ def initRBFNController(rs):
 	'''
     #Initializes the function approximator with the number of feature used
     fa = rbfn(rs.numfeats,rs.inputDim,rs.outputDim)
-    #Get state and command to initializes the controller by putting the features
-    stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "TrajRepository/"))
-    #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
-    #print ("len:", len(commandAll[0]))
-    stateAll = np.vstack(np.array(stateAll))
-    commandAll = np.vstack(np.array(commandAll))
-
-    #state, command = getStateAndCommandData(BrentTrajectoriesFolder)
-    #Transform data from dictionary into array
-    #stateAll, commandAll = dicToArray(state), dicToArray(command)
-
-    #Set the data for training the RBFN model (actually, we don't train it here, just needed for dimensioning)
-    fa.setTrainingData(stateAll, commandAll)
-    #set the center and width for the features
+    fa.loadFeatures(filename+".struct")
     return fa
 
 #------------------------------------------------------------------------
@@ -78,14 +65,12 @@ class TrajMaker:
     			-Ukf, unscented kalman filter, class object
     			-saveTraj, Boolean: true = Data are saved, false = data are not saved
     	'''
-        self.name = "TrajectoryGenerator"
-
         self.arm = Arm()
         self.arm.setDT(rs.dt)
 
-        self.controller = initRBFNController(rs)
+        self.controller = initRBFNController(rs,thetaFile)
         #load the controller, i.e. the vector of parameters theta
-        theta = self.controller.loadTheta(thetaFile)
+        theta = self.controller.loadTheta(thetaFile+".theta")
         #put theta to a one dimension numpy array, ie row vector form
         #theta = matrixToVector(theta)
  
