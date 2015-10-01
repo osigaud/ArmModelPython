@@ -207,7 +207,7 @@ def plotXYPositions(what, foldername = "None", targetSize = "All", plotEstim=Fal
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             plotPos(name, ax, plotEstim)
 
-            makeInitPlot(rs)
+            #makeInitPlot(rs)
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
             ax.set_title("XY Positions for target " + str(rs.sizeOfTarget[i]))
