@@ -109,8 +109,7 @@ class rbfn():
 
     def train_rbfn(self):
         '''
-        Training function to learn the approximation (i.e. regression)
-        
+        Perform batch regression
         '''
         self.theta = []
         for i in range(self.outputDimension):
@@ -120,6 +119,25 @@ class rbfn():
             Kmat = np.matrix(K).T
             A = np.dot(Kmat, Kmat.T)
             inv = np.linalg.pinv(A)
+            vec = self.outputData.T
+            y = np.array(vec[i].T)
+            b = np.dot(Kmat, y).T
+            self.theta.append(np.dot(inv,b))
+
+    def train_reg_rbfn(self, lamb):
+        '''
+        Perform batch regularized regression
+        '''
+        self.theta = []
+        for i in range(self.outputDimension):
+            K = []
+            for val in self.inputData:
+                 K.append(self.computeAllWeights(val))
+            Kmat = np.matrix(K).T
+            A = np.dot(Kmat, Kmat.T)
+            B = lamb*np.identity(np.shape(A)[0])
+            C = A + B
+            inv = np.linalg.pinv(C)
             vec = self.outputData.T
             y = np.array(vec[i].T)
             b = np.dot(Kmat, y).T

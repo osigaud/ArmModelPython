@@ -51,7 +51,7 @@ def runRBFN(name,fromStruct):
         initFromExistingStruct(fa,rs.RBFNpath+name+".struct")
     else:
         initFromData(fa,rs.RBFNpath+name+".struct")
-    fa.train_rbfn()
+    fa.train_reg_rbfn(rs.lamb)
     fa.saveTheta(rs.RBFNpath + name+".theta")
     #test(fa, stateAll)
 

@@ -87,7 +87,8 @@ def chooseFunction(choix):
     elif choix == 5:
         name = raw_input('Name of file to save the RBFN controller: ')
         c = Chrono()
-        runRBFN(name,True)
+#        runRBFN(name,True)
+        runRBFN(name,False)
         c.stop()
     elif choix == 6:
         name = raw_input('Name of the RBFN controller file: ')
@@ -319,5 +320,5 @@ def plotRBFNs():
 #generateFromRBFN(3, "Full", "SFull")
 #plotXYPositions("RBFN","SFull","All",True)
 
-setPosCircu28()
+#setPosCircu28()
 runChoice()
