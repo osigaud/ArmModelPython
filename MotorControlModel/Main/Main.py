@@ -16,6 +16,7 @@ from multiprocessing.pool import Pool
 
 from Utils.ReadSetupFile import ReadSetupFile
 from Utils.ThetaNormalization import normalization, unNormalization
+from Utils.Chrono import Chrono
 
 from ArmModel.Arm import Arm
 from Experiments.Experiments import Experiments, checkIfFolderExists
@@ -48,9 +49,11 @@ def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, s
 def generateFromCMAES(repeat, thetaFile, saveDir = 'Data'):
     rs = ReadSetupFile()
     for el in rs.sizeOfTarget:
+        c = Chrono()
         thetaName = rs.CMAESpath + str(el) + "/" + thetaFile
         saveName = rs.CMAESpath + str(el) + "/" + saveDir + "/"
         GenerateDataFromTheta(rs,el,saveName,thetaName,repeat,True)
+        c.stop()
     print("CMAES:End of generation")
 
 def generateRichDataFromCMAES(repeat, thetaFile, saveDir = 'Data'):

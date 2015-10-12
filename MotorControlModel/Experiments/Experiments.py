@@ -162,7 +162,7 @@ class Experiments:
             np.savetxt(costfoldername+"cmaesCost.log",self.CMAEScostStore) #Note: inefficient, should rather add to the file
             np.savetxt(costfoldername+"cmaesTime.log",self.CMAESTimeStore) #Note: inefficient, should rather add to the file
 
-        return (300.0-meanCost)/20.0
+        return 10.0*(self.rs.rhoCF-meanCost)/self.rs.rhoCF
     
     
     

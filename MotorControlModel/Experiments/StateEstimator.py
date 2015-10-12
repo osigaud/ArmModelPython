@@ -10,6 +10,8 @@ Description: Used to estimate the current state, reproducing the human control m
 import numpy as np
 import random as rd
 
+from ArmModel.Arm import getDotQAndQFromStateVector
+
 #from ArmModel.MuscularActivation import getNoisyCommand
 
 def isNull(vec):
@@ -78,11 +80,13 @@ class StateEstimator:
             if isNull(U):
                 return state
             inferredState = self.arm.computeNextState(U,inferredState)
-            '''
-            for i in range(2,4):#len(inferredState)):
-                inferredState[i] = inferredState[i]*(1+ np.random.normal(0,0.001))
-            '''
         newEstimState = self.arm.computeNextState(U,self.currentEstimState)
+        qdot,q = getDotQAndQFromStateVector(state)
+        J = self.arm.jacobian(q)
+        vecspeed = np.dot(J,qdot)
+        speed = np.linalg.norm(vecspeed)
+        for i in range(2,4):
+            inferredState[i] = inferredState[i]*(1+ np.random.normal(0,0.01*speed))
         for i in range(4):
             self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
         return self.currentEstimState

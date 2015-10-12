@@ -550,8 +550,15 @@ def plotFittsLaw(foldername, rbfn = False):
     slope, intercept, r_value, p_value, std_err = stats.linregress(DI,MT)
     yLR = slope * np.asarray(DI) + intercept
     plt.figure()
+
     for el in timeDistWidth:
-        plt.scatter(np.log2(el[0]/el[1]), el[2])
+            if el[0]<=0.15:
+                plt.scatter(np.log2(el[0]/el[1]), el[2], c ='blue')
+            elif el[0]<=0.28:
+                plt.scatter(np.log2(el[0]/el[1]), el[2], c ='green')
+            else:
+                plt.scatter(np.log2(el[0]/el[1]), el[2], c ='red')
+        
     plt.plot(DI, yLR)
     plt.title("a = " + str(slope) + " b = " + str(intercept) + " r^2 = " + str(r_value**2))
     plt.xlabel("log(D/W)/log(2)")

@@ -130,9 +130,7 @@ def chooseFunction(choix):
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
-        c = Chrono()
         generateFromCMAES(nbret, nameTheta, name)
-        c.stop()
     elif choix == 13:
         nameF = raw_input('Folder where the results are saved: ')
         plotVelocityProfile("CMAES",nameF)
@@ -218,7 +216,9 @@ def chooseFunction(choix):
     elif choix == 27:
         plotTrajsInRepo()
 
-def generateInitialPositions():
+
+
+def setPosCircu15():
     rs=ReadSetupFile()
     filename = pathDataFolder + "PosCircu15"
     data = []
@@ -234,6 +234,8 @@ def generateInitialPositions():
     np.savetxt(filename,data)
 
     #------- **** --rayon de 0.1 à 0.6, angle de -pi/5 à -4pi/5 ---------
+def setPosCircu540():
+    rs=ReadSetupFile()
     filename2 = pathDataFolder + "PosCircu540"
     data2 = []
     for j in range(20):
@@ -242,6 +244,28 @@ def generateInitialPositions():
             data2.append(point)
     np.savetxt(filename2,data2)
 
+def setPosCircu56():
+    rs=ReadSetupFile()
+    filename = pathDataFolder + "PosCircu56"
+    data2 = []
+    for j in range(8):
+        for i in range(7):
+            point = [rs.XTarget+ (0.1+j*0.05)*np.cos(-i*np.pi/12-np.pi/4), rs.YTarget+ (0.1+j*0.05)*np.sin(-i*np.pi/12-np.pi/4)]
+            data2.append(point)
+    np.savetxt(filename,data2)
+
+def setPosCircu28():
+    rs=ReadSetupFile()
+    filename = pathDataFolder + "PosCircu28"
+    data2 = []
+    for j in range(4):
+        for i in range(7):
+            point = [rs.XTarget+ (0.1+j*0.1)*np.cos(-i*np.pi/12-np.pi/4), rs.YTarget+ (0.1+j*0.1)*np.sin(-i*np.pi/12-np.pi/4)]
+            data2.append(point)
+    np.savetxt(filename,data2)
+
+def setPosSquare():
+    rs=ReadSetupFile()
     filename3 = pathDataFolder + "PosSquare"
     data3 = []
     for j in range(20):
@@ -295,4 +319,5 @@ def plotRBFNs():
 #generateFromRBFN(3, "Full", "SFull")
 #plotXYPositions("RBFN","SFull","All",True)
 
+setPosCircu28()
 runChoice()
