@@ -85,8 +85,10 @@ class StateEstimator:
         J = self.arm.jacobian(q)
         vecspeed = np.dot(J,qdot)
         speed = np.linalg.norm(vecspeed)
+        '''
         for i in range(2,4):
             inferredState[i] = inferredState[i]*(1+ np.random.normal(0,0.01*speed))
+        '''
         for i in range(4):
             self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
         return self.currentEstimState
