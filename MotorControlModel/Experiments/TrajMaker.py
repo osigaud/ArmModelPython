@@ -172,7 +172,7 @@ class TrajMaker:
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
                 cost = self.cc.computeFinalCostReward(cost, t)
             else:
-                cost = cost - 10000*(coordHand[0])
+                cost = cost - 10000*(abs(coordHand[0]))
         else:
             cost = cost - 1000
 
