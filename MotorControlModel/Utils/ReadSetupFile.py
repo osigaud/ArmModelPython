@@ -66,6 +66,8 @@ class ReadSetupFile:
         self.inputDim = int((allsByLign[18].split(":"))[1])
         #reading line 20, Dimension de la sortie, ici le vecteur d'activation musculaire
         self.outputDim = int((allsByLign[19].split(":"))[1])
+        #reading line 21, lamda, regularization factor in RBFNs
+        self.lamb = float((allsByLign[20].split(":"))[1])
 
         self.RBFNpath = pathDataFolder + "RBFN/" + str(self.numfeats) + "feats/"
         self.CMAESpath = pathDataFolder + cmaesPath + "/ResCma"

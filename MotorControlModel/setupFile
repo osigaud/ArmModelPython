@@ -18,3 +18,4 @@ Sensory delay in time steps (int):10
 Number of repetitions in CMAES for each trajectory(int):10
 Input dimension, here position, velocity(int):4
 Output dimension, here muscular activation vector:6
+lambda:0.1
