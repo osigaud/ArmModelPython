@@ -172,9 +172,9 @@ class TrajMaker:
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
                 cost = self.cc.computeFinalCostReward(cost, t)
             else:
-                cost = cost - 1000*(abs(coordHand[0]))
+                cost = cost - 5000*(abs(coordHand[0]))
         else:
-            cost = cost - 1000
+            cost = cost - 4000
 
         if self.saveTraj == True:
             filename = findFilename(foldername+"Log/","traj",".log")

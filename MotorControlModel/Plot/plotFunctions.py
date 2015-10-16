@@ -157,7 +157,7 @@ def plotVelocityProfile(what, foldername = "None"):
         plt.ylabel("Instantaneous velocity (m/s)")
         plt.title("Velocity profiles for " + what)
 
-    plt.savefig("ImageBank/"+what+'_velocity_profiles.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_velocity_profiles'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 
@@ -254,7 +254,7 @@ def plotArticularPositions(what, foldername = "None", targetSize = "0.05"):
     plt.xlabel("Q1 (rad)")
     plt.ylabel("Q2 (rad)")
     plt.title("Articular positions for " + what)
-    plt.savefig("ImageBank/"+what+'_articular.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_articular'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #------------------ muscular activations --------------------------------
@@ -301,7 +301,7 @@ def plotMuscularActivations(what, foldername = "None", targetSize = "0.05"):
             plt.xlabel("time")
             plt.ylabel("U")
             plt.title("Muscular Activations for " + what)
-            plt.savefig("ImageBank/"+what+"_muscu" + key + ".png", bbox_inches='tight')
+            plt.savefig("ImageBank/"+what+"_muscu" + key +foldername + ".png", bbox_inches='tight')
 
             print key
             val = raw_input('1 to see data, anything otherwise: ')
@@ -385,7 +385,7 @@ def plotCostColorMap(what, foldername = "None", targetSize = "All"):
         plt.ylabel("Y (m)")
         plt.title("Cost map for " + what)
 
-    plt.savefig("ImageBank/"+what+'_costmap.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_costmap'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #-------------------------- time maps ----------------------------------------------
@@ -460,7 +460,7 @@ def plotTimeColorMap(what, foldername = "None", targetSize = "All"):
         plt.xlabel("X (m)")
         plt.ylabel("Y (m)")
 
-    plt.savefig("ImageBank/"+what+'_timemap.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_timemap'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -492,7 +492,7 @@ def plotTimeDistanceTarget(foldername):
     for key in sorted(dicoTime.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoTime[key].keys())], [np.mean(dicoTime[key][i]) for i in sorted(dicoTime[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig("ImageBank/timedist.png", bbox_inches='tight')
+    plt.savefig("ImageBank/timedist"+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -522,7 +522,7 @@ def plotPerfSizeDist(foldername):
     for key in sorted(dicoCost.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoCost[key].keys())], [np.mean(dicoCost[key][i]) for i in sorted(dicoCost[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig("ImageBank/perfdist.png", bbox_inches='tight')
+    plt.savefig("ImageBank/perfdist"+foldername+".png", bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -563,7 +563,7 @@ def plotFittsLaw(foldername, rbfn = False):
     plt.title("a = " + str(slope) + " b = " + str(intercept) + " r^2 = " + str(r_value**2))
     plt.xlabel("log(D/W)/log(2)")
     plt.ylabel("Movement time (s)")
-    plt.savefig("ImageBank/fitts.png", bbox_inches='tight')
+    plt.savefig("ImageBank/fitts"+foldername+".png", bbox_inches='tight')
     plt.show(block = True)
  
 # ---------------- hit dispersion ---------------------------------------
@@ -585,7 +585,7 @@ def plotHitDispersion(foldername,sizeT):
     plt.scatter(tabx, taby, c = 'b')
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
-    plt.savefig("ImageBank/hit" + str(sizeT) + ".png", bbox_inches='tight')
+    plt.savefig("ImageBank/hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
     plt.show(block = True)
 
 def plotScattergram(what,foldername):
@@ -627,7 +627,7 @@ def plotScattergram(what,foldername):
             plt.ylabel("Y (m)")
             plt.title("Hit Dispersion for RBFN")
     
-    plt.savefig("ImageBank/"+what+"_hitdisp.png", bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+"_hitdisp"+foldername+".png", bbox_inches='tight')
     plt.show(block = True)
         
 # ---------------- end of hit dispersion ---------------------------------------
@@ -654,6 +654,7 @@ def plotCMAESCostProgress():
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 
     plt.show(block = True)
+    plt.savefig("ImageBank/costProgress.png", bbox_inches='tight')
 
 def plotCMAESTimeProgress():
     rs = ReadSetupFile()
@@ -674,6 +675,7 @@ def plotCMAESTimeProgress():
         ax.set_title(str("Time Target " + str(rs.sizeOfTarget[i])))
 
     plt.show(block = True)
+    plt.savefig("ImageBank/timeProgress.png", bbox_inches='tight')
 
 def plotExperimentSetup():
     rs = ReadSetupFile()
