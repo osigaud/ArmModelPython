@@ -653,8 +653,8 @@ def plotCMAESCostProgress():
 
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 
+    plt.savefig("ImageBank/costProgress.png")
     plt.show(block = True)
-    plt.savefig("ImageBank/costProgress.png", bbox_inches='tight')
 
 def plotCMAESTimeProgress():
     rs = ReadSetupFile()
@@ -674,8 +674,8 @@ def plotCMAESTimeProgress():
 
         ax.set_title(str("Time Target " + str(rs.sizeOfTarget[i])))
 
+    plt.savefig("ImageBank/timeProgress.png")
     plt.show(block = True)
-    plt.savefig("ImageBank/timeProgress.png", bbox_inches='tight')
 
 def plotExperimentSetup():
     rs = ReadSetupFile()
