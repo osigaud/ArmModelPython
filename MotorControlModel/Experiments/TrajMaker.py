@@ -12,7 +12,7 @@ import os
 
 from Utils.CreateVectorUtil import createVector
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
-from ArmModel.MuscularActivation import getNoisyCommand
+from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
 
 from Regression.RBFN import rbfn
 
@@ -60,7 +60,6 @@ class TrajMaker:
     	Inputs:		
     			-arm, armModel, class object
                         -rs, readSetup, class object
-    			-cc, costComputation, class object
     			-sizeOfTarget, size of the target, float
     			-Ukf, unscented kalman filter, class object
     			-saveTraj, Boolean: true = Data are saved, false = data are not saved
@@ -75,7 +74,6 @@ class TrajMaker:
         #theta = matrixToVector(theta)
  
         self.rs = rs
-        self.cc = CostComputation(rs)
         self.sizeOfTarget = sizeOfTarget
         #6 is the dimension of the state for the filter, 4 is the dimension of the observation for the filter, 25 is the delay used
         self.stateEstimator = StateEstimator(rs.outputDim, rs.delayUKF, self.arm)
@@ -84,6 +82,44 @@ class TrajMaker:
  
     def setTheta(self, theta):
         self.controller.setTheta(theta)
+
+    def computeStateTransitionCost(self, cost, U, t):
+        '''
+		Computes the cost on one step of the trajectory
+		
+		Input:	-cost: cost at time t, float
+				-U: muscular activation vector, numpy array (6,1)
+				-t: time, float
+				
+		Output:		-cost: cost at time t+1, float
+		'''
+        #compute the square of the norm of the muscular activation vector
+        mvtCost = (np.linalg.norm(U))**2
+        #compute the cost following the law of the model
+        cost += np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
+        return cost
+    
+    def computeFinalCostReward(self, cost, t, coordHand):
+        '''
+		Computes the cost on final step if the target is reached
+		
+		Input:		-cost: cost at the end of the trajectory, float
+					-t: time, float
+					
+		Output:		-cost: final cost if the target is reached
+		'''
+        #check if the target is reached and give the reward if yes
+        if coordHand[1] >= self.rs.YTarget:
+            #print "main X:", coordHand[0]
+            if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
+                cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF
+            else:
+                cost -= 5000*(coordHand[0]*coordHand[0])
+        else:
+            cost -= 4000
+        
+        return cost
+
         
     def runTrajectory(self, x, y, foldername):
         '''
@@ -120,23 +156,22 @@ class TrajMaker:
             #print ("state :",self.arm.state)
 
             U = self.controller.computeOutput(estimState)
-            #U = self.controller.computeOutput(self.arm.state) #used to ignore the filter
 
-            #print ("U:",U)
             Unoisy = getNoisyCommand(U,self.rs.knoiseU)
+            #Unoisy = muscleFilter(U)
             #computation of the arm state
             realNextState = self.arm.computeNextState(Unoisy, self.arm.state)
  
             #computation of the approximated state
             tmpstate = self.arm.state
             estimNextState = self.stateEstimator.getEstimState(tmpstate,U)
+            #estimNextState = realNextState
             #print estimNextState
-            #estimNextState = np.array([0.2, 0.2, 0.2, 0.2,])
 
             self.arm.setState(realNextState)
 
             #computation of the cost
-            cost = self.cc.computeStateTransitionCost(cost, Unoisy, t)
+            cost = self.computeStateTransitionCost(cost, Unoisy, t)
             #get dotq and q from the state vector
             dotq, q = getDotQAndQFromStateVector(realNextState)
             #print ("dotq :",dotq)
@@ -167,14 +202,7 @@ class TrajMaker:
             i += 1
             t += self.rs.dt
 
-        #check if the target is reached and give the reward if yes
-        if coordHand[1] >= self.rs.YTarget:
-            if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
-                cost = self.cc.computeFinalCostReward(cost, t)
-            else:
-                cost = cost - 5000*(coordHand[0]*coordHand[0])
-        else:
-            cost = cost - 4000
+        cost = self.computeFinalCostReward(cost, t,coordHand)
 
         if self.saveTraj == True:
             filename = findFilename(foldername+"Log/","traj",".log")
@@ -186,7 +214,7 @@ class TrajMaker:
                 np.savetxt(name,dataStore)
             '''
 
-        lastX = -1000
+        lastX = -1000 #used to ignore dispersion when the target line is not crossed
         if coordHand[1] >= self.rs.YTarget:
             lastX = coordHand[0]
         #print "end of trajectory"
