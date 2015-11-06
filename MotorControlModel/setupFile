@@ -4,7 +4,7 @@ K parameter for motor noise (float):0.2
 Gamma parameter in cost function (float):0.6
 Rho parameter in cost function (int):3000
 Upsilon parameter in cost function (int):1
-In CMAES, sigma(float):0.000001
+In CMAES, sigma(float):0.000005
 In CMAES, maxIteration(int):500
 In CMAES, popsize(int):20
 Target sizes (m)(float)(4 target max):0.005/0.01/0.02/0.04
@@ -15,7 +15,7 @@ Initial positions file:PosCircu28
 Max number of time steps for a trajectory:300
 Max final error (not used?):0.001
 Sensory delay in time steps (int):12
-Number of repetitions in CMAES for each trajectory(int):1
+Number of repetitions in CMAES for each trajectory(int):10
 Input dimension, here position, velocity(int):4
 Output dimension, here muscular activation vector:6
 lambda (regularization term in RBFN):0.00001
