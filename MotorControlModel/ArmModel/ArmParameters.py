@@ -68,15 +68,15 @@ class ArmParameters:
             alls = file.read()
         allsByLign = alls.split("\n")
         #line 9, Damping term k6
-        k4 = float((allsByLign[8].split(":"))[1])
+        b1 = float((allsByLign[8].split(":"))[1])
         #line 10, Damping term k7
-        k5 = float((allsByLign[9].split(":"))[1])
+        b2 = float((allsByLign[9].split(":"))[1])
         #line 11, Damping term k8
-        k6 = float((allsByLign[10].split(":"))[1])
+        b3 = float((allsByLign[10].split(":"))[1])
         #line 12, Damping term k9
-        k7 = float((allsByLign[11].split(":"))[1])
+        b4 = float((allsByLign[11].split(":"))[1])
         #matrix definition
-        self.B = np.array([[k4,k5],[k6,k7]])
+        self.B = np.array([[b1,b2],[b3,b4]])
     
     def AMatrix(self):
         '''

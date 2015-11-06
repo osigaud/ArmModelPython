@@ -6,10 +6,10 @@ Arm inertia(float)(kg.m^2)     I1:0.025
 ForeArm inertia(float)(kg.m^2) I2:0.045
 Distance from the center of segment 1 to its center of mass(float)(m) s1:0.11
 Distance from the center of segment 2 to its center of mass(float)(m) s2:0.16
-Damping term (float)         k4:0.05
-Damping term (float)         k5:0.025
-Damping term (float)         k6:0.025
-Damping term (float)         k7:0.05
+Damping term (float)         b1:0.05
+Damping term (float)         b2:0.025
+Damping term (float)         b3:0.025
+Damping term (float)         b4:0.05
 Moment arm matrix,           a1:0.04
 Moment arm matrix,           a2:-0.04
 Moment arm matrix, 	     a3:0.0
