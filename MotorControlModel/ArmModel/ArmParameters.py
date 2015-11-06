@@ -57,7 +57,7 @@ class ArmParameters:
         Initialization of parameters used for the inertia matrix
         '''
         self.k1 = self.I1 + self.I2 + self.m2*(self.l1**2)
-        self.k2 = self.m2*self.l1*self.I2
+        self.k2 = self.m2*self.l1*self.s2
         self.k3 = self.I2
     
     def BMatrix(self):
