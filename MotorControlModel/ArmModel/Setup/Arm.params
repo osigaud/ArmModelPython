@@ -1,0 +1,28 @@
+Arm length(float)(m)           l1:0.3
+ForeArm length(float)(m)       l2:0.35
+Arm mass(float)(kg)            m1:1.4
+ForeArm mass(float)(kg)        m2:1.1
+Arm inertia(float)(kg.m^2)     I1:0.025
+ForeArm inertia(float)(kg.m^2) I2:0.045
+Distance from the center of segment 1 to its center of mass(float)(m) s1:0.11
+Distance from the center of segment 2 to its center of mass(float)(m) s2:0.16
+Damping term (float)         k4:0.05
+Damping term (float)         k5:0.025
+Damping term (float)         k6:0.025
+Damping term (float)         k7:0.05
+Moment arm matrix,           a1:0.04
+Moment arm matrix,           a2:-0.04
+Moment arm matrix, 	     a3:0.0
+Moment arm matrix, 	     a4:0.0
+Moment arm matrix, 	     a5:0.028
+Moment arm matrix, 	     a6:-0.035
+Moment arm matrix, 	     a7:0.0
+Moment arm matrix, 	     a8:0.0
+Moment arm matrix, 	     a9:0.025
+Moment arm matrix, 	     a10:-0.025
+Moment arm matrix, 	     a11:0.028
+Moment arm matrix, 	     a12:-0.035
+Shoulder upper bound(float)  sub:2.6
+Shoulder lower bound(float)  slb:-0.6
+Elbow upper bound(float)     eub:3.0
+Elbow lower bound(float)     elb:-0.2
