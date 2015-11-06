@@ -147,9 +147,10 @@ class Experiments:
 
         if meanCost>self.bestCost:
             self.bestCost = meanCost
-            extension = ".save" + str(meanCost)
-            filename = findDataFilename(self.foldername+"Theta/", "theta", extension)
-            np.savetxt(filename, self.theta)
+            if meanCost>0:
+                extension = ".save" + str(meanCost)
+                filename = findDataFilename(self.foldername+"Theta/", "theta", extension)
+                np.savetxt(filename, self.theta)
 
         self.call += 1
         self.call = self.call%self.popSize
