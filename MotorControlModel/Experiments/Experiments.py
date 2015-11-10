@@ -88,7 +88,7 @@ class Experiments:
          
     def runOneTrajectory(self, x, y):
         cost, trajTime, lastX = self.tm.runTrajectory(x, y, self.foldername)
-        #print("Exp local cost: ", cost)
+        print("Exp local cost: ", cost)
         if lastX != -1000:
             self.lastCoord.append(lastX)
         return cost, trajTime
@@ -135,6 +135,7 @@ class Experiments:
             self.localBestCost = -10000.0
         c = Chrono()
         self.initTheta(theta)
+        print "theta avant appel :", theta
         #compute all the trajectories x times each, x = numberOfRepeat
         meanCost, meanTime = self.runTrajectoriesForResultsGeneration(self.numberOfRepeat)
         c.stop()
