@@ -99,7 +99,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
     thetaCMA, max = normalization(thetaIn)
     exp.maxT = max
     print ("max normalisation :", max)
-    print ("theta CMA : ", thetaCMA)
+    #print ("theta CMA : ", thetaCMA)
 
     #run the optimization (cmaes)
     resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes})
