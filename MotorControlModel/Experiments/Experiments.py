@@ -87,8 +87,9 @@ class Experiments:
         np.savetxt(filenameX, self.lastCoord)
          
     def runOneTrajectory(self, x, y):
+        self.tm.saveTraj = True
         cost, trajTime, lastX = self.tm.runTrajectory(x, y, self.foldername)
-        print("Exp local cost: ", cost)
+        print "Exp local cost x y : ", x, y, cost
         if lastX != -1000:
             self.lastCoord.append(lastX)
         return cost, trajTime
@@ -132,7 +133,7 @@ class Experiments:
     	Ouput:		-meanAll: the mean of the cost of all trajectories generated, float
     	'''
         if (self.call==0):
-            self.localBestCost = -10000.0
+            self.localBestCost = -1000000.0
         c = Chrono()
         self.initTheta(theta)
         print "theta avant appel :", theta
