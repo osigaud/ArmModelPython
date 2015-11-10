@@ -67,6 +67,10 @@ class MusclesParameters:
         fmax6 = float((allsByLign[5].split(":"))[1])
         #matrix definition
         self.fmax = np.diag([fmax1, fmax2, fmax3, fmax4, fmax5, fmax6])
+
+        #line 7, amount of motor noise on U
+        self.knoiseU = float((allsByLign[6].split(":"))[1])
+
         
     def activationVectorInit(self):
         '''

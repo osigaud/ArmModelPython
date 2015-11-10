@@ -321,4 +321,5 @@ def plotRBFNs():
 #plotXYPositions("RBFN","SFull","All",True)
 
 #setPosCircu28()
+#plotXYPositions("CMAES", "A2", "0.04", True)
 runChoice()

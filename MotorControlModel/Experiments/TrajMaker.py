@@ -9,6 +9,8 @@ Description: Class to generate a trajectory
 '''
 import numpy as np
 import os
+import sys
+import math
 
 from Utils.CreateVectorUtil import createVector
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
@@ -94,7 +96,8 @@ class TrajMaker:
 		Output:		-cost: cost at time t+1, float
 		'''
         #compute the square of the norm of the muscular activation vector
-        mvtCost = (np.linalg.norm(U))**2
+        norme = np.linalg.norm(U)
+        mvtCost = norme*norme
         #compute the cost following the law of the model
         cost += np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
         return cost
@@ -135,7 +138,7 @@ class TrajMaker:
         #creates the state vector [dotq1, dotq2, q1, q2]
         q = createVector(q1,q2)
         state = np.array([0., 0., q1, q2])
-        #print("coord init ",[x,y])
+        #print("start state --------------: ",state)
 
         #computes the coordinates of the hand and the elbow from the position vector
         coordElbow, coordHand = self.arm.mgdFull(q)
@@ -156,22 +159,37 @@ class TrajMaker:
             #print ("state :",self.arm.state)
 
             U = self.controller.computeOutput(estimState)
+            U = muscleFilter(U)
 
-            #Unoisy = getNoisyCommand(U,self.rs.knoiseU)
-            Unoisy = muscleFilter(U)
+            Unoisy = getNoisyCommand(U,self.arm.musclesP.knoiseU)
+            #Unoisy = muscleFilter(U)
             #computation of the arm state
             realNextState = self.arm.computeNextState(Unoisy, self.arm.state)
  
             #computation of the approximated state
             tmpstate = self.arm.state
-            #estimNextState = self.stateEstimator.getEstimState(tmpstate,U)
-            estimNextState = realNextState
+            estimNextState = self.stateEstimator.getEstimState(tmpstate,U)
+            #estimNextState = realNextState
             #print estimNextState
 
             self.arm.setState(realNextState)
 
             #computation of the cost
             cost = self.computeStateTransitionCost(cost, Unoisy, t)
+
+            '''
+            print "U =", U
+            print "Unoisy =", Unoisy
+            print "estimstate =", estimState
+            #print "theta =", self.controller.theta
+            if math.isnan(cost):
+                print "NAN : U =", U
+                print "NAN : Unoisy =", Unoisy
+                print "NAN : estimstate =", estimState
+                #print "NAN : theta =", self.controller.theta
+                sys.exit()
+            '''
+
             #get dotq and q from the state vector
             dotq, q = getDotQAndQFromStateVector(realNextState)
             #print ("dotq :",dotq)
