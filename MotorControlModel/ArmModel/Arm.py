@@ -138,6 +138,34 @@ class Arm:
         return J
 
 
+  def estimError(self,state, estimState):
+        '''
+        Computes a state estimation error as the cartesian distance between the estimated state and the current state
+        '''
+        qdot,q = getDotQAndQFromStateVector(state)
+        qdotEstim,qEstim = getDotQAndQFromStateVector(estimState)
+        hand = self.mgdEndEffector(q)
+        handEstim = self.mgdEndEffector(qEstim)
+        dx = hand[0] - handEstim[0]
+        dy = hand[1] - handEstim[1]
+        return math.sqrt(dx**2 + dy**2)
+
+  def estimErrorReduced(self,q,qEstim):
+        '''
+        Computes a state estimation error as the cartesian distance between the estimated state and the current state
+        but only taking the position part of the state as input
+        '''
+        hand = self.mgdEndEffector(q)
+        handEstim = self.mgdEndEffector(qEstim)
+        dx = hand[0] - handEstim[0]
+        dy = hand[1] - handEstim[1]
+        return math.sqrt(dx**2 + dy**2)
+
+  def cartesianSpeed(self,state):
+        qdot,q = getDotQAndQFromStateVector(state)
+        J = self.jacobian(q)
+        return np.linalg.norm(np.dot(J,qdot))
+
   def mgdEndEffector(self, q):
       '''
       Direct geometric model of the arm

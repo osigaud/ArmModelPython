@@ -14,7 +14,7 @@ from Main.Main import generateFromRBFN, generateFromCMAES, generateRichDataFromR
 from Regression.RunRegressionRBFN import runRBFN, UnitTest, UnitTestRBFNController, UnitTestArmModel
 
 
-from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo
+from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo
 
 from Utils.Chrono import Chrono
 from Utils.ReadSetupFile import ReadSetupFile
@@ -37,6 +37,7 @@ def printMainMenu():
     print('		8 plot XY positions')
     print('		9 plot muscular activations')
     print('		10 plot cost Map')
+    print('		28 plot XY estimation error')
     print('-------------------------------------------------')
     print('	CMAES:')
     print('		11 train CMAES for all targets')
@@ -114,6 +115,9 @@ def chooseFunction(choix):
     elif choix == 10:
         nameF = raw_input('Folder where the results are saved: ')
         plotCostColorMap("RBFN",nameF)
+    elif choix == 28:
+        nameF = raw_input('Folder where the results are saved: ')
+        plotXYEstimError("RBFN",nameF,"All")
 
 #------------------------------------------- CMAES
     elif choix == 11:
@@ -302,7 +306,7 @@ def plotRBFNs():
 '''
 
 
-#plotInitPos()  
+#plotInitPos("PosCircu540")  
 #runAuto()
 #generateFromRBFN(nbret, nameC)
 #generateInitialPositions()

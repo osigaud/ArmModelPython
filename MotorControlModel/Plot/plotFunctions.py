@@ -18,9 +18,8 @@ from matplotlib import animation
 from matplotlib.mlab import griddata
 plt.rc("figure", facecolor="white")
 
-from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedXYHandData, getXYHandData, getXYElbowData, getCommandData, getNoiselessCommandData, getInitPos, getCostData, getTrajTimeData, getTrajTimeData, getLastXData
+from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYElbowData, getCommandData, getNoiselessCommandData, getInitPos, getCostData, getTrajTimeData, getTrajTimeData, getLastXData
 from Utils.ReadSetupFile import ReadSetupFile
-from Utils.NiemRoot import tronquerNB
 
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
 
@@ -77,11 +76,14 @@ def trajectoriesAnimation(what, foldername = "None", targetSize = "0.05"):
     ani = animation.FuncAnimation(fig, animate, init_func=init, frames=len(xEl), blit=True, interval=20, repeat=True)
     plt.show(block = True)
 
-def makeInitPlot(rs):
+#----------------------------------------------------------------------------------------------------------------------------
+#Functions related to plotting initial positions
+
+def makeInitPlot(rs,filename):
     x0 = []
     y0 = []
     #posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    posIni = np.loadtxt(pathDataFolder + "PosCircu540")
+    posIni = np.loadtxt(pathDataFolder + filename)
     for el in posIni:
         x0.append(el[0])
         y0.append(el[1])
@@ -99,21 +101,20 @@ def makeInitPlot(rs):
     plt.scatter(rs.XTarget, rs.YTarget, c = "r", marker=u'*', s = 100)
     plt.scatter(x0, y0, c = "r", marker=u'o', s=25)  
 
-def plotInitPos():
+def plotInitPos(filename):
     '''
     Plots the initial position of trajectories present in the Brent directory
     '''
     plt.figure()
     rs = ReadSetupFile()
-    makeInitPlot(rs)
+    makeInitPlot(rs,filename)
     
     plt.show(block = True)
 
 #----------------------------------------------------------------------------------------------------------------------------
 #Functions related to velocity profiles
 
-def makeVelocityData(rs,name,media):
-    arm = Arm()
+def makeVelocityData(rs,arm,name,media):
     state = getStateData(name)
     factor = min(1, 100./len(state.items()))
     for k,v in state.items():
@@ -123,10 +124,7 @@ def makeVelocityData(rs,name,media):
             distance = round(rs.getDistanceToTarget(handxy[0],handxy[1]),2)
             for j in range(len(v)):
                 index.append(j*rs.dt)
-                qdot,q = getDotQAndQFromStateVector(v[j])
-                J = arm.jacobian(q)
-                vecspeed = np.dot(J,qdot)
-                speed.append(np.linalg.norm(vecspeed))
+                speed.append(arm.cartesianSpeed(v[j]))
             if distance<=0.15:
                 media.plot(index, speed, c ='blue')
             elif distance<=0.28:
@@ -136,13 +134,14 @@ def makeVelocityData(rs,name,media):
 
 def plotVelocityProfile(what, foldername = "None"):
     rs = ReadSetupFile()
+    arm = Arm()
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES":
         for i in range(4):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
-            makeVelocityData(rs,name,ax)
+            makeVelocityData(rs,arm,name,ax)
             ax.set_xlabel("time (s)")
             ax.set_ylabel("Instantaneous velocity (m/s)")
             ax.set_title(str("Velocity profiles for target " + str(rs.sizeOfTarget[i])))
@@ -152,7 +151,7 @@ def plotVelocityProfile(what, foldername = "None"):
         else:
             name = rs.RBFNpath + foldername + "/Log/"
 
-        makeVelocityData(rs,name,plt)
+        makeVelocityData(rs,arm,name,plt)
         plt.xlabel("time (s)")
         plt.ylabel("Instantaneous velocity (m/s)")
         plt.title("Velocity profiles for " + what)
@@ -162,12 +161,13 @@ def plotVelocityProfile(what, foldername = "None"):
 
 
 # ------------------------- positions, trajectories ---------------------------------
+# factor is used to plot no more than 100 trajectories. If there are more, they are drawn randomly
 
 def plotPos(name, media, plotEstim):
-    state = getXYHandData(name)
-    factor = min(1, 100./len(state.items()))
+    states = getXYHandData(name)
+    factor = min(1, 100./len(states.items()))
 
-    for k,v in state.items():
+    for k,v in states.items():
         if  rd.random()<factor:
             posX, posY = [], []
             for j in range(len(v)):
@@ -176,14 +176,26 @@ def plotPos(name, media, plotEstim):
             media.plot(posX,posY, c ='b')
 
     if plotEstim==True:
-        estimState = getEstimatedXYHandData(name)
-        for k,v in estimState.items():
+        estimStates = getEstimatedXYHandData(name)
+        for k,v in estimStates.items():
             if  rd.random()<factor:
                 eX, eY = [], []
                 for j in range(len(v)):
                     eX.append(v[j][0])
                     eY.append(v[j][1])
                 media.plot(eX,eY, c ='r')
+
+def plotEstimError(name, media):
+    errors = getXYEstimError(name)
+    factor = min(1, 100./len(errors.items()))
+
+    for k,v in errors.items():
+        if  rd.random()<factor:
+            posX, posY = [], []
+            for j in range(len(v)):
+                posX.append(v[j][0])
+                posY.append(v[j][1])
+            media.plot(posX,posY, c ='b')
 
 def plotTrajsInRepo():
     rs = ReadSetupFile()
@@ -228,7 +240,39 @@ def plotXYPositions(what, foldername = "None", targetSize = "All", plotEstim=Fal
         plt.title("XY Positions for " + what)
 
     plt.savefig("ImageBank/"+what+'_trajectories'+foldername+'.png', bbox_inches='tight')
-    #plt.savefig("ImageBank/"+what+'_trajectories.png')
+    plt.show(block = True)
+
+def plotXYEstimError(what, foldername = "None", targetSize = "All"):
+    rs = ReadSetupFile()
+    plt.figure(1, figsize=(16,9))
+
+    if what == "CMAES" and targetSize == "All":
+        for i in range(len(rs.sizeOfTarget)):
+            ax = plt.subplot2grid((2,2), (i/2,i%2))
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            plotEstimError(name, ax)
+
+            #makeInitPlot(rs)
+            ax.set_xlabel("X (m)")
+            ax.set_ylabel("Y (m)")
+            ax.set_title("XY Positions for target " + str(rs.sizeOfTarget[i]))
+
+    else:
+        if what == "CMAES":
+            name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
+        elif what == "Brent":
+            name = BrentTrajectoriesFolder
+        else:
+            name = rs.RBFNpath + foldername + "/Log/"
+
+        plotEstimError(name, plt)
+        #makeInitPlot(rs)
+
+        plt.xlabel("X (m)")
+        plt.ylabel("Y (m)")
+        plt.title("XY Positions for " + what)
+
+    plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 def plotArticularPositions(what, foldername = "None", targetSize = "0.05"):
