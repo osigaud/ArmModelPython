@@ -1,4 +1,4 @@
-Number of features (int):3
+Number of features (int):4
 Motor noise (Y or N):Y
 Gamma parameter in cost function (float):0.6
 Rho parameter in cost function (int):3000
