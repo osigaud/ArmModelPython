@@ -18,7 +18,7 @@ from matplotlib import animation
 from matplotlib.mlab import griddata
 plt.rc("figure", facecolor="white")
 
-from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYElbowData, getCommandData, getNoiselessCommandData, getInitPos, getCostData, getTrajTimeData, getTrajTimeData, getLastXData
+from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getCommandData, getNoiselessCommandData, getInitPos, getCostData, getTrajTimeData, getTrajTimeData, getLastXData
 from Utils.ReadSetupFile import ReadSetupFile
 
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
@@ -185,17 +185,29 @@ def plotPos(name, media, plotEstim):
                     eY.append(v[j][1])
                 media.plot(eX,eY, c ='r')
 
-def plotEstimError(name, media):
+def plotEstimError(rs,name, media):
     errors = getXYEstimError(name)
     factor = min(1, 100./len(errors.items()))
 
     for k,v in errors.items():
         if  rd.random()<factor:
-            posX, posY = [], []
+            index, er = [], []
             for j in range(len(v)):
-                posX.append(v[j][0])
-                posY.append(v[j][1])
-            media.plot(posX,posY, c ='b')
+                index.append(j*rs.dt)
+                er.append(v[j])
+            media.plot(index,er, c ='b')
+
+def plotEstimErrorOfSpeed(name, media):
+    errors = getXYEstimErrorOfSpeed(name)
+    factor = min(1, 100./len(errors.items()))
+
+    for k,v in errors.items():
+        if  rd.random()<factor:
+            er, speed = [], []
+            for j in range(len(v)):
+                er.append(v[j][0])
+                speed.append(v[j][1])
+            media.plot(speed,er, c ='b')
 
 def plotTrajsInRepo():
     rs = ReadSetupFile()
@@ -250,12 +262,12 @@ def plotXYEstimError(what, foldername = "None", targetSize = "All"):
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
-            plotEstimError(name, ax)
+            plotEstimError(rs,name, ax)
 
             #makeInitPlot(rs)
-            ax.set_xlabel("X (m)")
-            ax.set_ylabel("Y (m)")
-            ax.set_title("XY Positions for target " + str(rs.sizeOfTarget[i]))
+            ax.set_xlabel("Time (s)")
+            ax.set_ylabel("Estimation error (m)")
+            ax.set_title("Estimation error for target " + str(rs.sizeOfTarget[i]))
 
     else:
         if what == "CMAES":
@@ -265,12 +277,45 @@ def plotXYEstimError(what, foldername = "None", targetSize = "All"):
         else:
             name = rs.RBFNpath + foldername + "/Log/"
 
-        plotEstimError(name, plt)
+        plotEstimError(rs,name, plt)
         #makeInitPlot(rs)
 
-        plt.xlabel("X (m)")
-        plt.ylabel("Y (m)")
-        plt.title("XY Positions for " + what)
+        plt.xlabel("Time (s)")
+        plt.ylabel("Estimation error (m)")
+        plt.title("Estimation error Positions for " + what)
+
+    plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
+    plt.show(block = True)
+
+def plotXYEstimErrorOfSpeed(what, foldername = "None", targetSize = "All"):
+    rs = ReadSetupFile()
+    plt.figure(1, figsize=(16,9))
+
+    if what == "CMAES" and targetSize == "All":
+        for i in range(len(rs.sizeOfTarget)):
+            ax = plt.subplot2grid((2,2), (i/2,i%2))
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            plotEstimErrorOfSpeed(name, ax)
+
+            #makeInitPlot(rs)
+            ax.set_xlabel("Velocity (m/s)")
+            ax.set_ylabel("Estimation error (m)")
+            ax.set_title("Estimation error function of velocity for target " + str(rs.sizeOfTarget[i]))
+
+    else:
+        if what == "CMAES":
+            name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
+        elif what == "Brent":
+            name = BrentTrajectoriesFolder
+        else:
+            name = rs.RBFNpath + foldername + "/Log/"
+
+        plotEstimErrorOfSpeed(name, plt)
+        #makeInitPlot(rs)
+
+        plt.xlabel("Velocity (m/s)")
+        plt.ylabel("Estimation error (m)")
+        plt.title("Estimation error function of velocity for " + what)
 
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
