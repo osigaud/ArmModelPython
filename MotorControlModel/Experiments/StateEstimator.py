@@ -77,17 +77,15 @@ class StateEstimator:
         #store the state of the arm to feed the filter with a delay on the observation
         inferredState = self.storeInfo(state, command)
         if isNull(inferredState):
-            self.currentEstimState = state
-            return state
-        for i in range (self.delay-1):
+            self.currentEstimState = self.arm.computeNextState(command,self.currentEstimState)
+            return self.currentEstimState
+        newEstimState = self.arm.computeNextState(command,self.currentEstimState)
+        for i in range (self.delay):
             U = self.commandStore[self.delay-i-1]
             inferredState = self.arm.computeNextState(U,inferredState)
-        newEstimState = self.arm.computeNextState(U,self.currentEstimState)
-        qdot,q = getDotQAndQFromStateVector(state)
-        J = self.arm.jacobian(q)
-        vecspeed = np.dot(J,qdot)
-        speed = np.linalg.norm(vecspeed)
         '''
+        qdot,q = getDotQAndQFromStateVector(state)
+        speed = self.arm.cartesianspeed(state)
         for i in range(2,4):
             inferredState[i] = inferredState[i]*(1+ np.random.normal(0,0.01*speed))
         '''

@@ -193,7 +193,9 @@ def plotEstimError(rs,name, media):
         if  rd.random()<factor:
             index, er = [], []
             for j in range(len(v)):
-                index.append(j*rs.dt)
+#            for j in range(20):
+#                index.append(j*rs.dt)
+                index.append(j)
                 er.append(v[j])
             media.plot(index,er, c ='b')
 
