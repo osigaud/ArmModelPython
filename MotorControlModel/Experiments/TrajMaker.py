@@ -78,7 +78,7 @@ class TrajMaker:
         self.rs = rs
         self.sizeOfTarget = sizeOfTarget
         #6 is the dimension of the state for the filter, 4 is the dimension of the observation for the filter, 25 is the delay used
-        self.stateEstimator = StateEstimator(rs.outputDim, rs.delayUKF, self.arm)
+        self.stateEstimator = StateEstimator(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
         self.saveTraj = saveTraj
         #Initializes variables used to save trajectory
  

@@ -58,6 +58,8 @@ def printMainMenu():
     print('		25 generate rich results from RBFN controller')
     print('		26 generate rich results from CMAES controllers')
     print('		27 plot successful trajectories in repository')
+    print('		30 plot XY estimation error')
+    print('		31 plot Estimation error as function of velocity')
 
 def runChoice():
     checkL = True
@@ -224,6 +226,12 @@ def chooseFunction(choix):
         c.stop()
     elif choix == 27:
         plotTrajsInRepo()
+    elif choix == 30:
+        nameF = raw_input('Folder where the results are saved: ')
+        plotXYEstimError("CMAES",nameF,"All")
+    elif choix == 31:
+        nameF = raw_input('Folder where the results are saved: ')
+        plotXYEstimErrorOfSpeed("CMAES",nameF,"All")
 
 
 

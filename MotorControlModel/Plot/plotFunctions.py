@@ -203,10 +203,10 @@ def plotEstimErrorOfSpeed(name, media):
 
     for k,v in errors.items():
         if  rd.random()<factor:
-            er, speed = [], []
+            speed, er = [], []
             for j in range(len(v)):
-                er.append(v[j][0])
-                speed.append(v[j][1])
+                speed.append(v[j][0])
+                er.append(v[j][1])
             media.plot(speed,er, c ='b')
 
 def plotTrajsInRepo():

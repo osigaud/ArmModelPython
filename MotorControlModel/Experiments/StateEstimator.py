@@ -22,7 +22,7 @@ def isNull(vec):
 
 class StateEstimator:
     
-    def __init__(self, dimCommand, delay, arm):
+    def __init__(self, dimState, dimCommand, delay, arm):
         '''
     	Initializes parameters to uses the function implemented below
     	
@@ -31,6 +31,7 @@ class StateEstimator:
     			-arm, armModel, class object
     	'''
         self.name = "StateEstimator"
+        self.dimState = dimState
         self.dimCommand = dimCommand
         self.delay = delay
         self.arm = arm
@@ -44,7 +45,7 @@ class StateEstimator:
         self.stateStore = []
         self.commandStore = []
         for i in range(self.delay):
-            self.stateStore.append(state)
+            self.stateStore.append([0] * self.dimState)
             self.commandStore.append([0] * self.dimCommand)
         #print ("InitStore:", self.stateStore)
         self.currentEstimState = state
@@ -75,10 +76,11 @@ class StateEstimator:
     	'''
         #store the state of the arm to feed the filter with a delay on the observation
         inferredState = self.storeInfo(state, command)
+        if isNull(inferredState):
+            self.currentEstimState = state
+            return state
         for i in range (self.delay-1):
             U = self.commandStore[self.delay-i-1]
-            if isNull(U):
-                return state
             inferredState = self.arm.computeNextState(U,inferredState)
         newEstimState = self.arm.computeNextState(U,self.currentEstimState)
         qdot,q = getDotQAndQFromStateVector(state)
