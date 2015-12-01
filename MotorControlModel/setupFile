@@ -13,8 +13,8 @@ Time step (s) (float):0.002
 Initial positions file:PosCircu28
 Max number of time steps for a trajectory:300
 Max final error (not used?):0.001
-Sensory delay in time steps (int):25
-Number of repetitions in CMAES for each trajectory(int):10
+Sensory delay in time steps (int):1
+Number of repetitions in CMAES for each trajectory(int):1
 Input dimension, here position, velocity(int):4
 Output dimension, here muscular activation vector:6
 lambda (regularization term in RBFN):0.00001

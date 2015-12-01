@@ -96,13 +96,18 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
     exp.popSize = rs.popsizeCmaes
     theta = exp.tm.controller.theta
     thetaIn = theta.flatten()
-    thetaCMA, max = normalization(thetaIn)
-    exp.maxT = max
-    print ("max normalisation :", max)
-    #print ("theta CMA : ", thetaCMA)
+    #print ("theta avant normalisation: ", thetaIn)
+    #np.savetxt("CMAunnorm", thetaIn)
+    thetaCMA, minT, maxT = normalization(thetaIn)
+    exp.minT = minT
+    exp.maxT = maxT
+    #print ("max normalisation :", maxT)
+    #print ("theta normalise (pour CMA) : ", thetaCMA)
+    #np.savetxt("CMAnorm", thetaCMA)
+
 
     #run the optimization (cmaes)
-    resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes})
+    resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
 def launchCMAESForAllTargetSizes(thetaname, save):

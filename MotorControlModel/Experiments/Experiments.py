@@ -8,6 +8,7 @@ Module: Experiments
 Description: Class used to generate all the trajectories of the experimental setup and also used for CMAES optimization
 '''
 import os
+import cma
 
 import numpy as np
 
@@ -60,6 +61,7 @@ class Experiments:
         self.bestCost = -10000.0
         self.lastCoord = []
         self.maxT = 1
+        self.minT = -1
         self.popSize = 0
 
     def setTheta(self, theta):
@@ -69,12 +71,14 @@ class Experiments:
         '''
      	Input:		-theta: controller ie vector of parameters, numpy array
     	'''
-        self.theta = np.copy(theta)
+        self.theta = theta
+        #print ("theta from CMA normalized : ", self.theta)
         #reshaping of the parameters vector because this function is used by the cmaes algorithm and 
         #cmaes feeds the function with a one dimension numpy array but in the rest of the algorithm the 2 dimensions numpy array is expected for the vector of parameters theta
-        th = unNormalization(self.theta, self.maxT)
+        th = unNormalization(self.theta, self.minT, self.maxT)
+        #print ("theta init unnormalized : ", th)
         self.theta = np.asarray(th).reshape((self.dimOutput, self.numfeats**self.dimState))
-        #print ("theta Exp: ", self.theta)
+        #print ("theta reconstructed : ", self.theta)
 
         self.setTheta(self.theta)
 
@@ -139,6 +143,9 @@ class Experiments:
         #print "theta avant appel :", theta
         #compute all the trajectories x times each, x = numberOfRepeat
         meanCost, meanTime = self.runTrajectoriesForResultsGeneration(self.numberOfRepeat)
+        #cma.plot()
+        #opt = cma.CMAOptions()
+        #print "CMAES options :", opt
         c.stop()
 
         print("Indiv #: ", self.call, "\n Cost: ", meanCost)
