@@ -15,7 +15,6 @@ from shutil import copyfile
 from multiprocessing.pool import Pool
 
 from Utils.ReadSetupFile import ReadSetupFile
-from Utils.ThetaNormalization import normalization, unNormalization
 from Utils.Chrono import Chrono
 
 from ArmModel.Arm import Arm
@@ -95,16 +94,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
     exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname)
     exp.popSize = rs.popsizeCmaes
     theta = exp.tm.controller.theta
-    thetaIn = theta.flatten()
-    #print ("theta avant normalisation: ", thetaIn)
-    #np.savetxt("CMAunnorm", thetaIn)
-    thetaCMA, minT, maxT = normalization(thetaIn)
-    exp.minT = minT
-    exp.maxT = maxT
-    #print ("max normalisation :", maxT)
-    #print ("theta normalise (pour CMA) : ", thetaCMA)
-    #np.savetxt("CMAnorm", thetaCMA)
-
+    thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)
     resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True})

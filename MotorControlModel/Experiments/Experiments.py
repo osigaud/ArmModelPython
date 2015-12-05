@@ -12,7 +12,7 @@ import cma
 
 import numpy as np
 
-from Utils.ThetaNormalization import normalization, unNormalization
+#from Utils.ThetaNormalization import normalization, unNormalization
 from Utils.ReadSetupFile import ReadSetupFile
 from Utils.FileReading import dicToArray, getInitPos
 from Utils.Chrono import Chrono
@@ -63,24 +63,13 @@ class Experiments:
         self.maxT = 1
         self.minT = -1
         self.popSize = 0
-
-    def setTheta(self, theta):
-        self.tm.setTheta(theta)
     
     def initTheta(self, theta):
         '''
      	Input:		-theta: controller ie vector of parameters, numpy array
     	'''
-        self.theta = theta
-        #print ("theta from CMA normalized : ", self.theta)
-        #reshaping of the parameters vector because this function is used by the cmaes algorithm and 
-        #cmaes feeds the function with a one dimension numpy array but in the rest of the algorithm the 2 dimensions numpy array is expected for the vector of parameters theta
-        th = unNormalization(self.theta, self.minT, self.maxT)
-        #print ("theta init unnormalized : ", th)
-        self.theta = np.asarray(th).reshape((self.dimOutput, self.numfeats**self.dimState))
-        #print ("theta reconstructed : ", self.theta)
-
-        self.setTheta(self.theta)
+        self.theta = np.asarray(theta).reshape((self.dimOutput, self.numfeats**self.dimState))
+        self.tm.setTheta(self.theta)
 
     def saveCost(self):
         filename = findDataFilename(self.foldername+"Cost/","traj",".cost")
