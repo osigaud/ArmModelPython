@@ -60,8 +60,6 @@ class Experiments:
         self.trajTimeStore = []
         self.bestCost = -10000.0
         self.lastCoord = []
-        self.maxT = 1
-        self.minT = -1
         self.popSize = 0
     
     def initTheta(self, theta):
