@@ -233,8 +233,6 @@ def chooseFunction(choix):
         nameF = raw_input('Folder where the results are saved: ')
         plotXYEstimErrorOfSpeed("CMAES",nameF,"All")
 
-
-
 def setPosCircu15():
     rs=ReadSetupFile()
     filename = pathDataFolder + "PosCircu15"

@@ -17,12 +17,18 @@ class ReadSetupFile:
         self.name = "setup"
         self.readingSetupFile()
     
-    def readingSetupFile(self):
+    def readingSetupFile(self,det):
         '''
         Reads the setup file
         '''
         #Recuperation des donnees du fichier de configuration
-        with open(pathWorkingDirectory + "/setupFile", "r") as file:
+        if det:
+            filename = "/setupFileDet"
+            self.det = True
+        else:
+            filename = "/setupFileStoc"            
+            self.det = False
+        with open(pathWorkingDirectory + filename, "r") as file:
             alls = file.read()
         #Split to get line to line
         allsByLign = alls.split("\n")
@@ -30,42 +36,40 @@ class ReadSetupFile:
         self.numfeats = int((allsByLign[0].split(":"))[1])
         #reading line 2, choix d'une simulation avec ou sans bruit moteur
         self.noise = (allsByLign[1].split(":"))[1]
-        #reading line 4, choix du Parametre gamma cost function
+        #reading line 3, choix du Parametre gamma cost function
         self.gammaCF = float((allsByLign[2].split(":"))[1])
-        #reading line 5, choix du Parametre rho cost function
+        #reading line 4, choix du Parametre rho cost function
         self.rhoCF = int((allsByLign[3].split(":"))[1])
-        #reading line 6, choix du Parametre upsilon cost function
+        #reading line 5, choix du Parametre upsilon cost function
         self.upsCF = float((allsByLign[4].split(":"))[1])
-        #reading line 7, Pour CMAES, sigma
+        #reading line 6, Pour CMAES, sigma
         self.sigmaCmaes = float((allsByLign[5].split(":"))[1])
-        #reading line 8, Pour CMAES, maxIteration
+        #reading line 7, Pour CMAES, maxIteration
         self.maxIterCmaes = int((allsByLign[6].split(":"))[1])
-        #reading line 9, POUR CMAES, popsize
+        #reading line 8, POUR CMAES, popsize
         self.popsizeCmaes = int((allsByLign[7].split(":"))[1])
-        #reading line 10, Taille de la cible pour l'experimentation
+        #reading line 9, Taille de la cible pour l'experimentation
         self.sizeOfTarget = [float(allsByLign[8].split(":")[1].split("/")[0]), float(allsByLign[8].split(":")[1].split("/")[1]), float(allsByLign[8].split(":")[1].split("/")[2]), float(allsByLign[8].split(":")[1].split("/")[3])]
-        #reading line 11, abscisse de la cible
+        #reading line 10, abscisse de la cible
         self.XTarget = float((allsByLign[9].split(":"))[1])
-        #reading line 12, ordonnee de la cible
+        #reading line 11, ordonnee de la cible
         self.YTarget = float((allsByLign[10].split(":"))[1])
-        #reading line 13, Pas de temps utilise pour l'experimentation
+        #reading line 12, Pas de temps utilise pour l'experimentation
         self.dt = float((allsByLign[11].split(":"))[1])
-        #reading line 14, initiales positions
+        #reading line 13, positions initiales
         self.experimentFilePosIni = (allsByLign[12].split(":"))[1]
-        #reading line 15, number of iteration to stop unresolved trajectory
+        #reading line 14, number of iteration to stop unresolved trajectory
         self.numMaxIter = int((allsByLign[13].split(":"))[1])
-        #reading line 16, final position error
-        self.errorPosEnd = float((allsByLign[14].split(":"))[1])
-        #reading line 17, Delai utilise pour le filtre de kalman(int)
-        self.delayUKF = int((allsByLign[15].split(":"))[1])
-        #reading line 18, Nombre de repetition pour chaque trajectoire(int)
-        self.numberOfRepeatEachTraj = int((allsByLign[16].split(":"))[1])
-        #reading line 19, Dimension de l'entree, ici le vecteur position(int)
-        self.inputDim = int((allsByLign[17].split(":"))[1])
-        #reading line 20, Dimension de la sortie, ici le vecteur d'activation musculaire
-        self.outputDim = int((allsByLign[18].split(":"))[1])
-        #reading line 21, lamda, regularization factor in RBFNs
-        self.lamb = float((allsByLign[19].split(":"))[1])
+        #reading line 15, Delai utilise pour le filtre de kalman(int)
+        self.delayUKF = int((allsByLign[14].split(":"))[1])
+        #reading line 16, Nombre de repetition pour chaque trajectoire(int)
+        self.numberOfRepeatEachTraj = int((allsByLign[15].split(":"))[1])
+        #reading line 17, Dimension de l'entree, ici le vecteur position(int)
+        self.inputDim = int((allsByLign[16].split(":"))[1])
+        #reading line 18, Dimension de la sortie, ici le vecteur d'activation musculaire
+        self.outputDim = int((allsByLign[17].split(":"))[1])
+        #reading line 19, lamda, regularization factor in RBFNs
+        self.lamb = float((allsByLign[18].split(":"))[1])
 
         self.RBFNpath = pathDataFolder + "RBFN/" + str(self.numfeats) + "feats/"
         self.CMAESpath = pathDataFolder + cmaesPath + "/ResCma"
