@@ -736,11 +736,15 @@ def plotCMAESCostProgress():
         name = rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesCost.log"
         data = np.loadtxt(name)
 
-        x,y = [],[]
+        x,w,m,b = [],[],[],[]
         for j in range(len(data)):
             x.append(j)
-            y.append(data[j])
-        ax.plot(x, y, c = 'b')
+            w.append(data[j][0])
+            m.append(data[j][1])
+            b.append(data[j][2])
+        ax.plot(x, w, c = 'b')
+        ax.plot(x, m, c = 'g')
+        ax.plot(x, b, c = 'r')
 
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 
@@ -757,11 +761,15 @@ def plotCMAESTimeProgress():
         name = rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesTime.log"
         data = np.loadtxt(name)
 
-        x,y = [],[]
+        x,w,m,b = [],[],[],[]
         for j in range(len(data)):
             x.append(j)
-            y.append(data[j])
-        ax.plot(x, y, c = 'r')
+            w.append(data[j][0])
+            m.append(data[j][1])
+            b.append(data[j][2])
+        ax.plot(x, w, c = 'b')
+        ax.plot(x, m, c = 'g')
+        ax.plot(x, b, c = 'r')
 
         ax.set_title(str("Time Target " + str(rs.sizeOfTarget[i])))
 

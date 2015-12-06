@@ -23,7 +23,7 @@ from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommand
 from CostComputation import CostComputation
 from StateEstimator import StateEstimator
 
-from GlobalVariables import BrentTrajectoriesFolder,pathDataFolder
+from GlobalVariables import BrentTrajectoriesFolder,pathDataFolder,det 
 
 def checkFolder(name):
     if not os.path.isdir(name):
@@ -160,15 +160,21 @@ class TrajMaker:
             U = self.controller.computeOutput(estimState)
             U = muscleFilter(U)
 
-            Unoisy = getNoisyCommand(U,self.arm.musclesP.knoiseU)
-            #Unoisy = muscleFilter(U)
+            if det:
+                Unoisy = muscleFilter(U)
+            else:
+                Unoisy = getNoisyCommand(U,self.arm.musclesP.knoiseU)
             #computation of the arm state
             realNextState = self.arm.computeNextState(Unoisy, self.arm.state)
  
             #computation of the approximated state
             tmpstate = self.arm.state
-            estimNextState = self.stateEstimator.getEstimState(tmpstate,U)
-            #estimNextState = realNextState
+
+            if det:
+                estimNextState = realNextState
+            else:
+                estimNextState = self.stateEstimator.getEstimState(tmpstate,U)
+            
             #print estimNextState
 
             self.arm.setState(realNextState)

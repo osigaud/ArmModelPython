@@ -9,7 +9,7 @@ Description: On retrouve dans ce fichier une fonction permettant de lire le fich
 '''
 import math
 
-from GlobalVariables import pathWorkingDirectory, pathDataFolder, cmaesPath
+from GlobalVariables import pathWorkingDirectory, pathDataFolder, cmaesPath, det
 
 class ReadSetupFile:
     
@@ -17,7 +17,7 @@ class ReadSetupFile:
         self.name = "setup"
         self.readingSetupFile()
     
-    def readingSetupFile(self,det):
+    def readingSetupFile(self):
         '''
         Reads the setup file
         '''
@@ -70,6 +70,8 @@ class ReadSetupFile:
         self.outputDim = int((allsByLign[17].split(":"))[1])
         #reading line 19, lamda, regularization factor in RBFNs
         self.lamb = float((allsByLign[18].split(":"))[1])
+        #reading line 20, period, for plotting performance improvement
+        self.period = int((allsByLign[19].split(":"))[1])
 
         self.RBFNpath = pathDataFolder + "RBFN/" + str(self.numfeats) + "feats/"
         self.CMAESpath = pathDataFolder + cmaesPath + "/ResCma"

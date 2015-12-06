@@ -29,7 +29,7 @@ def copyRBFNtoCMAES(rs, name, size):
     copyfile(savenamestruct, cmaname + name + ".struct")
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
-    exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile)
+    exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost, time = exp.runTrajectoriesForResultsGeneration(repeat)
     print("Average cost: ", cost)
     print("Average time: ", time)
@@ -38,7 +38,7 @@ def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save)
         exp.saveCost()
 
 def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
-    exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile)
+    exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost = exp.runRichTrajectories(repeat)
     print("Average cost: ", cost)
     print("foldername : ", foldername)
@@ -91,8 +91,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
         copyRBFNtoCMAES(rs, thetaFile, sizeOfTarget)
 
     #Initializes all the class used to generate trajectory
-    exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname)
-    exp.popSize = rs.popsizeCmaes
+    exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
     theta = exp.tm.controller.theta
     thetaCMA = theta.flatten()
 

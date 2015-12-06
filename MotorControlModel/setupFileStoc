@@ -17,3 +17,4 @@ Number of repetitions in CMAES for each trajectory(int):10
 Input dimension, here position, velocity(int):4
 Output dimension, here muscular activation vector:6
 lambda (regularization term in RBFN):0.00001
+period (interval for plotting performance):10
