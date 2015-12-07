@@ -150,6 +150,8 @@ class TrajMaker:
         self.arm.setState(state)
         estimState = state
         dataStore = []
+        qtarget1, qtarget2 = self.arm.mgi(self.rs.XTarget, self.rs.YTarget)
+        vectarget = [0.0, 0.0, qtarget1, qtarget2]
 
         #loop to generate next position until the target is reached 
         while coordHand[1] < self.rs.YTarget and i < self.rs.numMaxIter:
@@ -168,12 +170,12 @@ class TrajMaker:
             realNextState = self.arm.computeNextState(Unoisy, self.arm.state)
  
             #computation of the approximated state
-            tmpstate = self.arm.state
+            tmpState = self.arm.state
 
             if det:
                 estimNextState = realNextState
             else:
-                estimNextState = self.stateEstimator.getEstimState(tmpstate,U)
+                estimNextState = self.stateEstimator.getEstimState(tmpState,U)
             
             #print estimNextState
 
@@ -196,18 +198,17 @@ class TrajMaker:
             '''
 
             #get dotq and q from the state vector
-            dotq, q = getDotQAndQFromStateVector(realNextState)
+            dotq, q = getDotQAndQFromStateVector(tmpState)
+            coordElbow, coordHand = self.arm.mgdFull(q)
             #print ("dotq :",dotq)
             #computation of the coordinates to check if the target is reach or not
             #code to save data of the trajectory
 
             #Note : these structures might be much improved
-            if self.saveTraj == True:
-                qt1, qt2 = self.arm.mgi(self.rs.XTarget, self.rs.YTarget)
- 
-                stepStore.append([0.0, 0.0, qt1, qt2])
+            if self.saveTraj == True: 
+                stepStore.append(vectarget)
                 stepStore.append(estimState)
-                stepStore.append(tmpstate)
+                stepStore.append(tmpState)
                 stepStore.append(Unoisy)
                 stepStore.append(np.array(U))
                 stepStore.append(estimNextState)
@@ -221,7 +222,6 @@ class TrajMaker:
                 dataStore.append(row)
 
             estimState = estimNextState
-            coordElbow, coordHand = self.arm.mgdFull(q)
             i += 1
             t += self.rs.dt
 
