@@ -21,8 +21,6 @@ def getNoisyCommand(U, knoiseU):
     UnoiseTmp = []
     for i in range(len(U)):
         UnoiseTmp.append(U[i]*(1+ np.random.normal(0,knoiseU)))
-    #check if the muscular activation are normed, ie between 0 and 1
-    UnoiseTmp = muscleFilter(UnoiseTmp)
     #put U in column vector form
     return np.array(UnoiseTmp)
         

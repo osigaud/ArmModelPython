@@ -160,12 +160,12 @@ class TrajMaker:
             #print ("state :",self.arm.state)
 
             U = self.controller.computeOutput(estimState)
-            U = muscleFilter(U)
 
             if det:
                 Unoisy = muscleFilter(U)
             else:
                 Unoisy = getNoisyCommand(U,self.arm.musclesP.knoiseU)
+                Unoisy = muscleFilter(Unoisy)
             #computation of the arm state
             realNextState = self.arm.computeNextState(Unoisy, self.arm.state)
  
@@ -175,6 +175,7 @@ class TrajMaker:
             if det:
                 estimNextState = realNextState
             else:
+                U = muscleFilter(U)
                 estimNextState = self.stateEstimator.getEstimState(tmpState,U)
             
             #print estimNextState
