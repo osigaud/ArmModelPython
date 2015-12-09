@@ -117,7 +117,7 @@ class TrajMaker:
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
                 cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF
             else:
-                cost -= 500/(coordHand[0]*coordHand[0])
+                cost -= 500+500000*(coordHand[0]*coordHand[0])
         else:
             cost -= 4000
         

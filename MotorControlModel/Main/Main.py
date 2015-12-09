@@ -96,13 +96,16 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
     thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)
-    resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True})
+    resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
 def launchCMAESForAllTargetSizes(thetaname, save):
     rs = ReadSetupFile()
     for el in rs.sizeOfTarget:
         launchCMAESForSpecificTargetSize(el, thetaname,save)
+
+def term():
+    return False
 
 #--------------------------- multiprocessing -------------------------------------------------------
     
