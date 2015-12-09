@@ -62,6 +62,12 @@ class Experiments:
         self.lastCoord = []
         self.popSize = popSize
         self.period = period
+        
+    def printLastCoordInfo(self):
+        vec = np.array(self.lastCoord)
+        print "moyenne :", np.mean(vec)
+        print "min :", np.min(vec)
+        print "max :", np.max(vec)
     
     def initTheta(self, theta):
         '''
@@ -114,6 +120,7 @@ class Experiments:
             self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
             globCost.append(meanCost)
             globTime.append(meanTrajTime)
+        self.printLastCoordInfo()
         return np.mean(globCost), np.mean(globTime)
     
     def runTrajectoriesCMAES(self, theta):
