@@ -19,7 +19,6 @@ class MusclesParameters:
         class parameters initialization
         '''
         self.pathSetupFile = pathWorkingDirectory + "/ArmModel/Setup/Muscles.params"
-        self.activationVectorInit()
         self.fmaxMatrix()
         
         ###############################Annexe parameters########################
@@ -70,29 +69,3 @@ class MusclesParameters:
 
         #line 7, amount of motor noise on U
         self.knoiseU = float((allsByLign[6].split(":"))[1])
-
-        
-    def activationVectorInit(self):
-        '''
-        Initializes the muscular activation vector
-        '''
-        u1 = 0
-        u2 = 0
-        u3 = 0
-        u4 = 0
-        u5 = 0
-        u6 = 0
-        self.U0 = np.array([[u1],[u2],[u3],[u4],[u5],[u6]])
-        
-    def activationVectorUse(self, u1, u2, u3, u4, u5, u6):
-        '''
-        Builds the muscular activation vector from its 6 components
-        '''
-        U = np.array([[u1],[u2],[u3],[u4],[u5],[u6]])
-        return U
-
-        
-        
-        
-        
-        
