@@ -699,8 +699,8 @@ def plotScattergram(what,foldername):
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             ax.hist(data[rs.sizeOfTarget[i]], 20)
-            ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]]/2, [0, 500], c = 'r', linewidth = 3)
-            ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]]/2, [0, 500], c = 'r', linewidth = 3)
+            ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
+            ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
             ax.set_title(str("Hit Dispersion for Target " + str(rs.sizeOfTarget[i])))
 
     elif what=="RBFN":
