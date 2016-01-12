@@ -90,7 +90,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
 
     #Initializes all the class used to generate trajectory
     exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
-    theta = exp.tm.controller.theta
+    theta = exp.tm.controller.getTheta()
     thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)

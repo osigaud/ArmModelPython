@@ -21,7 +21,6 @@ from Regression.RunRegressionRBFN import initRBFNController
 
 from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords
 
-from CostComputation import CostComputation
 from StateEstimator import StateEstimator
 
 from GlobalVariables import BrentTrajectoriesFolder,pathDataFolder,det 

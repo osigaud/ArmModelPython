@@ -21,7 +21,6 @@ from Regression.RunRegressionNN import initNNController
 
 from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords
 
-from CostComputation import CostComputation
 from StateEstimator import StateEstimator
 
 from GlobalVariables import BrentTrajectoriesFolder,pathDataFolder,det 

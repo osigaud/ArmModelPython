@@ -38,6 +38,9 @@ class NeuralNet():
     def setTheta(self, theta):
         self.net.params = theta
 
+    def getTheta(self):
+        return self.net.params
+
     def loadTheta(self,thetaFile):
         self.net._setParameters(np.loadtxt(thetaFile))
         #print ("theta LOAD : ", self.net.params)

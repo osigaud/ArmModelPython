@@ -338,6 +338,6 @@ def plotRBFNs():
 #setPosCircu28()
 #plotXYPositions("CMAES", "A2", "0.04", True)
 
-#runChoice()
+runChoice()
 
-UnitTestNNController()
+#UnitTestNNController()
