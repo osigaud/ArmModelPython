@@ -17,6 +17,7 @@ from ArmModel.Arm import Arm, getDotQAndQFromStateVector
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
 
 from Regression.RBFN import rbfn
+from Regression.RunRegressionRBFN import initRBFNController
 
 from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords
 
@@ -38,18 +39,6 @@ def findFilename(foldername, name, extension):
         tryName = name + str(i) + extension
     filename = foldername + tryName
     return filename
-
-def initRBFNController(rs,filename):
-    '''
-	Initializes the controller allowing to compute the output from the input and the vector of parameters theta
-	
-	Input:		-rs: ReadSetup, class object
-			-fr, FileReading, class object
-	'''
-    #Initializes the function approximator with the number of feature used
-    fa = rbfn(rs.numfeats,rs.inputDim,rs.outputDim)
-    fa.loadFeatures(filename+".struct")
-    return fa
 
 #------------------------------------------------------------------------
 

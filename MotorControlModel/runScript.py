@@ -7,12 +7,14 @@ Module: runScript
 
 Description: main script to run what we want in the project
 '''
+
 import numpy as np
+import random as rd
 
 from Main.Main import generateFromRBFN, generateFromCMAES, generateRichDataFromRBFN, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Regression.RunRegressionRBFN import runRBFN, UnitTest, UnitTestRBFNController, UnitTestArmModel
-
+from Regression.RunRegressionNN import runNN, UnitTestNN, UnitTestNNController
 
 from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo
 
@@ -315,7 +317,6 @@ def plotRBFNs():
         plotXYPositions("RBFN","SX"+str(i),"All",True)
 '''
 
-
 #plotInitPos("PosCircu540")  
 #runAuto()
 #generateFromRBFN(nbret, nameC)
@@ -336,4 +337,7 @@ def plotRBFNs():
 
 #setPosCircu28()
 #plotXYPositions("CMAES", "A2", "0.04", True)
-runChoice()
+
+#runChoice()
+
+UnitTestNNController()

@@ -17,9 +17,20 @@ from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommand
 
 from Regression.RBFN import rbfn
 from ArmModel.Arm import Arm
-from Experiments.TrajMaker import initRBFNController
 
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
+
+def initRBFNController(rs,filename):
+    '''
+	Initializes the controller allowing to compute the output from the input and the vector of parameters theta
+	
+	Input:		-rs: ReadSetupFile, parameters
+			-filename: name where to load the structure
+	'''
+    #Initializes the function approximator with the number of feature used
+    fa = rbfn(rs.numfeats,rs.inputDim,rs.outputDim)
+    fa.loadFeatures(filename+".struct")
+    return fa
 
 def runRBFN(name,fromStruct):
     ''' 
@@ -114,7 +125,9 @@ def UnitTestRBFNController():
                     outrbfn = fa.computeOutput(np.array(state[el][i]))
                     print("Real  :", command[el][i]) 
                     print("Learn :",outrbfn)
-  
+
+# a replacer plus intelligemment
+
 def UnitTestArmModel():
     '''
     Tests the next state 
@@ -149,6 +162,3 @@ def UnitTestArmModel():
                     print("ArmN :", outNextStateNoisy)
                     print("Arm :", outNextState)
                     print("---------------------------------------------------------")
-
-    
-    
