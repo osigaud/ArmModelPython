@@ -73,8 +73,8 @@ class Experiments:
         '''
      	Input:		-theta: controller ie vector of parameters, numpy array
     	'''
-        self.theta = np.asarray(theta).reshape((self.dimOutput, self.numfeats**self.dimState))
-        self.tm.setTheta(self.theta)
+        #self.theta = np.asarray(theta).reshape((self.dimOutput, self.numfeats**self.dimState))
+        self.tm.setTheta(theta)
 
     def saveCost(self):
         filename = findDataFilename(self.foldername+"Cost/","traj",".cost")
@@ -167,7 +167,7 @@ class Experiments:
             if meanCost>0:
                 extension = ".save" + str(meanCost)
                 filename = findDataFilename(self.foldername+"Theta/", "theta", extension)
-                np.savetxt(filename, self.theta)
+                np.savetxt(filename, theta)
         
         self.periodMeanCost += meanCost
         self.periodMeanTime += meanTime

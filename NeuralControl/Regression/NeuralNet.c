@@ -1164,7 +1164,7 @@ static PyObject *__pyx_pf_10Regression_9NeuralNet_9NeuralNet___init__(CYTHON_UNU
  *         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
  * 
  *     def setTheta(self, theta):             # <<<<<<<<<<<<<<
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  */
 
@@ -1234,6 +1234,9 @@ static PyObject *__pyx_pf_10Regression_9NeuralNet_9NeuralNet_2setTheta(CYTHON_UN
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1242,20 +1245,47 @@ static PyObject *__pyx_pf_10Regression_9NeuralNet_9NeuralNet_2setTheta(CYTHON_UN
   /* "Regression/NeuralNet.py":39
  * 
  *     def setTheta(self, theta):
- *         self.net.params = theta             # <<<<<<<<<<<<<<
+ *         self.net._setParameters(theta)             # <<<<<<<<<<<<<<
  * 
  *     def getTheta(self):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_net); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_t_1, __pyx_n_s_params, __pyx_v_theta) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_net); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_setParameters); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  if (!__pyx_t_2) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_theta); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
+    __Pyx_INCREF(__pyx_v_theta);
+    __Pyx_GIVEREF(__pyx_v_theta);
+    PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_theta);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "Regression/NeuralNet.py":38
  *         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
  * 
  *     def setTheta(self, theta):             # <<<<<<<<<<<<<<
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  */
 
@@ -1264,6 +1294,9 @@ static PyObject *__pyx_pf_10Regression_9NeuralNet_9NeuralNet_2setTheta(CYTHON_UN
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("Regression.NeuralNet.NeuralNet.setTheta", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -1273,7 +1306,7 @@ static PyObject *__pyx_pf_10Regression_9NeuralNet_9NeuralNet_2setTheta(CYTHON_UN
 }
 
 /* "Regression/NeuralNet.py":41
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  *     def getTheta(self):             # <<<<<<<<<<<<<<
  *         return self.net.params
@@ -1322,7 +1355,7 @@ static PyObject *__pyx_pf_10Regression_9NeuralNet_9NeuralNet_4getTheta(CYTHON_UN
   goto __pyx_L0;
 
   /* "Regression/NeuralNet.py":41
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  *     def getTheta(self):             # <<<<<<<<<<<<<<
  *         return self.net.params
@@ -2567,7 +2600,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
  * 
  *     def setTheta(self, theta):             # <<<<<<<<<<<<<<
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  */
   __pyx_tuple__3 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_theta); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -2576,7 +2609,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_setTheta, 38, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "Regression/NeuralNet.py":41
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  *     def getTheta(self):             # <<<<<<<<<<<<<<
  *         return self.net.params
@@ -2920,7 +2953,7 @@ PyMODINIT_FUNC PyInit_NeuralNet(void)
  *         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
  * 
  *     def setTheta(self, theta):             # <<<<<<<<<<<<<<
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  */
   __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10Regression_9NeuralNet_9NeuralNet_3setTheta, 0, __pyx_n_s_NeuralNet_setTheta, NULL, __pyx_n_s_Regression_NeuralNet, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -2929,7 +2962,7 @@ PyMODINIT_FUNC PyInit_NeuralNet(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "Regression/NeuralNet.py":41
- *         self.net.params = theta
+ *         self.net._setParameters(theta)
  * 
  *     def getTheta(self):             # <<<<<<<<<<<<<<
  *         return self.net.params

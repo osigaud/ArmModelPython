@@ -36,7 +36,7 @@ class NeuralNet():
         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
 
     def setTheta(self, theta):
-        self.net.params = theta
+        self.net._setParameters(theta)
 
     def getTheta(self):
         return self.net.params

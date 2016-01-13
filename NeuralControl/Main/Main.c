@@ -711,9 +711,6 @@ static char __pyx_k_resCma[] = "resCma";
 static char __pyx_k_shutil[] = "shutil";
 static char __pyx_k_cmaname[] = "cmaname";
 static char __pyx_k_flatten[] = "flatten";
-static char __pyx_k_maxiter[] = "maxiter";
-static char __pyx_k_options[] = "options";
-static char __pyx_k_popsize[] = "popsize";
 static char __pyx_k_saveDir[] = "saveDir";
 static char __pyx_k_theta_2[] = "theta";
 static char __pyx_k_copyfile[] = "copyfile";
@@ -721,13 +718,11 @@ static char __pyx_k_getTheta[] = "getTheta";
 static char __pyx_k_saveCost[] = "saveCost";
 static char __pyx_k_saveName[] = "saveName";
 static char __pyx_k_thetaCMA[] = "thetaCMA";
-static char __pyx_k_verb_log[] = "verb_log";
 static char __pyx_k_CMAESpath[] = "CMAESpath";
 static char __pyx_k_Main_Main[] = "Main.Main";
 static char __pyx_k_thetaFile[] = "thetaFile";
 static char __pyx_k_thetaName[] = "thetaName";
 static char __pyx_k_thetaname[] = "thetaname";
-static char __pyx_k_verb_disp[] = "verb_disp";
 static char __pyx_k_controller[] = "controller";
 static char __pyx_k_foldername[] = "foldername";
 static char __pyx_k_sigmaCmaes[] = "sigmaCmaes";
@@ -735,10 +730,8 @@ static char __pyx_k_Experiments[] = "Experiments";
 static char __pyx_k_ArmModel_Arm[] = "ArmModel.Arm";
 static char __pyx_k_Average_cost[] = "Average cost: ";
 static char __pyx_k_Average_time[] = "Average time: ";
-static char __pyx_k_CMA_diagonal[] = "CMA_diagonal";
 static char __pyx_k_Utils_Chrono[] = "Utils.Chrono";
 static char __pyx_k_foldername_2[] = "foldername : ";
-static char __pyx_k_maxIterCmaes[] = "maxIterCmaes";
 static char __pyx_k_popsizeCmaes[] = "popsizeCmaes";
 static char __pyx_k_sizeOfTarget[] = "sizeOfTarget";
 static char __pyx_k_ReadSetupFile[] = "ReadSetupFile";
@@ -752,7 +745,6 @@ static char __pyx_k_runRichTrajectories[] = "runRichTrajectories";
 static char __pyx_k_NN_End_of_generation[] = "NN:End of generation";
 static char __pyx_k_multiprocessing_pool[] = "multiprocessing.pool";
 static char __pyx_k_runTrajectoriesCMAES[] = "runTrajectoriesCMAES";
-static char __pyx_k_termination_callback[] = "termination_callback";
 static char __pyx_k_GenerateDataFromTheta[] = "GenerateDataFromTheta";
 static char __pyx_k_generateRichDataFromNN[] = "generateRichDataFromNN";
 static char __pyx_k_CMAES_End_of_generation[] = "CMAES:End of generation";
@@ -774,7 +766,6 @@ static PyObject *__pyx_kp_s_Average_cost;
 static PyObject *__pyx_kp_s_Average_time;
 static PyObject *__pyx_kp_s_CMAES_End_of_generation;
 static PyObject *__pyx_n_s_CMAESpath;
-static PyObject *__pyx_n_s_CMA_diagonal;
 static PyObject *__pyx_n_s_Chrono;
 static PyObject *__pyx_n_s_Data;
 static PyObject *__pyx_kp_s_End_of_optimization_for_target;
@@ -819,17 +810,13 @@ static PyObject *__pyx_n_s_launchCMAESForAllTargetSizesMult;
 static PyObject *__pyx_n_s_launchCMAESForSpecificTargetSize;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_map;
-static PyObject *__pyx_n_s_maxIterCmaes;
-static PyObject *__pyx_n_s_maxiter;
 static PyObject *__pyx_n_s_multiprocessing_pool;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
-static PyObject *__pyx_n_s_options;
 static PyObject *__pyx_n_s_os;
 static PyObject *__pyx_n_s_p;
 static PyObject *__pyx_n_s_period;
-static PyObject *__pyx_n_s_popsize;
 static PyObject *__pyx_n_s_popsizeCmaes;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_repeat;
@@ -849,7 +836,6 @@ static PyObject *__pyx_n_s_size;
 static PyObject *__pyx_n_s_sizeOfTarget;
 static PyObject *__pyx_n_s_stop;
 static PyObject *__pyx_n_s_term;
-static PyObject *__pyx_n_s_termination_callback;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_s_theta;
 static PyObject *__pyx_n_s_thetaCMA;
@@ -859,8 +845,6 @@ static PyObject *__pyx_n_s_theta_2;
 static PyObject *__pyx_n_s_thetaname;
 static PyObject *__pyx_n_s_time;
 static PyObject *__pyx_n_s_tm;
-static PyObject *__pyx_n_s_verb_disp;
-static PyObject *__pyx_n_s_verb_log;
 static PyObject *__pyx_pf_4Main_4Main_copyNNtoCMAES(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_rs, PyObject *__pyx_v_name, PyObject *__pyx_v_size); /* proto */
 static PyObject *__pyx_pf_4Main_4Main_2GenerateDataFromTheta(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_rs, PyObject *__pyx_v_sizeOfTarget, PyObject *__pyx_v_foldername, PyObject *__pyx_v_thetaFile, PyObject *__pyx_v_repeat, PyObject *__pyx_v_save); /* proto */
 static PyObject *__pyx_pf_4Main_4Main_4GenerateRichDataFromTheta(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_rs, PyObject *__pyx_v_sizeOfTarget, PyObject *__pyx_v_foldername, PyObject *__pyx_v_thetaFile, PyObject *__pyx_v_repeat, PyObject *__pyx_v_save); /* proto */
@@ -873,8 +857,6 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
 static PyObject *__pyx_pf_4Main_4Main_18term(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_4Main_4Main_20launchCMAESForAllTargetSizesMulti(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_float_0_05;
-static PyObject *__pyx_int_1;
-static PyObject *__pyx_int_50;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_tuple__7;
@@ -3217,7 +3199,6 @@ static PyObject *__pyx_pf_4Main_4Main_14launchCMAESForSpecificTargetSize(CYTHON_
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
   PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -3503,99 +3484,74 @@ static PyObject *__pyx_pf_4Main_4Main_14launchCMAESForSpecificTargetSize(CYTHON_
   /* "Main/Main.py":97
  * 
  *     #run the optimization (cmaes)
- *     resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})             # <<<<<<<<<<<<<<
- *     print("End of optimization for target " + str(sizeOfTarget) + " !")
- * 
+ *     resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes)             # <<<<<<<<<<<<<<
+ * #, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True,'verb_log':50, 'verb_disp':1,'termination_callback':term()})
+ * #, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_cma); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_fmin); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_cma); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_exp, __pyx_n_s_runTrajectoriesCMAES); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_sigmaCmaes); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_fmin); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_exp, __pyx_n_s_runTrajectoriesCMAES); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_sigmaCmaes); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
-  __Pyx_INCREF(__pyx_v_thetaCMA);
-  __Pyx_GIVEREF(__pyx_v_thetaCMA);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_thetaCMA);
-  __Pyx_GIVEREF(__pyx_t_8);
-  PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_8);
-  __pyx_t_3 = 0;
-  __pyx_t_8 = 0;
-  __pyx_t_8 = PyDict_New(); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_maxIterCmaes); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_maxiter, __pyx_t_6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_popsizeCmaes); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_popsize, __pyx_t_6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_CMA_diagonal, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_verb_log, __pyx_int_50) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_verb_disp, __pyx_int_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_term); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_9 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_9)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_9);
+  __pyx_t_6 = NULL;
+  __pyx_t_5 = 0;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_8))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_8);
+    if (likely(__pyx_t_6)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_6);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_7, function);
+      __Pyx_DECREF_SET(__pyx_t_8, function);
+      __pyx_t_5 = 1;
     }
   }
-  if (__pyx_t_9) {
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_9); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  } else {
-    __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_7);
+  if (__pyx_t_6) {
+    __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
   }
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_termination_callback, __pyx_t_6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_options, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_8); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_5, __pyx_t_1);
+  __Pyx_INCREF(__pyx_v_thetaCMA);
+  __Pyx_GIVEREF(__pyx_v_thetaCMA);
+  PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_5, __pyx_v_thetaCMA);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_5, __pyx_t_2);
+  __pyx_t_1 = 0;
+  __pyx_t_2 = 0;
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_v_resCma = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Main/Main.py":98
- *     #run the optimization (cmaes)
- *     resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
+  /* "Main/Main.py":100
+ * #, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True,'verb_log':50, 'verb_disp':1,'termination_callback':term()})
+ * #, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
  *     print("End of optimization for target " + str(sizeOfTarget) + " !")             # <<<<<<<<<<<<<<
  * 
  * def launchCMAESForAllTargetSizes(thetaname, save):
  */
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_sizeOfTarget);
   __Pyx_GIVEREF(__pyx_v_sizeOfTarget);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_sizeOfTarget);
-  __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Add(__pyx_kp_s_End_of_optimization_for_target, __pyx_t_8); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyNumber_Add(__pyx_kp_s_End_of_optimization_for_target, __pyx_t_8); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = PyNumber_Add(__pyx_t_3, __pyx_kp_s__2); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = PyNumber_Add(__pyx_t_3, __pyx_kp_s__2); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_8) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PrintOne(0, __pyx_t_8) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
   /* "Main/Main.py":78
@@ -3616,7 +3572,6 @@ static PyObject *__pyx_pf_4Main_4Main_14launchCMAESForSpecificTargetSize(CYTHON_
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_AddTraceback("Main.Main.launchCMAESForSpecificTargetSize", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -3632,7 +3587,7 @@ static PyObject *__pyx_pf_4Main_4Main_14launchCMAESForSpecificTargetSize(CYTHON_
   return __pyx_r;
 }
 
-/* "Main/Main.py":100
+/* "Main/Main.py":102
  *     print("End of optimization for target " + str(sizeOfTarget) + " !")
  * 
  * def launchCMAESForAllTargetSizes(thetaname, save):             # <<<<<<<<<<<<<<
@@ -3672,11 +3627,11 @@ static PyObject *__pyx_pw_4Main_4Main_17launchCMAESForAllTargetSizes(PyObject *_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_save)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("launchCMAESForAllTargetSizes", 1, 2, 2, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("launchCMAESForAllTargetSizes", 1, 2, 2, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "launchCMAESForAllTargetSizes") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "launchCMAESForAllTargetSizes") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3689,7 +3644,7 @@ static PyObject *__pyx_pw_4Main_4Main_17launchCMAESForAllTargetSizes(PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("launchCMAESForAllTargetSizes", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("launchCMAESForAllTargetSizes", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("Main.Main.launchCMAESForAllTargetSizes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3720,14 +3675,14 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("launchCMAESForAllTargetSizes", 0);
 
-  /* "Main/Main.py":101
+  /* "Main/Main.py":103
  * 
  * def launchCMAESForAllTargetSizes(thetaname, save):
  *     rs = ReadSetupFile()             # <<<<<<<<<<<<<<
  *     for el in rs.sizeOfTarget:
  *         launchCMAESForSpecificTargetSize(el, thetaname,save)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_ReadSetupFile); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_ReadSetupFile); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -3740,32 +3695,32 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_rs = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "Main/Main.py":102
+  /* "Main/Main.py":104
  * def launchCMAESForAllTargetSizes(thetaname, save):
  *     rs = ReadSetupFile()
  *     for el in rs.sizeOfTarget:             # <<<<<<<<<<<<<<
  *         launchCMAESForSpecificTargetSize(el, thetaname,save)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_sizeOfTarget); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_sizeOfTarget); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -3773,17 +3728,17 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -3793,7 +3748,7 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -3802,14 +3757,14 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
     __Pyx_XDECREF_SET(__pyx_v_el, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "Main/Main.py":103
+    /* "Main/Main.py":105
  *     rs = ReadSetupFile()
  *     for el in rs.sizeOfTarget:
  *         launchCMAESForSpecificTargetSize(el, thetaname,save)             # <<<<<<<<<<<<<<
  * 
  * def term():
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_launchCMAESForSpecificTargetSize); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_launchCMAESForSpecificTargetSize); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_6 = NULL;
     __pyx_t_7 = 0;
@@ -3823,7 +3778,7 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
         __pyx_t_7 = 1;
       }
     }
-    __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
     if (__pyx_t_6) {
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -3837,13 +3792,13 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
     __Pyx_INCREF(__pyx_v_save);
     __Pyx_GIVEREF(__pyx_v_save);
     PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_7, __pyx_v_save);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "Main/Main.py":102
+    /* "Main/Main.py":104
  * def launchCMAESForAllTargetSizes(thetaname, save):
  *     rs = ReadSetupFile()
  *     for el in rs.sizeOfTarget:             # <<<<<<<<<<<<<<
@@ -3853,7 +3808,7 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Main/Main.py":100
+  /* "Main/Main.py":102
  *     print("End of optimization for target " + str(sizeOfTarget) + " !")
  * 
  * def launchCMAESForAllTargetSizes(thetaname, save):             # <<<<<<<<<<<<<<
@@ -3880,7 +3835,7 @@ static PyObject *__pyx_pf_4Main_4Main_16launchCMAESForAllTargetSizes(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "Main/Main.py":105
+/* "Main/Main.py":107
  *         launchCMAESForSpecificTargetSize(el, thetaname,save)
  * 
  * def term():             # <<<<<<<<<<<<<<
@@ -3907,7 +3862,7 @@ static PyObject *__pyx_pf_4Main_4Main_18term(CYTHON_UNUSED PyObject *__pyx_self)
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("term", 0);
 
-  /* "Main/Main.py":106
+  /* "Main/Main.py":108
  * 
  * def term():
  *     return False             # <<<<<<<<<<<<<<
@@ -3919,7 +3874,7 @@ static PyObject *__pyx_pf_4Main_4Main_18term(CYTHON_UNUSED PyObject *__pyx_self)
   __pyx_r = Py_False;
   goto __pyx_L0;
 
-  /* "Main/Main.py":105
+  /* "Main/Main.py":107
  *         launchCMAESForSpecificTargetSize(el, thetaname,save)
  * 
  * def term():             # <<<<<<<<<<<<<<
@@ -3934,7 +3889,7 @@ static PyObject *__pyx_pf_4Main_4Main_18term(CYTHON_UNUSED PyObject *__pyx_self)
   return __pyx_r;
 }
 
-/* "Main/Main.py":110
+/* "Main/Main.py":112
  * #--------------------------- multiprocessing -------------------------------------------------------
  * 
  * def launchCMAESForAllTargetSizesMulti():             # <<<<<<<<<<<<<<
@@ -3974,44 +3929,14 @@ static PyObject *__pyx_pf_4Main_4Main_20launchCMAESForAllTargetSizesMulti(CYTHON
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("launchCMAESForAllTargetSizesMulti", 0);
 
-  /* "Main/Main.py":115
+  /* "Main/Main.py":117
  *     '''
  *     #initializes setup variables
  *     rs = ReadSetupFile()             # <<<<<<<<<<<<<<
  *     #initializes a pool of worker, ie multiprocessing
  *     p = Pool()
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_ReadSetupFile); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_rs = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "Main/Main.py":117
- *     rs = ReadSetupFile()
- *     #initializes a pool of worker, ie multiprocessing
- *     p = Pool()             # <<<<<<<<<<<<<<
- *     #run cmaes on each targets size on separate processor
- *     p.map(launchCMAESForSpecificTargetSize, rs.sizeOfTarget, "theta")
- */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Pool); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_ReadSetupFile); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -4031,19 +3956,49 @@ static PyObject *__pyx_pf_4Main_4Main_20launchCMAESForAllTargetSizesMulti(CYTHON
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_p = __pyx_t_1;
+  __pyx_v_rs = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "Main/Main.py":119
+ *     rs = ReadSetupFile()
+ *     #initializes a pool of worker, ie multiprocessing
+ *     p = Pool()             # <<<<<<<<<<<<<<
+ *     #run cmaes on each targets size on separate processor
+ *     p.map(launchCMAESForSpecificTargetSize, rs.sizeOfTarget, "theta")
+ */
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Pool); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  } else {
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_p = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "Main/Main.py":121
  *     p = Pool()
  *     #run cmaes on each targets size on separate processor
  *     p.map(launchCMAESForSpecificTargetSize, rs.sizeOfTarget, "theta")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_p, __pyx_n_s_map); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_p, __pyx_n_s_map); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_launchCMAESForSpecificTargetSize); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_launchCMAESForSpecificTargetSize); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_sizeOfTarget); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_rs, __pyx_n_s_sizeOfTarget); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -4057,7 +4012,7 @@ static PyObject *__pyx_pf_4Main_4Main_20launchCMAESForAllTargetSizesMulti(CYTHON
       __pyx_t_6 = 1;
     }
   }
-  __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   if (__pyx_t_5) {
     __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -4071,13 +4026,13 @@ static PyObject *__pyx_pf_4Main_4Main_20launchCMAESForAllTargetSizesMulti(CYTHON
   PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_6, __pyx_n_s_theta_2);
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Main/Main.py":110
+  /* "Main/Main.py":112
  * #--------------------------- multiprocessing -------------------------------------------------------
  * 
  * def launchCMAESForAllTargetSizesMulti():             # <<<<<<<<<<<<<<
@@ -4135,7 +4090,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Average_time, __pyx_k_Average_time, sizeof(__pyx_k_Average_time), 0, 0, 1, 0},
   {&__pyx_kp_s_CMAES_End_of_generation, __pyx_k_CMAES_End_of_generation, sizeof(__pyx_k_CMAES_End_of_generation), 0, 0, 1, 0},
   {&__pyx_n_s_CMAESpath, __pyx_k_CMAESpath, sizeof(__pyx_k_CMAESpath), 0, 0, 1, 1},
-  {&__pyx_n_s_CMA_diagonal, __pyx_k_CMA_diagonal, sizeof(__pyx_k_CMA_diagonal), 0, 0, 1, 1},
   {&__pyx_n_s_Chrono, __pyx_k_Chrono, sizeof(__pyx_k_Chrono), 0, 0, 1, 1},
   {&__pyx_n_s_Data, __pyx_k_Data, sizeof(__pyx_k_Data), 0, 0, 1, 1},
   {&__pyx_kp_s_End_of_optimization_for_target, __pyx_k_End_of_optimization_for_target, sizeof(__pyx_k_End_of_optimization_for_target), 0, 0, 1, 0},
@@ -4180,17 +4134,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_launchCMAESForSpecificTargetSize, __pyx_k_launchCMAESForSpecificTargetSize, sizeof(__pyx_k_launchCMAESForSpecificTargetSize), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_map, __pyx_k_map, sizeof(__pyx_k_map), 0, 0, 1, 1},
-  {&__pyx_n_s_maxIterCmaes, __pyx_k_maxIterCmaes, sizeof(__pyx_k_maxIterCmaes), 0, 0, 1, 1},
-  {&__pyx_n_s_maxiter, __pyx_k_maxiter, sizeof(__pyx_k_maxiter), 0, 0, 1, 1},
   {&__pyx_n_s_multiprocessing_pool, __pyx_k_multiprocessing_pool, sizeof(__pyx_k_multiprocessing_pool), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
-  {&__pyx_n_s_options, __pyx_k_options, sizeof(__pyx_k_options), 0, 0, 1, 1},
   {&__pyx_n_s_os, __pyx_k_os, sizeof(__pyx_k_os), 0, 0, 1, 1},
   {&__pyx_n_s_p, __pyx_k_p, sizeof(__pyx_k_p), 0, 0, 1, 1},
   {&__pyx_n_s_period, __pyx_k_period, sizeof(__pyx_k_period), 0, 0, 1, 1},
-  {&__pyx_n_s_popsize, __pyx_k_popsize, sizeof(__pyx_k_popsize), 0, 0, 1, 1},
   {&__pyx_n_s_popsizeCmaes, __pyx_k_popsizeCmaes, sizeof(__pyx_k_popsizeCmaes), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_repeat, __pyx_k_repeat, sizeof(__pyx_k_repeat), 0, 0, 1, 1},
@@ -4210,7 +4160,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_sizeOfTarget, __pyx_k_sizeOfTarget, sizeof(__pyx_k_sizeOfTarget), 0, 0, 1, 1},
   {&__pyx_n_s_stop, __pyx_k_stop, sizeof(__pyx_k_stop), 0, 0, 1, 1},
   {&__pyx_n_s_term, __pyx_k_term, sizeof(__pyx_k_term), 0, 0, 1, 1},
-  {&__pyx_n_s_termination_callback, __pyx_k_termination_callback, sizeof(__pyx_k_termination_callback), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_kp_s_theta, __pyx_k_theta, sizeof(__pyx_k_theta), 0, 0, 1, 0},
   {&__pyx_n_s_thetaCMA, __pyx_k_thetaCMA, sizeof(__pyx_k_thetaCMA), 0, 0, 1, 1},
@@ -4220,8 +4169,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_thetaname, __pyx_k_thetaname, sizeof(__pyx_k_thetaname), 0, 0, 1, 1},
   {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
   {&__pyx_n_s_tm, __pyx_k_tm, sizeof(__pyx_k_tm), 0, 0, 1, 1},
-  {&__pyx_n_s_verb_disp, __pyx_k_verb_disp, sizeof(__pyx_k_verb_disp), 0, 0, 1, 1},
-  {&__pyx_n_s_verb_log, __pyx_k_verb_log, sizeof(__pyx_k_verb_log), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
@@ -4334,38 +4281,38 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__19);
   __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(3, 0, 10, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_launchCMAESForSpecificTargetSize, 78, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "Main/Main.py":100
+  /* "Main/Main.py":102
  *     print("End of optimization for target " + str(sizeOfTarget) + " !")
  * 
  * def launchCMAESForAllTargetSizes(thetaname, save):             # <<<<<<<<<<<<<<
  *     rs = ReadSetupFile()
  *     for el in rs.sizeOfTarget:
  */
-  __pyx_tuple__21 = PyTuple_Pack(4, __pyx_n_s_thetaname, __pyx_n_s_save, __pyx_n_s_rs, __pyx_n_s_el); if (unlikely(!__pyx_tuple__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__21 = PyTuple_Pack(4, __pyx_n_s_thetaname, __pyx_n_s_save, __pyx_n_s_rs, __pyx_n_s_el); if (unlikely(!__pyx_tuple__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_launchCMAESForAllTargetSizes, 100, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_launchCMAESForAllTargetSizes, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "Main/Main.py":105
+  /* "Main/Main.py":107
  *         launchCMAESForSpecificTargetSize(el, thetaname,save)
  * 
  * def term():             # <<<<<<<<<<<<<<
  *     return False
  * 
  */
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_term, 105, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_term, 107, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "Main/Main.py":110
+  /* "Main/Main.py":112
  * #--------------------------- multiprocessing -------------------------------------------------------
  * 
  * def launchCMAESForAllTargetSizesMulti():             # <<<<<<<<<<<<<<
  *     '''
  *     Launch in parallel (on differents processor) the cmaes optimization for each target size
  */
-  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_n_s_rs, __pyx_n_s_p); if (unlikely(!__pyx_tuple__24)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_n_s_rs, __pyx_n_s_p); if (unlikely(!__pyx_tuple__24)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_launchCMAESForAllTargetSizesMult, 110, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_sigaud_CODYCO_ArmModelPyth, __pyx_n_s_launchCMAESForAllTargetSizesMult, 112, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4376,8 +4323,6 @@ static int __Pyx_InitCachedConstants(void) {
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __pyx_float_0_05 = PyFloat_FromDouble(0.05); if (unlikely(!__pyx_float_0_05)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_int_50 = PyInt_FromLong(50); if (unlikely(!__pyx_int_50)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4745,40 +4690,40 @@ PyMODINIT_FUNC PyInit_Main(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_launchCMAESForSpecificTargetSize, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Main/Main.py":100
+  /* "Main/Main.py":102
  *     print("End of optimization for target " + str(sizeOfTarget) + " !")
  * 
  * def launchCMAESForAllTargetSizes(thetaname, save):             # <<<<<<<<<<<<<<
  *     rs = ReadSetupFile()
  *     for el in rs.sizeOfTarget:
  */
-  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4Main_4Main_17launchCMAESForAllTargetSizes, 0, __pyx_n_s_launchCMAESForAllTargetSizes, NULL, __pyx_n_s_Main_Main, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4Main_4Main_17launchCMAESForAllTargetSizes, 0, __pyx_n_s_launchCMAESForAllTargetSizes, NULL, __pyx_n_s_Main_Main, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_launchCMAESForAllTargetSizes, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_launchCMAESForAllTargetSizes, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Main/Main.py":105
+  /* "Main/Main.py":107
  *         launchCMAESForSpecificTargetSize(el, thetaname,save)
  * 
  * def term():             # <<<<<<<<<<<<<<
  *     return False
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4Main_4Main_19term, 0, __pyx_n_s_term, NULL, __pyx_n_s_Main_Main, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4Main_4Main_19term, 0, __pyx_n_s_term, NULL, __pyx_n_s_Main_Main, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_term, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_term, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Main/Main.py":110
+  /* "Main/Main.py":112
  * #--------------------------- multiprocessing -------------------------------------------------------
  * 
  * def launchCMAESForAllTargetSizesMulti():             # <<<<<<<<<<<<<<
  *     '''
  *     Launch in parallel (on differents processor) the cmaes optimization for each target size
  */
-  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4Main_4Main_21launchCMAESForAllTargetSizesMulti, 0, __pyx_n_s_launchCMAESForAllTargetSizesMult, NULL, __pyx_n_s_Main_Main, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4Main_4Main_21launchCMAESForAllTargetSizesMulti, 0, __pyx_n_s_launchCMAESForAllTargetSizesMult, NULL, __pyx_n_s_Main_Main, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_launchCMAESForAllTargetSizesMult, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_launchCMAESForAllTargetSizesMult, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "Main/Main.py":1
