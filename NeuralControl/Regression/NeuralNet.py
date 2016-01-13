@@ -28,7 +28,7 @@ class NeuralNet():
         '''
         self.inputDimension = inputDim
         self.outputDimension = outputDim
-        self.net = buildNetwork(inputDim, 10, outputDim)
+        self.net = buildNetwork(inputDim, 5, outputDim)
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
 
         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
