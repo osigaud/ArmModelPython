@@ -130,17 +130,17 @@ class Arm:
       return coordElbow, coordHand
     
   def jacobian(self, q):
-        J = np.array([
-                    [-self.armP.l1*np.sin(q[0]) - self.armP.l2*np.sin(q[0] + q[1]),
-                     -self.armP.l2*np.sin(q[0] + q[1])],
-                    [self.armP.l1*np.cos(q[0]) + self.armP.l2*np.cos(q[0] + q[1]),
-                     self.armP.l2*np.cos(q[0] + q[1])]])
+        J = np.array([[-self.armP.l1*math.sin(q[0]) - self.armP.l2*math.sin(q[0] + q[1]),-self.armP.l2*math.sin(q[0] + q[1])],
+             [self.armP.l1*math.cos(q[0]) + self.armP.l2*math.cos(q[0] + q[1]), self.armP.l2*math.cos(q[0] + q[1])]
+             ])
         return J
 
   def manipulability1(self, q, target):
        J = self.jacobian(q)
+       #print "J", J
        K = np.transpose(J)
-       M = J*K
+       #print "K", K
+       M = np.dot(J,K)
        Minv= np.linalg.inv(M)
 
        coordHand = self.mgdEndEffector(q)
@@ -148,9 +148,16 @@ class Arm:
        vdir =  np.array([target[0]-coordHand[0],target[1]-coordHand[1]])
        vdirt = np.transpose(vdir)
 
-       root = vdirt*Minv*vdir
+       #print "Minv", Minv
+       #print "vdir", vdir
+       #print "vdirt", vdirt
+
+       root = np.dot(vdirt,np.dot(Minv,vdir))
+
+       #print "root", root
        
        manip = 1/math.sqrt(root)
+       #print "manip", manip
        return manip
 
   def estimError(self,state, estimState):
@@ -179,7 +186,8 @@ class Arm:
   def cartesianSpeed(self,state):
         qdot,q = getDotQAndQFromStateVector(state)
         J = self.jacobian(q)
-        return np.linalg.norm(np.dot(J,qdot))
+        speed = np.linalg.norm(np.dot(J,qdot))
+        return speed
 
   def mgdEndEffector(self, q):
       '''

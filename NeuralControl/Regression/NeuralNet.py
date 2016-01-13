@@ -15,8 +15,6 @@ from pybrain.tools.shortcuts     import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules   import SoftmaxLayer
 
-
-
 from Utils.CartesianProduct import cartesian
 
 class NeuralNet():
@@ -30,7 +28,7 @@ class NeuralNet():
         '''
         self.inputDimension = inputDim
         self.outputDimension = outputDim
-        self.net = buildNetwork(inputDim, outputDim)
+        self.net = buildNetwork(inputDim, 10, outputDim)
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
 
         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)

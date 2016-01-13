@@ -61,6 +61,8 @@ def printMainMenu():
     print('		27 plot successful trajectories in repository')
     print('		30 plot XY estimation error')
     print('		31 plot Estimation error as function of velocity')
+    print('		32 plot Experimental set-up')
+    print('		33 plot Manipulability')
 
 def runChoice():
     checkL = True
@@ -233,6 +235,10 @@ def chooseFunction(choix):
     elif choix == 31:
         nameF = raw_input('Folder where the results are saved: ')
         plotXYEstimErrorOfSpeed("CMAES",nameF,"All")
+    elif choix == 32:
+        plotExperimentSetup()
+    elif choix == 33:
+        plotManipulability()
 
 def setPosCircu15():
     rs=ReadSetupFile()
@@ -328,7 +334,6 @@ def plotNNs():
 #UnitTest()
 #UnitTestNNController()
 #UnitTestArmModel()
-#plotExperimentSetup()
 
 #runNN("Full",False)
 #generateFromNN(3, "Full", "SFull")
@@ -340,4 +345,4 @@ def plotNNs():
 runChoice()
 
 #UnitTestNNController()
-#plotManipulability()
+
