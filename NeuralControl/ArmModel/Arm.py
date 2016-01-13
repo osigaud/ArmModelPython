@@ -148,17 +148,24 @@ class Arm:
        vdir =  np.array([target[0]-coordHand[0],target[1]-coordHand[1]])
        vdirt = np.transpose(vdir)
 
-       #print "Minv", Minv
-       #print "vdir", vdir
-       #print "vdirt", vdirt
-
        root = np.dot(vdirt,np.dot(Minv,vdir))
-
-       #print "root", root
        
        manip = 1/math.sqrt(root)
-       #print "manip", manip
        return manip
+
+  def manipulability2(self, q, target):
+       J = self.jacobian(q)
+       K = np.transpose(J)
+       M = np.dot(J,K)
+
+       coordHand = self.mgdEndEffector(q)
+
+       vdir =  np.array([target[0]-coordHand[0],target[1]-coordHand[1]])
+       vdirt = np.transpose(vdir)
+
+       root = np.dot(np.dot(vdirt,M),vdir)
+
+       return root
 
   def estimError(self,state, estimState):
         '''
