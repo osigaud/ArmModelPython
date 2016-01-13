@@ -146,6 +146,7 @@ class Arm:
        coordHand = self.mgdEndEffector(q)
 
        vdir =  np.array([target[0]-coordHand[0],target[1]-coordHand[1]])
+       vdir = vdir/np.linalg.norm(vdir)
        vdirt = np.transpose(vdir)
 
        root = np.dot(vdirt,np.dot(Minv,vdir))
@@ -157,15 +158,9 @@ class Arm:
        J = self.jacobian(q)
        K = np.transpose(J)
        M = np.dot(J,K)
+       det = np.linalg.det(M)
 
-       coordHand = self.mgdEndEffector(q)
-
-       vdir =  np.array([target[0]-coordHand[0],target[1]-coordHand[1]])
-       vdirt = np.transpose(vdir)
-
-       root = np.dot(np.dot(vdirt,M),vdir)
-
-       return root
+       return math.sqrt(det)
 
   def estimError(self,state, estimState):
         '''
