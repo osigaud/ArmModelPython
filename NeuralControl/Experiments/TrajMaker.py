@@ -48,7 +48,6 @@ class TrajMaker:
     	Initializes the parameters used to run the functions below
     
     	Inputs:		
-    			-arm, armModel, class object
                         -rs, readSetup, class object
     			-sizeOfTarget, size of the target, float
     			-saveTraj, Boolean: true = Data are saved, false = data are not saved

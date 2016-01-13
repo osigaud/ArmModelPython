@@ -15,7 +15,7 @@ from Main.Main import generateFromNN, generateFromCMAES, generateRichDataFromNN,
 
 from Regression.RunRegressionNN import runNN, UnitTestNN, UnitTestNNController
 
-from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo
+from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability
 
 from Utils.Chrono import Chrono
 from Utils.ReadSetupFile import ReadSetupFile
@@ -340,3 +340,4 @@ def plotNNs():
 runChoice()
 
 #UnitTestNNController()
+#plotManipulability()
