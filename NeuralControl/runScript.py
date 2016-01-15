@@ -13,7 +13,7 @@ import random as rd
 
 from Main.Main import generateFromNN, generateFromCMAES, generateRichDataFromNN, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
-from Regression.RunRegressionNN import runNN, UnitTestNN, UnitTestNNController
+from Regression.RunRegressionNN import runNN, UnitTestNN, UnitTestNNController, saveRandomNN
 
 from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 
@@ -93,11 +93,15 @@ def chooseFunction(choix):
 
 #------------------------------------------- NN
     elif choix == 5:
-        name = raw_input('Name of file to save the NN controller: ')
-        c = Chrono()
-#        runNN(name,True)
-        runNN(name,False)
-        c.stop()
+        rorc = input("enter 1 if random or 2 if training: ")
+        rorc = int(rorc)
+        if rorc == 1:
+            saveRandomNN()
+        else:
+            name = raw_input('Name of file to save the NN controller: ')
+            c = Chrono()
+            runNN(name)
+            c.stop()
     elif choix == 6:
         name = raw_input('Name of the NN controller file: ')
         fname = raw_input('Folder where you want to save the results: ')

@@ -31,7 +31,12 @@ def initNNController(rs,thetaFile):
     fa.loadTheta(thetaFile+".theta")
     return fa
 
-def runNN(name,fromStruct):
+def saveRandomNN():
+    rs = ReadSetupFile()
+    fa = NeuralNet(rs.inputDim,rs.outputDim)
+    fa.saveTheta(rs.NNpath+"Random.theta")
+
+def runNN(name):
     ''' 
     Takes the Brent trajectories as input, shuffles them, and then runs the NN regression algorithm
     '''
