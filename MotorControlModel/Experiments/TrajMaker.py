@@ -73,6 +73,18 @@ class TrajMaker:
     def setTheta(self, theta):
         self.controller.setTheta(theta)
 
+    def computeManipulabilityCost(self):
+        '''
+        Computes the manipulability cost on one step of the trajectory
+		
+        Input:	-cost: cost at time t, float
+				
+        Output:		-cost: cost at time t+1, float
+        '''
+        dotq, q = getDotQAndQFromStateVector(self.arm.state)
+        manip = self.arm.directionalManipulability(q,self.cartTarget)
+        return 1-manip
+
     def computeStateTransitionCost(self, U, t):
         '''
 		Computes the cost on one step of the trajectory
@@ -170,7 +182,7 @@ class TrajMaker:
             self.arm.setState(realNextState)
 
             #computation of the cost
-            cost += self.computeStateTransitionCost(Unoisy, t)
+            #cost += self.computeStateTransitionCost(Unoisy, t)
 
             '''
             print "U =", U

@@ -168,6 +168,8 @@ class Experiments:
                 extension = ".save" + str(meanCost)
                 filename = findDataFilename(self.foldername+"Theta/", "theta", extension)
                 np.savetxt(filename, self.theta)
+                filename2 = self.foldername + "Best.theta"
+                np.savetxt(filename2, theta)
         
         self.periodMeanCost += meanCost
         self.periodMeanTime += meanTime
