@@ -16,7 +16,7 @@ from Main.Main import generateFromRBFN, generateFromCMAES, generateRichDataFromR
 from Regression.RunRegressionRBFN import runRBFN, UnitTest, UnitTestRBFNController, UnitTestArmModel
 from Regression.RunRegressionNN import runNN, UnitTestNN, UnitTestNNController
 
-from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo
+from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 
 from Utils.Chrono import Chrono
 from Utils.ReadSetupFile import ReadSetupFile
@@ -62,6 +62,9 @@ def printMainMenu():
     print('		27 plot successful trajectories in repository')
     print('		30 plot XY estimation error')
     print('		31 plot Estimation error as function of velocity')
+    print('		32 plot Experimental set-up')
+    print('		33 plot Directional Manipulability')
+    print('		34 plot Manipulability')
 
 def runChoice():
     checkL = True
@@ -234,6 +237,12 @@ def chooseFunction(choix):
     elif choix == 31:
         nameF = raw_input('Folder where the results are saved: ')
         plotXYEstimErrorOfSpeed("CMAES",nameF,"All")
+    elif choix == 32:
+        plotExperimentSetup()
+    elif choix == 33:
+        plotManipulability()
+    elif choix == 34:
+        plotManipulability2()
 
 def setPosCircu15():
     rs=ReadSetupFile()
@@ -329,7 +338,6 @@ def plotRBFNs():
 #UnitTest()
 #UnitTestRBFNController()
 #UnitTestArmModel()
-#plotExperimentSetup()
 
 #runRBFN("Full",False)
 #generateFromRBFN(3, "Full", "SFull")

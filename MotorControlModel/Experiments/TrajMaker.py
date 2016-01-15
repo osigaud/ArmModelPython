@@ -73,7 +73,7 @@ class TrajMaker:
     def setTheta(self, theta):
         self.controller.setTheta(theta)
 
-    def computeStateTransitionCost(self, cost, U, t):
+    def computeStateTransitionCost(self, U, t):
         '''
 		Computes the cost on one step of the trajectory
 		
@@ -87,8 +87,7 @@ class TrajMaker:
         norme = np.linalg.norm(U)
         mvtCost = norme*norme
         #compute the cost following the law of the model
-        cost += np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
-        return cost
+        return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
     
     def computeFinalCostReward(self, cost, t, coordHand):
         '''
@@ -171,7 +170,7 @@ class TrajMaker:
             self.arm.setState(realNextState)
 
             #computation of the cost
-            cost = self.computeStateTransitionCost(cost, Unoisy, t)
+            cost += self.computeStateTransitionCost(Unoisy, t)
 
             '''
             print "U =", U

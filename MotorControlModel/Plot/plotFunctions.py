@@ -814,3 +814,88 @@ def plotExperimentSetup():
     plt.plot([-0.3,0.3], [0.6175, 0.6175], c = 'g')
     plt.savefig("ImageBank/setup.png", bbox_inches='tight')
     plt.show(block = True)
+
+#TODO: both functions below can be much improved
+
+def plotManipulability():
+    rs = ReadSetupFile()
+    fig = plt.figure(1, figsize=(16,9))
+    arm = Arm()
+    q1 = np.linspace(-0.6, 2.6, 100, True)
+    q2 = np.linspace(-0.2, 3, 100, True)
+    target = [rs.XTarget, rs.YTarget]
+
+    pos = []
+    for i in range(len(q1)):
+        for j in range(len(q2)):
+            config = np.array([q1[i], q2[j]])
+            coordHa = arm.mgdEndEffector(config)
+            pos.append(coordHa)
+
+    x, y, cost = [], [], []
+    for el in pos:
+        x.append(el[0])
+        y.append(el[1])
+        config = arm.mgi(el[0],el[1])
+        manip = arm.directionalManipulability(config,target)
+        cost.append(manip)
+
+    xi = np.linspace(-0.7,0.8,100)
+    yi = np.linspace(-0.5,0.8,100)
+    zi = griddata(x, y, cost, xi, yi)
+
+    #t1 = plt.scatter(x, y, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
+    #CS = plt.contourf(xi, xi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+
+    t1 = plt.scatter(x, y, c=cost, s=5, cmap=cm.get_cmap('RdYlBu'))
+    CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+    fig.colorbar(t1, shrink=0.5, aspect=5)
+    plt.scatter(rs.XTarget, rs.YTarget, c = "g", marker=u'*', s = 200)
+    #plt.plot([-0.3,0.3], [rs.YTarget, rs.YTarget], c = 'g')
+    plt.xlabel("X (m)")
+    plt.ylabel("Y (m)")
+    plt.title(str("Manipulability map"))
+    plt.savefig("ImageBank/manipulability.png", bbox_inches='tight')
+    plt.show(block = True)
+
+
+def plotManipulability2():
+    rs = ReadSetupFile()
+    fig = plt.figure(1, figsize=(16,9))
+    arm = Arm()
+    q1 = np.linspace(-0.6, 2.6, 100, True)
+    q2 = np.linspace(-0.2, 3, 100, True)
+    target = [rs.XTarget, rs.YTarget]
+
+    pos = []
+    for i in range(len(q1)):
+        for j in range(len(q2)):
+            config = np.array([q1[i], q2[j]])
+            coordHa = arm.mgdEndEffector(config)
+            pos.append(coordHa)
+
+    x, y, cost = [], [], []
+    for el in pos:
+        x.append(el[0])
+        y.append(el[1])
+        config = arm.mgi(el[0],el[1])
+        manip = arm.manipulability(config,target)
+        cost.append(manip)
+
+    xi = np.linspace(-0.7,0.8,100)
+    yi = np.linspace(-0.5,0.8,100)
+    zi = griddata(x, y, cost, xi, yi)
+
+    #t1 = plt.scatter(x, y, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
+    #CS = plt.contourf(xi, xi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+
+    t1 = plt.scatter(x, y, c=cost, s=5, cmap=cm.get_cmap('RdYlBu'))
+    CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+    fig.colorbar(t1, shrink=0.5, aspect=5)
+    plt.scatter(rs.XTarget, rs.YTarget, c = "g", marker=u'*', s = 200)
+    #plt.plot([-0.3,0.3], [rs.YTarget, rs.YTarget], c = 'g')
+    plt.xlabel("X (m)")
+    plt.ylabel("Y (m)")
+    plt.title(str("Manipulability map"))
+    plt.savefig("ImageBank/manipulability2.png", bbox_inches='tight')
+    plt.show(block = True)

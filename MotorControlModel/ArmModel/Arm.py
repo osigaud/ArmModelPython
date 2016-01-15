@@ -201,7 +201,34 @@ class Arm:
         print xi,yi
         return "None"    
 
-    
+  def directionalManipulability(self, q, target):
+       J = self.jacobian(q)
+       #print "J", J
+       K = np.transpose(J)
+       #print "K", K
+       M = np.dot(J,K)
+       Minv= np.linalg.inv(M)
+
+       coordHand = self.mgdEndEffector(q)
+
+       vdir =  np.array([target[0]-coordHand[0],target[1]-coordHand[1]])
+       vdir = vdir/np.linalg.norm(vdir)
+       vdirt = np.transpose(vdir)
+
+       root = np.dot(vdirt,np.dot(Minv,vdir))
+       
+       manip = 1/math.sqrt(root)
+       return manip
+
+  def manipulability(self, q, target):
+       J = self.jacobian(q)
+       K = np.transpose(J)
+       M = np.dot(J,K)
+       det = np.linalg.det(M)
+
+       return math.sqrt(det)
+
+
     
 
 
