@@ -835,7 +835,7 @@ def plotManipulability():
         x.append(el[0])
         y.append(el[1])
         config = arm.mgi(el[0],el[1])
-        manip = arm.manipulability1(config,target)
+        manip = arm.directionalManipulability(config,target)
         cost.append(manip)
 
     xi = np.linspace(-0.7,0.8,100)
@@ -877,7 +877,7 @@ def plotManipulability2():
         x.append(el[0])
         y.append(el[1])
         config = arm.mgi(el[0],el[1])
-        manip = arm.manipulability2(config,target)
+        manip = arm.manipulability(config,target)
         cost.append(manip)
 
     xi = np.linspace(-0.7,0.8,100)

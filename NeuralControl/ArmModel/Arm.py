@@ -135,7 +135,7 @@ class Arm:
              ])
         return J
 
-  def manipulability1(self, q, target):
+  def directionalManipulability(self, q, target):
        J = self.jacobian(q)
        #print "J", J
        K = np.transpose(J)
@@ -154,7 +154,7 @@ class Arm:
        manip = 1/math.sqrt(root)
        return manip
 
-  def manipulability2(self, q, target):
+  def manipulability(self, q, target):
        J = self.jacobian(q)
        K = np.transpose(J)
        M = np.dot(J,K)

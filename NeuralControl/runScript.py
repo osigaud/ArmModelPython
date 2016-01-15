@@ -62,8 +62,8 @@ def printMainMenu():
     print('		30 plot XY estimation error')
     print('		31 plot Estimation error as function of velocity')
     print('		32 plot Experimental set-up')
-    print('		33 plot Manipulability')
-    print('		34 plot Manipulability2')
+    print('		33 plot Directional Manipulability')
+    print('		34 plot Manipulability')
 
 def runChoice():
     checkL = True
