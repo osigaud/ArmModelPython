@@ -33,10 +33,11 @@ def muscleFilter(UnoiseTmp):
     Output:		-UnoiseTmp: muscular activation vector
     '''
     for i in range(len(UnoiseTmp)):
-       if UnoiseTmp[i] < 0:
-           #print "U unfiltered :", UnoiseTmp[i]
-           UnoiseTmp[i] = 0
-       elif UnoiseTmp[i] > 1:
+        #print UnoiseTmp[i]
+        if UnoiseTmp[i] < 0:
+            #print "U unfiltered :", UnoiseTmp[i]
+            UnoiseTmp[i] = 0
+        elif UnoiseTmp[i] > 1:
            #print "U unfiltered :", UnoiseTmp[i]
            UnoiseTmp[i] = 1
     return UnoiseTmp
