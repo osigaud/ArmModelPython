@@ -105,7 +105,9 @@ class TrajMaker:
         dotq, q = getDotQAndQFromStateVector(self.arm.state)
         J = self.arm.jacobian(q)
         xi = np.dot(J,dotq)
-        return -1000*xi[0]
+        xi = xi/np.linalg.norm(xi)
+        print xi
+        return 50-100*xi[0]*xi[0]
 
     def computeFinalReward(self, t, coordHand):
         cost = self.computePerpendCost()
