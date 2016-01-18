@@ -107,7 +107,7 @@ class TrajMaker:
         xi = np.dot(J,dotq)
         return -1000*xi[0]
 
-    def computeFinalCost(self, t, coordHand):
+    def computeFinalReward(self, t, coordHand):
         cost = self.computePerpendCost()
         '''
 		Computes the cost on final step if the target is reached
@@ -231,7 +231,7 @@ class TrajMaker:
             i += 1
             t += self.rs.dt
 
-        cost += self.computeFinalCost(t,coordHand)
+        cost += self.computeFinalReward(t,coordHand)
 
         if self.saveTraj == True:
             filename = findFilename(foldername+"Log/","traj",".log")
