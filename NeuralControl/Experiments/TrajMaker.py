@@ -100,7 +100,15 @@ class TrajMaker:
 
         return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
     
-    def computeFinalCostReward(self, cost, t, coordHand):
+    def computePerpendCost(self):  
+        dotq, q = getDotQAndQFromStateVector(self.arm.state)
+        J = self.arm.jacobian(q)
+        xi = np.dot(J,dotq)
+        xi = xi/np.linalg.norm(xi)
+        return 500-1000*xi[0]*xi[0]
+
+    def computeFinalReward(self, t, coordHand):
+        cost = self.computePerpendCost()
         '''
 		Computes the cost on final step if the target is reached
 		
@@ -115,10 +123,9 @@ class TrajMaker:
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
                 cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF
             else:
-                cost -= 500+500000*(coordHand[0]*coordHand[0])
+                cost += -500-500000*(coordHand[0]*coordHand[0])
         else:
-            cost -= 4000
-        
+            cost += -4000
         return cost
 
     def runTrajectory(self, x, y, foldername):
@@ -181,8 +188,8 @@ class TrajMaker:
             self.arm.setState(realNextState)
 
             #computation of the cost
-            cost += self.computeManipulabilityCost(cost)
-            #cost = self.computeStateTransitionCost(cost, Unoisy, t)
+            #cost += self.computeManipulabilityCost()
+            #cost += self.computeStateTransitionCost(Unoisy, t)
 
             '''
             print "U =", U
@@ -225,7 +232,7 @@ class TrajMaker:
             i += 1
             t += self.rs.dt
 
-        cost = self.computeFinalCostReward(cost, t,coordHand)
+        cost += self.computeFinalReward(t,coordHand)
 
         if self.saveTraj == True:
             filename = findFilename(foldername+"Log/","traj",".log")
