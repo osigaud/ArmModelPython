@@ -41,6 +41,9 @@ class Arm:
   def setState(self, state):
       self.state = state
       
+  def getState(self):
+      return self.state
+      
   def setDT(self, dt):
       self.dt = dt
       

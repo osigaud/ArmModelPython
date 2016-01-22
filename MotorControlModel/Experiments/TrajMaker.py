@@ -81,7 +81,7 @@ class TrajMaker:
 				
         Output:		-cost: cost at time t+1, float
         '''
-        dotq, q = getDotQAndQFromStateVector(self.arm.state)
+        dotq, q = getDotQAndQFromStateVector(self.arm.getState())
         manip = self.arm.directionalManipulability(q,self.cartTarget)
         return 1-manip
 
@@ -102,7 +102,7 @@ class TrajMaker:
         return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
     
     def computePerpendCost(self):  
-        dotq, q = getDotQAndQFromStateVector(self.arm.state)
+        dotq, q = getDotQAndQFromStateVector(self.arm.getState())
         J = self.arm.jacobian(q)
         xi = np.dot(J,dotq)
         xi = xi/np.linalg.norm(xi)
@@ -163,7 +163,7 @@ class TrajMaker:
         while coordHand[1] < self.rs.YTarget and i < self.rs.numMaxIter:
             stepStore = []
             #computation of the next muscular activation vector using the controller theta
-            #print ("state :",self.arm.state)
+            #print ("state :",self.arm.getState())
 
             U = self.controller.computeOutput(estimState)
 
@@ -173,10 +173,10 @@ class TrajMaker:
                 Unoisy = getNoisyCommand(U,self.arm.musclesP.knoiseU)
                 Unoisy = muscleFilter(Unoisy)
             #computation of the arm state
-            realNextState = self.arm.computeNextState(Unoisy, self.arm.state)
+            realNextState = self.arm.computeNextState(Unoisy, self.arm.getState())
  
             #computation of the approximated state
-            tmpState = self.arm.state
+            tmpState = self.arm.getState()
 
             if det:
                 estimNextState = realNextState
