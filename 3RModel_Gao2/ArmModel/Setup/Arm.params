@@ -1,0 +1,51 @@
+Arm length(float)(m):0.3
+ForeArm length(float)(m):0.35
+Hand length(float)(m):0.2
+Arm mass(float)(kg):1.4
+ForeArm mass(float)(kg):1.1
+Hand mass(float)(kg):0.6
+Distance from the axis of joint 1 to its center of mass(float)(m):0.15
+Distance from the axis of joint 2 to its center of mass(float)(m):0.175
+Distance from the axis of joint 3 to its center of mass(float)(m):0.1
+Arm inertia(float)(kg.m^2):0.11
+ForeArm inertia(float)(kg.m^2):0.16
+Hand inertia(float)(kg.m^2):0.08
+Damping term b1(float):0.05
+Damping term b2(float):0.025
+Damping term b3(float):0.025
+Damping term b4(float):0.025
+Damping term b5(float):0.05
+Damping term b6(float):0.025
+Damping term b7(float):0.025
+Damping term b8(float):0.025
+Damping term b9(float):0.05
+Moment arm matrix, a1:0.04
+Moment arm matrix, a2:-0.04
+Moment arm matrix, a3:0.0
+Moment arm matrix, a4:0.0
+Moment arm matrix, a5:0.028
+Moment arm matrix, a6:-0.035
+Moment arm matrix, a7:0.0
+Moment arm matrix, a8:0.0
+Moment arm matrix, a9:0.0
+Moment arm matrix, a10:0.0
+Moment arm matrix, a11:0.025
+Moment arm matrix, a12:-0.025
+Moment arm matrix, a13:0.028
+Moment arm matrix, a14:-0.035
+Moment arm matrix, a15:0.0
+Moment arm matrix, a16:0.0
+Moment arm matrix, a17:0.0
+Moment arm matrix, a18:0.0
+Moment arm matrix, a19:0.0
+Moment arm matrix, a20:0.0
+Moment arm matrix, a21:0.0
+Moment arm matrix, a22:0.0
+Moment arm matrix, a23:0.02
+Moment arm matrix, a24:-0.02
+Shoulder upper bound(float):2.6
+Shoulder lower bound(float):-0.6
+Elbow upper bound(float):3.0
+Elbow lower bound(float):-0.2
+Hand upper bound(float):1.2
+Hand lower bound(float):-1.0

@@ -20,13 +20,11 @@ from Utils.Chrono import Chrono
 from ArmModel.Arm import Arm
 from Experiments.Experiments import Experiments, checkIfFolderExists
 
-def copyRBFNtoCMAES(rs, name, size):
-    savenametheta = rs.RBFNpath + name + ".theta"
-    savenamestruct = rs.RBFNpath + name + ".struct"
+def copyNNtoCMAES(rs, name, size):
+    savenametheta = rs.NNpath + name + ".theta"
     cmaname =  rs.CMAESpath + str(size) + "/"
     checkIfFolderExists(cmaname)
     copyfile(savenametheta, cmaname + name + ".theta")
-    copyfile(savenamestruct, cmaname + name + ".struct")
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
@@ -63,19 +61,19 @@ def generateRichDataFromCMAES(repeat, thetaFile, saveDir = 'Data'):
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
     print("CMAES:End of generation")
 
-def generateFromRBFN(repeat, thetaFile, saveDir):
+def generateFromNN(repeat, thetaFile, saveDir):
     rs = ReadSetupFile()
-    thetaName = rs.RBFNpath + thetaFile
-    saveName = rs.RBFNpath + saveDir + "/"
-    GenerateDataFromTheta(rs,0.05,saveName,thetaName,repeat,False)#True)
-    print("RBFN:End of generation")
+    thetaName = rs.NNpath + thetaFile
+    saveName = rs.NNpath + saveDir + "/"
+    GenerateDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
+    print("NN:End of generation")
 
-def generateRichDataFromRBFN(repeat, thetaFile, saveDir):
+def generateRichDataFromNN(repeat, thetaFile, saveDir):
     rs = ReadSetupFile()
-    thetaName = rs.RBFNpath + thetaFile
-    saveName = rs.RBFNpath + saveDir + "/"
+    thetaName = rs.NNpath + thetaFile
+    saveName = rs.NNpath + saveDir + "/"
     GenerateRichDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
-    print("RBFN:End of generation")
+    print("NN:End of generation")
 
 def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
     '''
@@ -88,15 +86,17 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, thetaFile, save):
     foldername = rs.CMAESpath + str(sizeOfTarget) + "/"
     thetaname = foldername + thetaFile
     if save:
-        copyRBFNtoCMAES(rs, thetaFile, sizeOfTarget)
+        copyNNtoCMAES(rs, thetaFile, sizeOfTarget)
 
     #Initializes all the class used to generate trajectory
     exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
-    theta = exp.tm.controller.theta
+    theta = exp.tm.controller.getTheta()
     thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)
-    resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
+    resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes)
+#, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True,'verb_log':50, 'verb_disp':1,'termination_callback':term()})
+#, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
 def launchCMAESForAllTargetSizes(thetaname, save):

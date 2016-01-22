@@ -4,19 +4,6 @@
 Author: Thomas Beucher
 Module: FileReading
 Description: Functions to read project data
-
-Organisation of the file :
-
-data [0 - 3] = target in joint space
-data [4 - 7] = estimatedcurrent state in joint space
-data [8 - 11] = actual current state in joint space
-data [12 - 17] = noisy muscular activations
-data [18 - 23] = noiseless muscular activations
-data [24 - 27] = estimated next state in joint space
-data [28 - 31] = actual next state in joint space
-data [32 - 33] = elbow position in cartesian space
-data [34 - 35] = wrist position in cartesian space
-data [36 - 37] = hand position in cartesian space
 '''
 import random as rd
 import numpy as np
@@ -37,7 +24,7 @@ def loadStateCommandPairsByStartCoords(foldername):
 #        j = j+1
 #        if j>4500 or rd.random()<0.5:
             data = np.loadtxt(foldername + el)
-            coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]]]))
+            coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]], [data[0,12]]]))
             x,y = str(coordHand[0][0]), str(coordHand[1][0])
             if not y in dataOut.keys():
                 dataOut[y] = {}
@@ -45,9 +32,7 @@ def loadStateCommandPairsByStartCoords(foldername):
                 dataOut[y][x] = []
             traj = []
             for i in range(data.shape[0]):
-                currentState = (data[i][8], data[i][9], data[i][10], data[i][11], data[i][12], data[i][13])
-                noisyActiv = ([data[i][14], data[i][15], data[i][16], data[i][17], data[i][18], data[i][19]])
-                pair = (currentState, noisyActiv)
+                pair = ((data[i][8], data[i][9], data[i][10], data[i][11], data[i][12], data[i][13]), ([data[i][14], data[i][15], data[i][16], data[i][17], data[i][18], data[i][19]]))
                 traj.append(pair)
             dataOut[y][x].append(traj)
     return dataOut
@@ -89,7 +74,7 @@ def getInitPos(foldername):
     xy = {}
     for el in os.listdir(foldername):
             data = np.loadtxt(foldername + el)
-            coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]]]))
+            coordHand = arm.mgdEndEffector(np.array([[data[0,10]], [data[0,11]], [data[0,12]]]))
             #if coordHand[1]<0.58:
             xy[el] = (coordHand[0], coordHand[1])
     return xy
@@ -107,13 +92,13 @@ def getStateAndCommandData(foldername):
             state[el], command[el] = [], []
             data = np.loadtxt(foldername + el)
             for i in range(data.shape[0]):
-                state[el].append((data[i][8], data[i][9], data[i][10], data[i][11]))
+                state[el].append((data[i][8], data[i][9], data[i][10], data[i][11], data[i][12], data[i][13]))
                 #command[el].append((data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23]))
                 #we use the noisy command because it is filtered
                 #com = np.array([data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17]])
                 #com = muscleFilter(com)
                 #It seems that filtering prevents learning...
-                command[el].append([data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17]])
+                command[el].append([data[i][14], data[i][15], data[i][16], data[i][17], data[i][18], data[i][19]])
     return state, command
   
 def getCommandData(foldername):
@@ -130,7 +115,7 @@ def getCommandData(foldername):
             for i in range(data.shape[0]):
                 #command[el].append((data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23]))
                 #we use the noisy command because it is filtered
-                command[el].append([data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17]])
+                command[el].append([data[i][14], data[i][15], data[i][16], data[i][17], data[i][18], data[i][19]])
     return command
   
 def getNoiselessCommandData(foldername):
@@ -145,7 +130,7 @@ def getNoiselessCommandData(foldername):
             command[el] = []
             data = np.loadtxt(foldername + el)
             for i in range(data.shape[0]):
-                command[el].append((data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23]))
+                command[el].append((data[i][20], data[i][21], data[i][22], data[i][23], data[i][24], data[i][25]))
                 #we use the noisy command because it is filtered
                 #command[el].append([data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17]])
     return command
@@ -161,7 +146,7 @@ def getStateData(foldername):
         state[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-            state[el].append((data[i][8], data[i][9], data[i][10], data[i][11]))
+            state[el].append((data[i][8], data[i][9], data[i][10], data[i][11], data[i][12], data[i][13]))
     return state
 
 def getXYHandData(foldername):
@@ -176,8 +161,24 @@ def getXYHandData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordHand = arm.mgdEndEffector(np.array([[data[i][10]], [data[i][11]]]))
+           coordHand = arm.mgdEndEffector(np.array([[data[i][8]], [data[i][9]], [data[i][10]], [data[i][11]], [data[i][12]], [data[i][13]]]))
            xy[el].append((coordHand[0], coordHand[1]))
+    return xy
+
+def getXYWristData(foldername):
+    '''
+    Put all the states of trajectories generated by the Brent controller into a dictionary
+    
+    Outputs:    -state: dictionary keys = filenames, values = array of data
+    '''
+    arm = Arm()
+    xy = {}
+    for el in os.listdir(foldername):
+        xy[el] = []
+        data = np.loadtxt(foldername + el)
+        for i in range(data.shape[0]):
+           coordElbow, coordWrist, coordHand = arm.mgdFull(np.array([[data[i][8]], [data[i][9]], [data[i][10]], [data[i][11]], [data[i][12]], [data[i][13]]]))
+           xy[el].append((coordWrist[0], coordWrist[1]))
     return xy
 
 def getXYElbowData(foldername):
@@ -192,7 +193,7 @@ def getXYElbowData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordElbow, coordHand = arm.mgdFull(np.array([[data[i][10]], [data[i][11]]]))
+           coordElbow, coordWrist, coordHand = arm.mgdFull(np.array([[data[i][8]], [data[i][9]], [data[i][10]], [data[i][11]], [data[i][12]], [data[i][13]]]))
            xy[el].append((coordElbow[0], coordElbow[1]))
     return xy
 
