@@ -10,13 +10,13 @@ Organisation of the file :
 data [0 - 5] = target in joint space
 data [6 - 11] = estimated current state in joint space
 data [12 - 17] =  actual current state in joint space
-data [18 - 23] = noisy muscular activations
-data [24 - 29] = noiseless muscular activations
-data [30 - 35] = estimated next state in joint space
-data [36 - 41] = actual next state in joint space
-data [42 - 43] = elbow position in cartesian space
-data [44 - 45] = wrist position in cartesian space
-data [46 - 47] = hand position in cartesian space
+data [18 - 25] = noisy muscular activations
+data [26 - 33] = noiseless muscular activations
+data [34 - 39] = estimated next state in joint space
+data [40 - 45] = actual next state in joint space
+data [46 - 47] = elbow position in cartesian space
+data [48 - 49] = wrist position in cartesian space
+data [50 - 51] = hand position in cartesian space
 '''
 import random as rd
 import numpy as np
@@ -37,7 +37,7 @@ def loadStateCommandPairsByStartCoords(foldername):
 #        j = j+1
 #        if j>4500 or rd.random()<0.5:
             data = np.loadtxt(foldername + el)
-            coordHand = (data[0,46], data[0,47])
+            coordHand = (data[0][50], data[0][51])
             x,y = str(coordHand[0]), str(coordHand[1])
             if not y in dataOut.keys():
                 dataOut[y] = {}
@@ -46,7 +46,7 @@ def loadStateCommandPairsByStartCoords(foldername):
             traj = []
             for i in range(data.shape[0]):
                 currentState = (data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17])
-                noisyActiv = (data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23])
+                noisyActiv = (data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23], data[i][24], data[i][25])
                 pair = (currentState, noisyActiv)
                 traj.append(pair)
             dataOut[y][x].append(traj)
@@ -89,7 +89,7 @@ def getInitPos(foldername):
     xy = {}
     for el in os.listdir(foldername):
             data = np.loadtxt(foldername + el)
-            coordHand = (data[0,46], data[0,47])
+            coordHand = (data[0][50], data[0][51])
             #if coordHand[1]<0.58:
             xy[el] = (coordHand[0], coordHand[1])
     return xy
@@ -108,7 +108,7 @@ def getStateAndCommandData(foldername):
             data = np.loadtxt(foldername + el)
             for i in range(data.shape[0]):
                 currentState = (data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17])
-                noisyActiv = (data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23])
+                noisyActiv = (data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23], data[i][24], data[i][25])
                 state[el].append(currentState)
                 #command[el].append((data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23]))
                 #we use the noisy command because it is filtered
@@ -132,7 +132,7 @@ def getCommandData(foldername):
             for i in range(data.shape[0]):
                 #command[el].append((data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23]))
                 #we use the noisy command because it is filtered
-                noisyActiv = (data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23])
+                noisyActiv = (data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23], data[i][24], data[i][25])
                 command[el].append(noisyActiv)
     return command
   
@@ -148,7 +148,7 @@ def getNoiselessCommandData(foldername):
             command[el] = []
             data = np.loadtxt(foldername + el)
             for i in range(data.shape[0]):
-                noislessActiv = (data[i][24], data[i][25], data[i][26], data[i][27], data[i][28], data[i][29])
+                noislessActiv = (data[i][26], data[i][27], data[i][28], data[i][29], data[i][30], data[i][31], data[i][32], data[i][33])
                 command[el].append(noislessActiv)
                 #we use the noisy command because it is filtered
                 #command[el].append([data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17]])
@@ -181,7 +181,7 @@ def getXYHandData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordHand = (data[0,46], data[0,47])
+           coordHand = (data[0][50], data[0][51])
            xy[el].append((coordHand[0], coordHand[1]))
     return xy
 
@@ -197,7 +197,7 @@ def getXYWristData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordWrist = (data[0,44], data[0,45])
+           coordWrist = (data[0,48], data[0,49])
            xy[el].append((coordWrist[0], coordWrist[1]))
     return xy
 
@@ -213,7 +213,7 @@ def getXYElbowData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordElbow = (data[0,42], data[0,43])
+           coordElbow = (data[0,46], data[0,47])
            xy[el].append((coordElbow[0], coordElbow[1]))
     return xy
 
@@ -228,7 +228,7 @@ def getEstimatedStateData(foldername):
         state[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-            estimState = (data[i][30], data[i][31], data[i][32], data[i][33], data[i][34], data[i][35])
+            estimState = (data[i][6], data[i][7], data[i][8], data[i][9], data[i][10], data[i][11])
             state[el].append(estimState)
     return state
     
@@ -244,7 +244,7 @@ def getEstimatedXYHandData(foldername):
         xyEstim[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-            estimState = (data[i][30], data[i][31], data[i][32], data[i][33], data[i][34], data[i][35])
+            estimState = (data[i][6], data[i][7], data[i][8], data[i][9], data[i][10], data[i][11])
             coordHand = arm.mgdEndEffector(np.array(estimState[3], estimState[4], estimState[5]))
             xyEstim[el].append((coordHand[0], coordHand[1]))
     return xyEstim
@@ -262,7 +262,7 @@ def getXYEstimError(foldername):
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
             currentState = (data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17])
-            estimState = (data[i][30], data[i][31], data[i][32], data[i][33], data[i][34], data[i][35])
+            estimState = (data[i][6], data[i][7], data[i][8], data[i][9], data[i][10], data[i][11])
             statePos = (currentState[3], currentState[4], currentState[5])
             estimStatePos = (estimState[3], estimState[4], estimState[5])
             errors[el].append(arm.estimErrorReduced(statePos,estimStatePos))
@@ -282,7 +282,7 @@ def getXYEstimErrorOfSpeed(foldername):
         for i in range(data.shape[0]):
             currentState = (data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17])
             speed = arm.cartesianSpeed(currentState)
-            estimState = (data[i][30], data[i][31], data[i][32], data[i][33], data[i][34], data[i][35])
+            estimState = (data[i][6], data[i][7], data[i][8], data[i][9], data[i][10], data[i][11])
             statePos = (currentState[3], currentState[4], currentState[5])
             estimStatePos = (estimState[3], estimState[4], estimState[5])
             error = arm.estimErrorReduced(statePos,estimStatePos)

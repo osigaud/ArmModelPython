@@ -15,8 +15,7 @@ data [18 - 23] = noiseless muscular activations
 data [24 - 27] = estimated next state in joint space
 data [28 - 31] = actual next state in joint space
 data [32 - 33] = elbow position in cartesian space
-data [34 - 35] = wrist position in cartesian space
-data [36 - 37] = hand position in cartesian space
+data [34 - 35] = hand position in cartesian space
 '''
 import random as rd
 import numpy as np

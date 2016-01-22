@@ -227,7 +227,7 @@ class TrajMaker:
                 #print ("before",stepStore)
                 tmpstore = np.array(stepStore).flatten()
                 row = [item for sub in tmpstore for item in sub]
-                #print ("store",row)
+                print "store: ", len(row)
                 dataStore.append(row)
 
             estimState = estimNextState
