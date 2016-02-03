@@ -1,0 +1,25 @@
+
+-----------------A Faire ----------------
+
+*Comprendre pourquoi "python testArmModel.py" ne fonctionne pas correctement
+
+-----------------A cythoniser ----------------
+
+
+En commençant par le coeur qui est ArmModel et avançant couche par couche (comme un oignon ;)), on trouve :
+
+Experiments/TrajMaker.py
+Experiments/StateEstimator.py
+Experiments/Experiments.py
+Main/Main.py
+
+Il y a aussi
+
+Regression/RBNF.py
+Regression/RunRegressionRBNF.py
+
+qui mériteraient d'être cythonisés.
+
+
+==> Important de reduire les appels au disue , tout passer en memoire cache
+

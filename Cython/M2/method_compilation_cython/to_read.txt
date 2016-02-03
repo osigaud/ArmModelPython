@@ -1,0 +1,27 @@
+Ici se trouve les methodes pour compiler du code cython
+
+@Todo : rendre le path de compilation relatif.
+	-> regarder du cote de la librairie os.path (import os.path)
+
+ex : Cythonize_ArmModel.py
+
+	ici 
+		ext_modules = cythonize("MotorControlModel/ArmModel/*.pyx")	
+
+	Devrais avoir un lien relatif.
+	Cepandant lorsque l'on lance :
+		python MotorControlModel/ArmModel/Cythonize_ArmModel.py build_ext --inplace
+	Le path pris est celui du dossier d'excution du script et non la position du code de cythonisation (MotorControlModel/ArmModel/)
+
+
+---------------Log des erreurs pouvant être à une dues à la compilation -------------------------
+
+# 1 (plus a jour au 20/01/2016 ): Probleme de référencement d'un module et de ses dependances :
+	Les fichiers issues de la compilation ne se trouvant pas dans le bon dossier, il seras impossible pour cython de les importer (d'ou une "ImportError: No module named ...").
+
+	ex :    
+		import ArmModel
+		from ArmModel import MusclesParameters
+	
+	Ici si le fichier issue de la compilation cython (MusclesParameters.so) ne se trouve pas dans le package ArmModel (/ArmModel), alors l'import ne peux pas s'effectuer.
+	

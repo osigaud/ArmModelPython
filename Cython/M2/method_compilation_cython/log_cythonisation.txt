@@ -1,0 +1,250 @@
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so
+Compiling ArmModel/MusclesParameters.pyx because it changed.
+Compiling ArmModel/MuscularActivation.pyx because it changed.
+Compiling ArmModel/ArmParameters.pyx because it changed.
+Compiling ArmModel/Arm.pyx because it changed.
+[1/4] Cythonizing ArmModel/Arm.pyx
+[2/4] Cythonizing ArmModel/ArmParameters.pyx
+[3/4] Cythonizing ArmModel/MusclesParameters.pyx
+[4/4] Cythonizing ArmModel/MuscularActivation.pyx
+running build_ext
+building 'ArmModel.MusclesParameters' extension
+creating build
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/ArmModel
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MusclesParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MusclesParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/MusclesParameters.so
+building 'ArmModel.MuscularActivation' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/MuscularActivation.c -o build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/MuscularActivation.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/MuscularActivation.so
+building 'ArmModel.ArmParameters' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/ArmParameters.c -o build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/ArmParameters.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/ArmParameters.so
+building 'ArmModel.Arm' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/local/include/python2.7 -c ArmModel/Arm.c -o build/temp.linux-x86_64-2.7/ArmModel/Arm.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/ArmModel/Arm.o -o /home/sigaud/Bureau/sigaud/CODYCO/ArmModel/ArmModelPython-cython/MotorControlModel/ArmModel/Arm.so

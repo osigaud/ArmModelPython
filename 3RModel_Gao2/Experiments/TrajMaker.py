@@ -215,19 +215,33 @@ class TrajMaker:
             #Note : these structures might be much improved
             if self.saveTraj == True: 
                 stepStore.append(vectarget)
+                #print ("vectarget:",vectarget,":",len(vectarget))
                 stepStore.append(estimState)
+                #print ("estimState:",estimState,":",len(estimState))
                 stepStore.append(tmpState)
+                #print ("tmpState:",tmpState,":",len(tmpState))
                 stepStore.append(Unoisy)
-                stepStore.append(np.array(U))
+                #print ("Unoisy:",Unoisy,":",len(Unoisy))
+                uu = np.array(U)
+                stepStore.append(uu)
+                #print ("uu:",uu,":",len(uu))
                 stepStore.append(estimNextState)
+                #print ("estimNextState:",estimNextState,":",len(estimNextState))
                 stepStore.append(realNextState)
-                stepStore.append([coordElbow[0], coordElbow[1]])
-                stepStore.append([coordWrist[0], coordWrist[1]])
-                stepStore.append([coordHand[0], coordHand[1]])
+                #print ("realNextState:",realNextState,":",len(realNextState))
+                elbow = [coordElbow[0], coordElbow[1]]
+                stepStore.append(elbow)
+                #print ("elbow:",elbow,":",len(elbow))
+                wrist = [coordWrist[0], coordWrist[1]]
+                stepStore.append(wrist)
+                #print ("wrist:",wrist,":",len(wrist))
+                hand = [coordHand[0], coordHand[1]]
+                stepStore.append(hand)
+                #print ("hand:",hand,":",len(hand))
                 #print ("before",stepStore)
                 tmpstore = np.array(stepStore).flatten()
                 row = [item for sub in tmpstore for item in sub]
-                print "store: ", len(row)
+                #print "store: ", len(row)
                 dataStore.append(row)
 
             estimState = estimNextState

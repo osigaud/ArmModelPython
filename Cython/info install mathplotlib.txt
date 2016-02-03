@@ -1,0 +1,13 @@
+#     --- Info pour installer matplotlib ----
+#     Installer pip et installer matplotlib via les code ci-dessous
+
+sudo apt-get install python-pip
+sudo pip install matplotlib
+
+#	Pour tester si matplotlib est bien installer :
+#	creer un fichier.py avec le code ci-dessous est l'executer
+#	
+#		import matplotlib.pyplot as plt
+#		plt.plot([1,2,3])
+#		plt.show()	
+#
