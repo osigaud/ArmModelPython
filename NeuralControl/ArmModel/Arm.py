@@ -71,7 +71,7 @@ class Arm:
     #Minv = np.linalg.inv(M)
     #print ("Minv:",Minv)
     C = np.array([-dotq[1]*(2*dotq[0]+dotq[1])*self.armP.k2*math.sin(q[1]),(dotq[0]**2)*self.armP.k2*math.sin(q[1])])
-    print ("C:",C)
+    #print ("C:",C)
     #the commented version uses a non null stiffness for the muscles
     #beware of dot product Kraid times q: q may not be the correct vector/matrix
     #Gamma = np.dot((np.dot(armP.At, musclesP.fmax)-np.dot(musclesP.Kraid, q)), U)
@@ -79,13 +79,13 @@ class Arm:
     #above Knulle is null, so it can be simplified
 
     Gamma = np.dot(np.dot(self.armP.At, self.musclesP.fmax), U)
-    print ("Gamma:",Gamma)
+    #print ("Gamma:",Gamma)
 
     #Gamma = np.dot(armP.At, np.dot(musclesP.fmax,U))
     #computes the acceleration ddotq and integrates
     
     b = np.dot(self.armP.B, dotq)
-    print ("b:",b)
+    #print ("b:",b)
 
     #ddotq = np.dot(Minv,Gamma - C - b)
     #print ("ddotq",ddotq)
