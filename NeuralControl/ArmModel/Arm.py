@@ -68,7 +68,7 @@ class Arm:
     #print ("dotq:",dotq)
     M = np.array([[self.armP.k1+2*self.armP.k2*math.cos(q[1]),self.armP.k3+self.armP.k2*math.cos(q[1])],[self.armP.k3+self.armP.k2*math.cos(q[1]),self.armP.k3]])
     #print ("M:",M)
-    Minv = np.linalg.inv(M)
+    #Minv = np.linalg.inv(M)
     #print ("Minv:",Minv)
     C = np.array([-dotq[1]*(2*dotq[0]+dotq[1])*self.armP.k2*math.sin(q[1]),(dotq[0]**2)*self.armP.k2*math.sin(q[1])])
     print ("C:",C)
@@ -87,8 +87,11 @@ class Arm:
     b = np.dot(self.armP.B, dotq)
     print ("b:",b)
 
-    ddotq = np.dot(Minv,Gamma - C - b)
+    #ddotq = np.dot(Minv,Gamma - C - b)
     #print ("ddotq",ddotq)
+    
+    #To avoid inverting M:
+    ddotq = np.linalg.solve(M, Gamma - C - b)
 
     dotq += ddotq*self.dt
     q += dotq*self.dt
