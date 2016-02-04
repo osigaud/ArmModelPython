@@ -85,7 +85,7 @@ class TrajMaker:
         manip = self.arm.directionalManipulability(q,self.cartTarget)
         return 1-manip
 
-    def computeStateTransitionCost(self, U, t):
+    def computeStateTransitionCost(self, U):
         '''
 		Computes the cost on one step of the trajectory
 		
@@ -99,7 +99,8 @@ class TrajMaker:
         norme = np.linalg.norm(U)
         mvtCost = norme*norme
         #compute the cost following the law of the model
-        return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
+        #return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
+        return -self.rs.upsCF*mvtCost
     
     def computePerpendCost(self):  
         dotq, q = getDotQAndQFromStateVector(self.arm.getState())
@@ -189,7 +190,7 @@ class TrajMaker:
             self.arm.setState(realNextState)
 
             #computation of the cost
-            #cost += self.computeStateTransitionCost(Unoisy, t)
+            cost += self.computeStateTransitionCost(Unoisy)
 
             '''
             print "U =", U
