@@ -29,6 +29,7 @@ def copyRBFNtoCMAES(rs, name, size):
     copyfile(savenamestruct, cmaname + name + ".struct")
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
+    os.system("rm "+foldername+"Log/*.log")
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost, time = exp.runTrajectoriesForResultsGeneration(repeat)
     print("Average cost: ", cost)
@@ -38,6 +39,7 @@ def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save)
         exp.saveCost()
 
 def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
+    os.system("rm "+foldername+"Log/*.log")
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost = exp.runRichTrajectories(repeat)
     print("Average cost: ", cost)

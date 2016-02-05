@@ -166,7 +166,7 @@ def plotVelocityProfile(what, setupFile="setupFile", foldername = "None"):
 def plotPos(name, media, plotEstim):
     states = getXYHandData(name)
     factor = min(1, 100./len(states.items()))
-
+    print(len(states.items()))
     for k,v in states.items():
         if  rd.random()<factor:
             posX, posY = [], []
@@ -226,7 +226,7 @@ def plotTrajsInRepo(setupFile="setupFile"):
 def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize = "All", plotEstim=False):
     rs = ReadSetupFile(setupFile)
     plt.figure(1, figsize=(16,9))
-
+    print(rs.det)
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
@@ -245,6 +245,7 @@ def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize
             name = BrentTrajectoriesFolder
         else:
             name = rs.path + foldername + "/Log/"
+            print(name)
 
         plotPos(name, plt, plotEstim)
         #makeInitPlot(rs)

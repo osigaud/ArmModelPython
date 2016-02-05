@@ -27,7 +27,7 @@ class ReadSetupFile:
         #Split to get line to line
         allsByLign = alls.split("\n")
         #line 1, mode stocastic
-        self.det = (allsByLign[0].split(":")[1]=="Y")
+        self.det = (not allsByLign[0].split(":")[1]=="Y")
         #line 2, regression type
         self.regression=allsByLign[1].split(":")[1]
         #reading line 3, nombre de features

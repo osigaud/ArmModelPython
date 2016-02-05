@@ -1,5 +1,6 @@
 import numpy as np
 import random as rd
+import os
 
 from Main.Main import generateFromRegression, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
@@ -12,8 +13,9 @@ from Utils.Chrono import Chrono
 from Utils.ReadSetupFile import ReadSetupFile
 from GlobalVariables import pathDataFolder
 
-c = Chrono()
-run("setupNN","ScriptNN",False)
-c.stop()
+
+#c = Chrono()
+#run("setupNN","ScriptNN",False)
+#c.stop()
 generateFromRegression(1, "setupNN", "ScriptNN", "Traj1")
-plotXYPositions("Regression", "setupNN", "Traj1","All",True)
+plotXYPositions("Regression", setupFile="setupNN", foldername ="Traj1",targetSize ="All",plotEstim=True)
