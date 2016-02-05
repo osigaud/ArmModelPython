@@ -223,7 +223,7 @@ def plotTrajsInRepo(setupFile="setupFile"):
     #plt.savefig("ImageBank/"+what+'_trajectories.png')
     plt.show(block = True)
 
-def plotXYPositions(what, setupFile, foldername = "None", targetSize = "All", plotEstim=False):
+def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize = "All", plotEstim=False):
     rs = ReadSetupFile(setupFile)
     plt.figure(1, figsize=(16,9))
 

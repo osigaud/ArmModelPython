@@ -75,6 +75,10 @@ class rbfn(regression):
         self.centersInEachDimensions = cartesian(linspaceForEachDim)
         self.nbFeatures = len(self.centersInEachDimensions)
         print("nbfeatures:", self.nbFeatures)
+        
+    def train(self, lamb=None):
+        if(lamb==None): self.train_rbfn()
+        else : self.train_reg_rbfn(lamb)
 
     def train_rbfn(self):
         '''

@@ -68,7 +68,7 @@ class NeuralNet(regression):
         trainer.train()
         
         #trainer.trainUntilConvergence(maxEpochs=10, verbose=True)
-        #print(trainer.trainEpochs(2))
+        #trainer.trainEpochs(10)
     def computeOutput(self, inputVal):
         '''
         Returns the output depending on the given input and theta
