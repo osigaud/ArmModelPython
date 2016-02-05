@@ -8,7 +8,7 @@ Module: ReadSetupFile
 Description: On retrouve dans ce fichier une fonction permettant de lire le fichier de configuration 
 '''
 import math
-from GlobalVariables import pathWorkingDirectory, pathDataFolder, cmaesPath, det
+from GlobalVariables import pathWorkingDirectory, pathDataFolder, cmaesPath
 
 class ReadSetupFile:
     

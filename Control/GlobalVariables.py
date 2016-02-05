@@ -15,4 +15,3 @@ pathListForm = pathWorkingDirectory.split("/")
 pathDataFolder = pathWorkingDirectory.replace(pathListForm[len(pathListForm)-1], '') + "Data/"
 BrentTrajectoriesFolder = pathDataFolder + "Brent/"
 cmaesPath = "CMAES"
-det = True

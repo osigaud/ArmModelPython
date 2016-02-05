@@ -1,4 +1,4 @@
-Motor noise (Y or N):Y
+Motor noise (Y or N):N
 Regression:RBFN
 Number of features (int):3
 Gamma parameter in cost function (float):0.6
