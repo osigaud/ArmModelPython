@@ -116,7 +116,7 @@ class rbfn(regression):
             y = np.array(vec[i].T)
             b = np.dot(Kmat, y).T
             #self.theta.append(np.dot(inv,b))
-            self.theta.append(np.linalg.lstsq(C,b))
+            self.theta.append(np.linalg.lstsq(C,b)[0])
     
     def computeFeatureWeight(self, inputVal, gauss):
         '''
