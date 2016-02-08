@@ -14,6 +14,9 @@ from pybrain.utilities           import percentError
 from pybrain.tools.shortcuts     import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules   import SoftmaxLayer
+from pybrain.structure.modules   import LinearLayer, SigmoidLayer, TanhLayer
+from pybrain.structure           import FullConnection
+from pybrain.structure           import FeedForwardNetwork
 
 from Utils.CartesianProduct import cartesian
 from Regression import *
@@ -28,7 +31,26 @@ class NeuralNet(regression):
 
         '''
         regression.__init__(self,inputDim, outputDim)
-        self.net = buildNetwork(inputDim, outputDim)
+        #self.net = buildNetwork(inputDim, 4, 4, outputDim)
+        self.net = FeedForwardNetwork()
+        inLayer = LinearLayer(inputDim)
+        hiddenLayer1 = TanhLayer(10)
+        hiddenLayer2 = TanhLayer(10)
+        outLayer = SigmoidLayer(outputDim)
+        self.net.addInputModule(inLayer)
+        self.net.addModule(hiddenLayer1)
+        self.net.addModule(hiddenLayer2)
+        self.net.addOutputModule(outLayer)
+
+        in_to_hidden1 = FullConnection(inLayer, hiddenLayer1)
+        hidden1_to_hidden2=FullConnection(hiddenLayer1,  hiddenLayer2)
+        hidden2_to_out = FullConnection(hiddenLayer2, outLayer)
+        self.net.addConnection(in_to_hidden1)
+        self.net.addConnection(hidden1_to_hidden2)
+        self.net.addConnection(hidden2_to_out)
+
+        self.net.sortModules()
+
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
         
 
@@ -63,9 +85,12 @@ class NeuralNet(regression):
         '''
         Perform batch regression
         '''
-        trainer = BackpropTrainer(self.net, self.ds)
-        
-        trainer.train()
+        trainer = BackpropTrainer(self.net, self.ds, learningrate=0.0001)
+        try:
+            while(True):
+                print(trainer.train())
+        except:
+            print("NeuralNet L71")
         
         #trainer.trainUntilConvergence(maxEpochs=10, verbose=True)
         #trainer.trainEpochs(10)
@@ -79,7 +104,9 @@ class NeuralNet(regression):
         Output:     -fa_out: numpy N-D array, output approximated
         '''
         assert(inputVal.shape[0]==self.inputDimension), "NeuralNet: Bad input format"
-        return self.net.activate(inputVal)
+        output=self.net.activate(inputVal)
+        #print(output)
+        return output
 
 
 

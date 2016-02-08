@@ -13,8 +13,12 @@ from Utils.ReadSetupFile import ReadSetupFile
 from GlobalVariables import pathDataFolder
 
 
+setupFile="setupRBFN"
+thetaName="ScriptRBFN"
+folder="Traj1"
+
 c = Chrono()
-run("setupRBFN","ScriptRBFN",False)
+run(setupFile,thetaName,False)
 c.stop()
-generateFromRegression(1, "setupRBFN", "ScriptRBFN", "ScriptRBFN")
-plotXYPositions("Regression", "setupRBFN", "ScriptRBFN","All",True)
+generateFromRegression(1, setupFile, thetaName, folder)
+plotXYPositions("Regression", setupRBFNFile, folder,"All",True)

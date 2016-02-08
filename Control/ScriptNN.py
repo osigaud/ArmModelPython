@@ -13,9 +13,12 @@ from Utils.Chrono import Chrono
 from Utils.ReadSetupFile import ReadSetupFile
 from GlobalVariables import pathDataFolder
 
+setupFile="setupNN"
+thetaName="ScriptNN"
+folder="Traj1"
 
-#c = Chrono()
-#run("setupNN","ScriptNN",False)
-#c.stop()
-generateFromRegression(1, "setupNN", "ScriptNN", "Traj1")
-plotXYPositions("Regression", setupFile="setupNN", foldername ="Traj1",targetSize ="All",plotEstim=True)
+c = Chrono()
+run(setupFile,"ScriptNN",False)
+c.stop()
+generateFromRegression(1, setupFile, thetaName, folder)
+plotXYPositions("Regression", setupFile=setupFile, foldername =folder,targetSize ="All",plotEstim=True)
