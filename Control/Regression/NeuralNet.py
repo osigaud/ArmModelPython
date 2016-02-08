@@ -85,7 +85,7 @@ class NeuralNet(regression):
         '''
         Perform batch regression
         '''
-        trainer = BackpropTrainer(self.net, self.ds, learningrate=0.0001)
+        trainer = BackpropTrainer(self.net, self.ds, learningrate=0.0005, momentum=0.9)
         try:
             while(True):
                 print(trainer.train())

@@ -17,8 +17,9 @@ setupFile="setupNN"
 thetaName="ScriptNN"
 folder="Traj1"
 
-c = Chrono()
-run(setupFile,"ScriptNN",False)
-c.stop()
-generateFromRegression(1, setupFile, thetaName, folder)
-plotXYPositions("Regression", setupFile=setupFile, foldername =folder,targetSize ="All",plotEstim=True)
+#c = Chrono()
+#run(setupFile,"ScriptNN",False)
+#c.stop()
+#generateFromRegression(1, setupFile, thetaName, folder)
+#plotXYPositions("Regression", setupFile=setupFile, foldername =folder,targetSize ="All",plotEstim=True)
+plotArticularPositions("Regression",setupFile, folder)

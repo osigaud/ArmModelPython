@@ -94,14 +94,14 @@ def chooseFunction(choix):
 
 #------------------------------------------- RBFN
     elif choix == 5:
-        fileName = raw_input('Name of file to load setup (wihtout extention): ')
+        fileName = raw_input('Name of file to load setup : ')
         name = raw_input('Name of file to save theta of Regression controller: ')
         c = Chrono()
 #        run(name,True)
         run(fileName,name,False)
         c.stop()
     elif choix == 6:
-        fileName = raw_input('Name of file to load setup (wihtout extention): ')
+        fileName = raw_input('Name of file to load setup : ')
         name = raw_input('Name of the Regression controller tethaFile: ')
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
@@ -112,14 +112,14 @@ def chooseFunction(choix):
         nameF = raw_input('Folder where the results are saved: ')
         plotVelocityProfile("RBFN",nameF)
     elif choix == 8:
-        fileName = raw_input('Name of file to load setup (wihtout extention): ')
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
             plotXYPositions("Regression", fileName, nameF,"All",True)#False)#
         else:
-            plotArticularPositions("RBFN",nameF)
+            plotArticularPositions("RBFN",fileName, nameF)
     elif choix == 9:
         nameF = raw_input('Folder where the results are saved: ')
         plotMuscularActivations("RBFN",nameF)

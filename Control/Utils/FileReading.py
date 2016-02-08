@@ -49,10 +49,10 @@ def loadStateCommandPairsByStartCoords(foldername, prct, det=False):
                 currentState = (data[i][8], data[i][9], data[i][10], data[i][11])
                 #wiht noise
                 if(det==False):
-                    noisyActiv = ([data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17]])
+                    Activ = ([data[i][12], data[i][13], data[i][14], data[i][15], data[i][16], data[i][17]])
                 else :
-                    noisyActiv = ([data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23]])
-                pair = (currentState, noisyActiv)
+                    Activ = ([data[i][18], data[i][19], data[i][20], data[i][21], data[i][22], data[i][23]])
+                pair = (currentState, Activ)
                 traj.append(pair)
             dataOut[y][x].append(traj)
     return dataOut
