@@ -185,6 +185,26 @@ def plotPos(name, media, plotEstim):
                     eY.append(v[j][1])
                 media.plot(eX,eY, c ='r')
 
+def plotRegBrent(trajReg, trajBrent):
+    """
+    plot Brent traj in blue and associated lerned traj in red
+    input:            -trajReg: array of trajectory learned
+                      -trajBrent: array of Brent trajectory
+    """
+    plt.figure(1, figsize=(16,9))
+    arm = Arm()
+    for i in range(trajBrent.shape[0]):
+        ligneReg=np.empty((trajReg[i].shape[0],2))
+        for j in range(trajReg[i].shape[0]):
+            ligneReg[j] = arm.mgdEndEffector(trajReg[i][j][2:])
+        plt.plot(ligneReg[:,0], ligneReg[:,1], c='r', label="regression")
+        ligneBrent=np.empty((len(trajBrent[i]),2))
+        for j in range(len(trajBrent[i])):
+            ligneBrent[j] = arm.mgdEndEffector(trajBrent[i][j][2:])
+        plt.plot(ligneBrent[:,0], ligneBrent[:,1], c='b')
+    plt.show(block = True)
+    
+
 def plotEstimError(rs,name, media):
     errors = getXYEstimError(name)
     factor = min(1, 100./len(errors.items()))
@@ -226,7 +246,6 @@ def plotTrajsInRepo(setupFile="setupFile"):
 def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize = "All", plotEstim=False):
     rs = ReadSetupFile(setupFile)
     plt.figure(1, figsize=(16,9))
-    print(rs.det)
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))

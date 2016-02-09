@@ -23,6 +23,38 @@ import os
 
 from ArmModel.Arm import Arm
 
+def loadTrajs(folderName, prct, det=False):
+    '''
+    Get all the data from a set of trajectories, sorted by the starting xy coordinates
+    
+    Output :               -state: np-array of trajectory's states
+                           -activity: np-array of trajectory's activity
+    '''
+    listdir = os.listdir(folderName)
+    state=[]
+    activity=[]
+    hand=[]
+    nbTraj = 0
+    for trajFile in listdir:
+        if(rd.random() < prct):
+            tmpData = np.loadtxt(folderName + trajFile)
+            stateTrajectory    = np.empty((tmpData.shape[0],4))
+            activityTrajectory = np.empty((tmpData.shape[0],6))
+            handPos = np.empty((tmpData.shape[0],2))
+            for i in range(tmpData.shape[0]):
+                stateTrajectory[i] = tmpData[i][8:12]
+                #wiht noise
+                if(det==False):
+                    activityTrajectory[i] = tmpData[i][12:18]
+                else :
+                    activityTrajectory[i] = tmpData[i][18:24]
+                handPos = tmpData[i][34:]
+            state.append(stateTrajectory)
+            activity.append(activityTrajectory)
+            nbTraj+=1
+    print(str(nbTraj) + " Trajectory charged")
+    return np.array(state), np.array(activity)
+
 def loadStateCommandPairsByStartCoords(foldername, prct, det=False):
     '''
     Get all the data from a set of trajectories, sorted by the starting xy coordinates

@@ -14,12 +14,12 @@ from Utils.ReadSetupFile import ReadSetupFile
 from GlobalVariables import pathDataFolder
 
 setupFile="setupNN"
-thetaName="ScriptNN"
-folder="Traj1"
+thetaName="ScriptNN1"
+folder="TrajNN1"
 
 #c = Chrono()
 #run(setupFile,"ScriptNN",False)
 #c.stop()
 #generateFromRegression(1, setupFile, thetaName, folder)
-#plotXYPositions("Regression", setupFile=setupFile, foldername =folder,targetSize ="All",plotEstim=True)
-plotArticularPositions("Regression",setupFile, folder)
+plotXYPositions("Regression", setupFile=setupFile, foldername =folder,targetSize ="All",plotEstim=True)
+#plotArticularPositions("Regression",setupFile, folder)

@@ -249,3 +249,86 @@ class TrajMaker:
             lastX = coordHand[0]
         #print "end of trajectory"
         return cost, t, lastX
+
+
+    def runTrajectory2(self, x, y):
+        '''
+    	Generates trajectory from the initial position (x, y)
+    
+    	Inputs:		-x: abscissa of the initial position, float
+    			-y: ordinate of the initial position, float
+    
+    	Output:		-trajState: state of the  trajectory generated, np-array
+                        -trajActivity: activity of the trajectory generated, np-array
+                        -cost: the cost of the trajectory, float
+                        -t:    time of the trajectory, float
+    	'''
+        #computes the articular position q1, q2 from the initial coordinates (x, y)
+        q1, q2 = self.arm.mgi(x, y)
+        #creates the state vector [dotq1, dotq2, q1, q2]
+        q = createVector(q1,q2)
+        state = np.array([0., 0., q1, q2])
+        #print("start state --------------: ",state)
+
+        #computes the coordinates of the hand and the elbow from the position vector
+        coordElbow, coordHand = self.arm.mgdFull(q)
+        #assert(coordHand[0]==x and coordHand[1]==y), "Erreur de MGD" does not work because of rounding effects
+
+        #initializes parameters for the trajectory
+        i, t, cost = 0, 0, 0
+        self.stateEstimator.initStore(state)
+        self.arm.setState(state)
+        estimState = state
+        trajState = [state]
+        trajActivity = []
+        qtarget1, qtarget2 = self.arm.mgi(self.rs.XTarget, self.rs.YTarget)
+        vectarget = np.array([0.0, 0.0, qtarget1, qtarget2])
+
+        #loop to generate next position until the target is reached 
+        while coordHand[1] < self.rs.YTarget and i < self.rs.numMaxIter:
+            #computation of the next muscular activation vector using the controller theta
+            #print ("state :",self.arm.getState())
+
+            U = self.controller.computeOutput(estimState)
+
+            if self.rs.det:
+                Unoisy = muscleFilter(U)
+            else:
+                Unoisy = getNoisyCommand(U,self.arm.musclesP.knoiseU)
+                Unoisy = muscleFilter(Unoisy)
+
+
+            #computation of the arm state
+            realNextState = self.arm.computeNextState(Unoisy, self.arm.getState())
+ 
+            #computation of the approximated state
+            tmpState = self.arm.getState()
+
+            if self.rs.det:
+                estimNextState = realNextState
+            else:
+                U = muscleFilter(U)
+                estimNextState = self.stateEstimator.getEstimState(tmpState,U)
+            
+            #print estimNextState
+
+            self.arm.setState(realNextState)
+
+            #computation of the cost
+            cost += self.computeStateTransitionCost(Unoisy)
+
+            #get dotq and q from the state vector
+            dotq, q = getDotQAndQFromStateVector(tmpState)
+            coordElbow, coordHand = self.arm.mgdFull(q)
+            #print ("dotq :",dotq)
+            #computation of the coordinates to check if the target is reach or not
+
+            trajActivity.append(Unoisy)
+            trajState.append(realNextState)
+            estimState = estimNextState
+            i += 1
+            t += self.rs.dt
+
+        trajActivity.append(np.zeros((4)))
+        cost += self.computeFinalReward(t,coordHand)
+        return np.array(trajState), np.array(trajActivity), cost, t
