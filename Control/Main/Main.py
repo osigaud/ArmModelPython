@@ -70,7 +70,7 @@ def generateRichDataFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
 
 def generateFromRegression(repeat, setupFile, thetaFile, saveDir):
     rs = ReadXmlFile(setupFile)
-    thetaName = rs.path + thetaFile
+    thetaName = rs.path + rs.thetaFile
     saveName = rs.path + saveDir + "/"
     GenerateDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")

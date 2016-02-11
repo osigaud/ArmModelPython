@@ -10,8 +10,6 @@ Description: A NeuralNet to be trained as the arm controller
 import random
 import numpy as np
 from pybrain.datasets            import SupervisedDataSet
-from pybrain.utilities           import percentError
-from pybrain.tools.shortcuts     import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules   import SoftmaxLayer
 from pybrain.structure.modules   import LinearLayer, SigmoidLayer, TanhLayer, BiasUnit
@@ -154,15 +152,14 @@ class NeuralNet(regression):
         Perform batch regression
         '''
         trainer = BackpropTrainer(self.net, self.ds, learningrate=self.learningRate, momentum=self.momentum)
-        try:
-            min=10
-            while(True):
-                erreur=trainer.train()
-                print(trainer.train())
-                if(erreur>min):
-                    self.saveTheta(self.rs.path+self.rs.thetaFile)
-        except:
-            print("endTrain")
+
+        min=10
+        while(True):
+            erreur=trainer.train()
+            print(trainer.train())
+            if(erreur<min):
+                self.saveTheta(self.rs.path+self.rs.thetaFile+".theta")
+
         
         #trainer.trainUntilConvergence(maxEpochs=10, verbose=True)
         #trainer.trainEpochs(10)

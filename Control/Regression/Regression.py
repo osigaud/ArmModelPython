@@ -17,6 +17,7 @@ class regression(object) :
         Initializes class parameters
 
         '''
+        self.rs=rs
         self.inputDimension = rs.inputDim
         self.outputDimension = rs.outputDim
         print ("dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension))

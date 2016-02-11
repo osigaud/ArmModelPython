@@ -29,7 +29,7 @@ from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
 #--------------------------- trajectory animations ---------------------------------------------------------------------------------------------
 
-def trajectoriesAnimation(what, setupFile = "setupFile",foldername = "None", targetSize = "0.05"):
+def trajectoriesAnimation(what, setupFile = "setup.xml",foldername = "None", targetSize = "0.05"):
     rs = ReadXmlFile(setupFile)
     if what == "CMAES":
         name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
@@ -103,7 +103,7 @@ def makeInitPlot(rs,filename):
     plt.scatter(rs.XTarget, rs.YTarget, c = "r", marker=u'*', s = 100)
     plt.scatter(x0, y0, c = "r", marker=u'o', s=25)  
 
-def plotInitPos(filename, setupFile="setupFile"):
+def plotInitPos(filename, setupFile="setup.xml"):
     '''
     Plots the initial position of trajectories present in the Brent directory
     '''
@@ -134,7 +134,7 @@ def makeVelocityData(rs,arm,name,media):
             else:
                 media.plot(index, speed, c ='red')
 
-def plotVelocityProfile(what, setupFile="setupFile", foldername = "None"):
+def plotVelocityProfile(what, setupFile="setup.xml", foldername = "None"):
     rs = ReadXmlFile(setupFile)
     arm = Arm()
     plt.figure(1, figsize=(16,9))
@@ -233,7 +233,7 @@ def plotEstimErrorOfSpeed(name, media):
                 er.append(v[j][1])
             media.plot(speed,er, c ='b')
 
-def plotTrajsInRepo(setupFile="setupFile"):
+def plotTrajsInRepo(setupFile="setup.xml"):
     rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
     plotPos(pathDataFolder+"TrajRepository/", plt, False)
@@ -245,7 +245,7 @@ def plotTrajsInRepo(setupFile="setupFile"):
     #plt.savefig("ImageBank/"+what+'_trajectories.png')
     plt.show(block = True)
 
-def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize = "All", plotEstim=False):
+def plotXYPositions(what, setupFile="setup.xml", foldername = "None", targetSize = "All", plotEstim=False):
     rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
     if what == "CMAES" and targetSize == "All":
@@ -278,7 +278,7 @@ def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize
     plt.savefig("ImageBank/"+what+'_trajectories'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
-def plotXYEstimError(what, setupFile="setupFile",foldername = "None", targetSize = "All"):
+def plotXYEstimError(what, setupFile="setup.xml",foldername = "None", targetSize = "All"):
     rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
 
@@ -311,7 +311,7 @@ def plotXYEstimError(what, setupFile="setupFile",foldername = "None", targetSize
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
-def plotXYEstimErrorOfSpeed(what, setupFile="setupFile",foldername = "None", targetSize = "All"):
+def plotXYEstimErrorOfSpeed(what, setupFile="setup.xml",foldername = "None", targetSize = "All"):
     rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
 
@@ -344,7 +344,7 @@ def plotXYEstimErrorOfSpeed(what, setupFile="setupFile",foldername = "None", tar
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
-def plotArticularPositions(what, setupFile="setupFile",foldername = "None", targetSize = "0.05"):
+def plotArticularPositions(what, setupFile="setup.xml",foldername = "None", targetSize = "0.05"):
     rs = ReadXmlFile(setupFile)
  
     if what == "CMAES":
@@ -372,7 +372,7 @@ def plotArticularPositions(what, setupFile="setupFile",foldername = "None", targ
 
 #------------------ muscular activations --------------------------------
 
-def plotMuscularActivations(what, setupFile="setupFile", foldername = "None", targetSize = "0.05"):
+def plotMuscularActivations(what, setupFile="setup.xml", foldername = "None", targetSize = "0.05"):
     '''
     plots the muscular activations from a folder
     
@@ -427,7 +427,7 @@ def plotMuscularActivations(what, setupFile="setupFile", foldername = "None", ta
 
 #-------------------------- cost maps ----------------------------------------------
 
-def plotCostColorMap(what, setupFile="setupFile", foldername = "None", targetSize = "All"):
+def plotCostColorMap(what, setupFile="setup.xml", foldername = "None", targetSize = "All"):
     '''
     Cette fonction permet d'afficher le profil de cout des trajectoires
     
@@ -503,7 +503,7 @@ def plotCostColorMap(what, setupFile="setupFile", foldername = "None", targetSiz
 
 #-------------------------- time maps ----------------------------------------------
 
-def plotTimeColorMap(what, setupFile="setupFile", foldername = "None", targetSize = "All"):
+def plotTimeColorMap(what, setupFile="setup.xml", foldername = "None", targetSize = "All"):
     '''
     Cette fonction permet d'afficher le profil de temps des trajectoires
     
@@ -578,7 +578,7 @@ def plotTimeColorMap(what, setupFile="setupFile", foldername = "None", targetSiz
 
 #-----------------------------------------------------------------------------------------------------------
     
-def plotTimeDistanceTarget(foldername,setupFile="setupFile"):
+def plotTimeDistanceTarget(foldername,setupFile="setup.xml"):
     rs = ReadXmlFile(setupFile)
 
     dicoTime = {}
@@ -610,7 +610,7 @@ def plotTimeDistanceTarget(foldername,setupFile="setupFile"):
 
 #-----------------------------------------------------------------------------------------------------------
     
-def plotPerfSizeDist(foldername, setupFile="setupFile"):
+def plotPerfSizeDist(foldername, setupFile="setup.xml"):
     rs = ReadXmlFile(setupFile)
     dicoCost = {}
  
@@ -640,7 +640,7 @@ def plotPerfSizeDist(foldername, setupFile="setupFile"):
 
 #-----------------------------------------------------------------------------------------------------------
             
-def plotFittsLaw(foldername, setupFile="setupFile", rbfn = False):
+def plotFittsLaw(foldername, setupFile="setup.xml", rbfn = False):
     rs = ReadXmlFile(setupFile)
 
     timeDistWidth = []
@@ -681,7 +681,7 @@ def plotFittsLaw(foldername, setupFile="setupFile", rbfn = False):
  
 # ---------------- hit dispersion ---------------------------------------
 
-def plotHitDispersion(foldername,sizeT, setupFile="setupFile"):
+def plotHitDispersion(foldername,sizeT, setupFile="setup.xml"):
     rs = ReadXmlFile(setupFile)
     name =  rs.CMAESpath + sizeT + "/" + foldername + "/finalX/"
     data = getLastXData(name)
