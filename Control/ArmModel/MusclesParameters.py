@@ -10,7 +10,7 @@ Description:    -We find here all muscles parameters
 '''
 import numpy as np
 import math
-from GlobalVariables import pathWorkingDirectory
+import os 
 
 class MusclesParameters:
     
@@ -18,7 +18,7 @@ class MusclesParameters:
         '''
         class parameters initialization
         '''
-        self.pathSetupFile = pathWorkingDirectory + "/ArmModel/Setup/Muscles.params"
+        self.pathSetupFile = os.getcwd() + "/ArmModel/Setup/Muscles.params"
         self.fmaxMatrix()
         
         ###############################Annexe parameters########################

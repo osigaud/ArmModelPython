@@ -9,21 +9,17 @@ Description: Class to generate a trajectory
 '''
 import numpy as np
 import os
-import sys
-import math
+
 
 from Utils.CreateVectorUtil import createVector
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
 
-from Regression.Regression import regression
-from Regression.RunRegression import initController
 
-from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords
+from Regression.RunRegression import initController
 
 from StateEstimator import StateEstimator
 
-from GlobalVariables import BrentTrajectoriesFolder,pathDataFolder
 
 def checkFolder(name):
     if not os.path.isdir(name):

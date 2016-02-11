@@ -68,7 +68,7 @@ def generateRichDataFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
     print("CMAES:End of generation")
 
-def generateFromRegression(repeat, setupFile, thetaFile, saveDir):
+def generateFromRegression(repeat, setupFile, saveDir):
     rs = ReadXmlFile(setupFile)
     thetaName = rs.path + rs.thetaFile
     saveName = rs.path + saveDir + "/"
@@ -106,10 +106,10 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, setupFile, save):
     resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
-def launchCMAESForAllTargetSizes(setupFile, thetaName, save):
+def launchCMAESForAllTargetSizes(setupFile, save):
     rs = ReadXmlFile(setupFile)
     for el in rs.sizeOfTarget:
-        launchCMAESForSpecificTargetSize(el, thetaName,save)
+        launchCMAESForSpecificTargetSize(el, rs.thetaFile,save)
 
 def term():
     return False

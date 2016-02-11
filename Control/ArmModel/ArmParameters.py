@@ -9,7 +9,7 @@ Description:    -We find here all arm parameters
                 -we use a model of arm with two joints and six muscles
 '''
 import numpy as np
-from GlobalVariables import pathWorkingDirectory
+import os
 
 class ArmParameters:
     '''
@@ -20,7 +20,7 @@ class ArmParameters:
         '''
         Intializes the class
         '''
-        self.pathSetupFile = pathWorkingDirectory + "/ArmModel/Setup/Arm.params"
+        self.pathSetupFile = os.getcwd() + "/ArmModel/Setup/Arm.params"
         self.readSetupFile()
         self.massMatrix()
         self.AMatrix()

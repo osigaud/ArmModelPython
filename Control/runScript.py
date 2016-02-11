@@ -95,22 +95,21 @@ def chooseFunction(choix):
 #------------------------------------------- RBFN
     elif choix == 5:
         fileName = raw_input('Name of file to load setup : ')
-        name = raw_input('Name of file to save theta of Regression controller: ')
         c = Chrono()
 #        run(name,True)
-        run(fileName,name,False)
+        run(fileName,False)
         c.stop()
     elif choix == 6:
         fileName = raw_input('Name of file to load setup : ')
-        name = raw_input('Name of the Regression controller tethaFile: ')
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         c = Chrono()
-        generateFromRegression(nbret, fileName, name, fname)
+        generateFromRegression(nbret, fileName, fname)
         c.stop()
     elif choix == 7:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotVelocityProfile("RBFN",nameF)
+        plotVelocityProfile("Regression",fileName, nameF)
     elif choix == 8:
         fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
@@ -119,49 +118,55 @@ def chooseFunction(choix):
         if rorc == 1:
             plotXYPositions("Regression", fileName, nameF,"All",True)#False)#
         else:
-            plotArticularPositions("RBFN",fileName, nameF)
+            plotArticularPositions("Regression",fileName, nameF)
     elif choix == 9:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotMuscularActivations("RBFN",nameF)
+        plotMuscularActivations("Regression",fileName, nameF)
     elif choix == 10:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotCostColorMap("RBFN",nameF)
+        plotCostColorMap("Regression", fileName, nameF)
     elif choix == 28:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimError("RBFN",nameF,"All")
+        plotXYEstimError("Regression", fileName, nameF,"All")
     elif choix == 29:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimErrorOfSpeed("RBFN",nameF,"All")
+        plotXYEstimErrorOfSpeed("Regression", fileName, nameF,"All")
 
 #------------------------------------------- CMAES
     elif choix == 11:
-        rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
+        rorc = input("enter 1 if from Regression, anything if from previous CMAES: ")
         save = False
         rorc = int(rorc)
         if rorc == 1:
             save = True
-        name = raw_input('Name of the controller file: ')
+        fileName = raw_input('Name of file to load setup : ')
         c = Chrono()
-        launchCMAESForAllTargetSizes(name,save)
+        launchCMAESForAllTargetSizes(fileName,save)
         c.stop()
     elif choix == 12:
+        fileName = raw_input('Name of file to load setup : ')
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
-        generateFromCMAES(nbret, nameTheta, name)
+        generateFromCMAES(nbret, fileName, nameTheta, name)
     elif choix == 13:
         nameF = raw_input('Folder where the results are saved: ')
         plotVelocityProfile("CMAES",nameF)
     elif choix == 14:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
-            plotXYPositions("CMAES",nameF,"All",False)
+            plotXYPositions("CMAES",fileName, nameF,"All",False)
         else:
             tSize = raw_input('Target Size: ')
-            plotArticularPositions("CMAES",nameF,tSize)
+            plotArticularPositions("CMAES",fileName, nameF,tSize)
     elif choix == 15:
         nameF = raw_input('Folder where the results are saved: ')
         tSize = raw_input('Target Size: ')

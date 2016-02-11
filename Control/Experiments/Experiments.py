@@ -8,16 +8,13 @@ Module: Experiments
 Description: Class used to generate all the trajectories of the experimental setup and also used for CMAES optimization
 '''
 import os
-import cma
 
 import numpy as np
 
 #from Utils.ThetaNormalization import normalization, unNormalization
-from Utils.ReadSetupFile import ReadSetupFile
-from Utils.FileReading import dicToArray, getInitPos
 from Utils.Chrono import Chrono
 
-from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
+from GlobalVariables import pathDataFolder
 
 from TrajMaker import TrajMaker
 

@@ -57,7 +57,7 @@ class NeuralNet(regression):
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
     
     '''
-    #TODO: this constructor have to replace the older   
+ 
     def __init__(self, rs):
         regression.__init__(self,rs)
         self.learningRate=rs.learningRate
@@ -153,11 +153,12 @@ class NeuralNet(regression):
         '''
         trainer = BackpropTrainer(self.net, self.ds, learningrate=self.learningRate, momentum=self.momentum)
 
-        min=10
+        minError=10
         while(True):
-            erreur=trainer.train()
+            error=trainer.train()
             print(trainer.train())
-            if(erreur<min):
+            if(error<minError):
+                minError=error
                 self.saveTheta(self.rs.path+self.rs.thetaFile+".theta")
 
         

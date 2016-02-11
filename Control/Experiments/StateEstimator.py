@@ -10,7 +10,7 @@ Description: Used to estimate the current state, reproducing the human control m
 import numpy as np
 import random as rd
 
-from ArmModel.Arm import getDotQAndQFromStateVector
+
 
 #from ArmModel.MuscularActivation import getNoisyCommand
 
@@ -57,8 +57,8 @@ class StateEstimator:
     	Input:		-state: the state to store
     	'''
         for i in range (self.delay-1):
-           self.stateStore[self.delay-i-1]=self.stateStore[self.delay-i-2]
-           self.commandStore[self.delay-i-1]=self.commandStore[self.delay-i-2]
+            self.stateStore[self.delay-i-1]=self.stateStore[self.delay-i-2]
+            self.commandStore[self.delay-i-1]=self.commandStore[self.delay-i-2]
         self.stateStore[0]=state
         self.commandStore[0]=command
         #print ("After store:", self.stateStore)
