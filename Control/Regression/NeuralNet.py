@@ -62,6 +62,9 @@ class NeuralNet(regression):
     #TODO: this constructor have to replace the older   
     def __init__(self, rs):
         regression.__init__(self,rs)
+        self.learningRate=rs.learningRate
+        self.momentum=rs.momentum
+        
         self.net = FeedForwardNetwork()
         
         #input Layer
@@ -150,12 +153,16 @@ class NeuralNet(regression):
         '''
         Perform batch regression
         '''
-        trainer = BackpropTrainer(self.net, self.ds, learningrate=0.0005, momentum=0.9)
+        trainer = BackpropTrainer(self.net, self.ds, learningrate=self.learningRate, momentum=self.momentum)
         try:
+            min=10
             while(True):
+                erreur=trainer.train()
                 print(trainer.train())
+                if(erreur>min):
+                    self.saveTheta(self.rs.path+self.rs.thetaFile)
         except:
-            print("NeuralNet L71")
+            print("endTrain")
         
         #trainer.trainUntilConvergence(maxEpochs=10, verbose=True)
         #trainer.trainEpochs(10)

@@ -48,7 +48,7 @@ def run(fileName,name, fromStruct=None):
     #print ("old:", stateAll[0])
 
     #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "Brent/", 0.1, rs.det))
-    stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.01, rs.det)
+    stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 1, rs.det)
     print("RunRegression L52")
     #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
     #print ("len:", len(commandAll[0]))

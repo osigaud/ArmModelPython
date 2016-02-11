@@ -15,8 +15,9 @@
       <outputLayer>
 		<type>linear</type>
       </outputLayer>
-      <learningrate>0.0001</learningrate>
       <bias>yes</bias>
+      <learningrate>0.0001</learningrate>
+      <momentum>0</momentum>
     </NeuralNet>
     <thetaFile>NNtest</thetaFile>
     <resultPath>/home/arnaud/stage/ArmModelPython/Data/NN/</resultPath>

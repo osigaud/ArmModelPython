@@ -47,12 +47,10 @@ class ReadXmlFile(object):
         inputLayer=reg[0]
         hiddenLayers=reg[1]
         outputLayer=reg[2]
-        self.learningRate=float(reg[3].text)
-        self.bias=reg[4].text=="yes"
-        if(len(reg)==6):
-            self.momentum=float(reg[5].text)
-        else:
-            self.momentum=None
+        self.bias=reg[3].text=="yes"
+        self.learningRate=float(reg[4].text)
+        self.momentum=float(reg[5].text)
+
         
         self.inputLayer = inputLayer[0].text
         self.outputLayer = outputLayer[0].text
