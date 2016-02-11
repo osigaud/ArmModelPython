@@ -47,7 +47,6 @@ class Experiments:
         self.rs = rs
         self.name = "Experiments"
         self.call = 0
-        self.numfeats = rs.numfeats
         self.dimState = rs.inputDim
         self.dimOutput = rs.outputDim
         self.numberOfRepeat = rs.numberOfRepeatEachTraj
@@ -69,11 +68,12 @@ class Experiments:
         print ("min : " + str(np.min(vec)))
         print ("max :" + str(np.max(vec)))
     
+
     def initTheta(self, theta):
         '''
      	Input:		-theta: controller ie vector of parameters, numpy array
     	'''
-        self.theta = np.asarray(theta).reshape((self.dimOutput, self.numfeats**self.dimState))
+        self.theta=theta
         self.tm.setTheta(self.theta)
 
     def saveCost(self): 

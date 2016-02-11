@@ -12,8 +12,8 @@ import os
 import numpy as np
 import random as rd
 
-from Utils.ReadSetupFile import ReadSetupFile
-from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords
+from Utils.ReadXmlFile import ReadXmlFile
+from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords, loadTrajs
 
 
 from RBFN import rbfn
@@ -21,6 +21,8 @@ from NeuralNet import NeuralNet
 from ArmModel.Arm import Arm
 
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
+
+regressionDict = {"NeuralNet" : NeuralNet, "RBFN" : rbfn}
 
 def initController(rs,fileName):
     '''
@@ -31,10 +33,7 @@ def initController(rs,fileName):
                                    fichier features pour rbfn
 	'''
     #Initializes the function approximator
-    if(rs.regression=="RBFN"):
-        fa = rbfn(rs.inputDim, rs.outputDim, rs.numfeats)
-    else :
-        fa = NeuralNet(rs.inputDim, rs.outputDim)
+    fa = regressionDict[rs.regression](rs)
     fa.load(fileName)
     return fa
 
@@ -43,12 +42,13 @@ def run(fileName,name, fromStruct=None):
     ''' 
     Takes the Brent trajectories as input, shuffles them, and then runs the NN regression algorithm
     '''
-    rs = ReadSetupFile(fileName)
+    rs = ReadXmlFile(fileName)
     #state, command = getStateAndCommandData(BrentTrajectoriesFolder)
     #stateAll, commandAll = dicToArray(state), dicToArray(command)
     #print ("old:", stateAll[0])
 
-    stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "Brent/", 0.1, rs.det))
+    #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "Brent/", 0.1, rs.det))
+    stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.01, rs.det)
     print("RunRegression L52")
     #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
     #print ("len:", len(commandAll[0]))
@@ -64,8 +64,9 @@ def run(fileName,name, fromStruct=None):
     np.random.shuffle(commandAll)
 
     print("nombre d'echantillons: ", len(stateAll))
+    
     if(rs.regression=="RBFN"):
-        fa = rbfn(rs.inputDim, rs.outputDim, rs.numfeats)
+        fa = rbfn(rs)
         fa.getTrainingData(stateAll, commandAll)
         if(fromStruct == True):
             fa.initFromExistingStruct(rs.path+name+".struct")
@@ -73,7 +74,7 @@ def run(fileName,name, fromStruct=None):
             fa.initFromData(rs.path+name+".struct")
         fa.train(rs.lamb)
     else :
-        fa = NeuralNet(rs.inputDim, rs.outputDim)
+        fa = NeuralNet(rs)
         fa.getTrainingData(stateAll, commandAll)
         fa.train()
     fa.saveTheta(rs.path+ name+".theta")
@@ -90,7 +91,7 @@ def UnitTestController(fileName):
     '''
     Tests the approximated command obtained from training states
     '''
-    rs = ReadSetupFile(fileName)
+    rs = ReadXmlFile(fileName)
     fa = initController(rs)
 
     stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "TrajRepository/"))
@@ -120,7 +121,7 @@ def UnitTestArmModel(fileName):
     '''
     Tests the next state 
     '''
-    rs = ReadSetupFile(fileName)
+    rs = ReadXmlFile(fileName)
 
     arm = Arm()
     arm.setDT(rs.dt)

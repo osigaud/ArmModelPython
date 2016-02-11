@@ -12,17 +12,22 @@ import numpy as np
 
 class regression(object) :
     
-    def __init__(self, inputDim, outputDim):
+    def __init__(self, rs):
         '''
         Initializes class parameters
 
         '''
-        self.inputDimension = inputDim
-        self.outputDimension = outputDim
+        self.inputDimension = rs.inputDim
+        self.outputDimension = rs.outputDim
         print ("dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension))
 
-
+    
+    
     def setTheta(self, theta):
+        '''
+            set a new theta vector
+            surcharge this methode if our theta is not a vector
+        '''
         self.theta = theta
 
     def getTheta(self):

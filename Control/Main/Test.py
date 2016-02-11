@@ -15,13 +15,14 @@ import numpy as np
 from Plot.plotFunctions import plotRegBrent
 from Experiments.TrajMaker import TrajMaker
 from Utils.FileReading import loadTrajs
+from Utils.ReadXmlFile import ReadXmlFile
 from ArmModel.Arm import Arm
 
-def testRegression(setupFile, thetaFile, folder):
+def testRegression(setupFile, thetaFile):
     """ 
     
     """
-    rs=ReadSetupFile(setupFile)
+    rs=ReadXmlFile(setupFile)
     stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.01, rs.det)
     stateAll=np.array(stateAll)
     arm=Arm()

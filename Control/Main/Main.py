@@ -7,6 +7,7 @@ Module: Main
 
 Description: useful functions to run cmaes and some scripts to run trajectories
 '''
+#TODO: Make a optimisation and CMAES class
 import os
 import cma
 import numpy as np
@@ -14,19 +15,21 @@ from shutil import copyfile
 
 from multiprocessing.pool import Pool
 
-from Utils.ReadSetupFile import ReadSetupFile
+from Utils.ReadXmlFile import ReadXmlFile
 from Utils.Chrono import Chrono
 
 from ArmModel.Arm import Arm
 from Experiments.Experiments import Experiments, checkIfFolderExists
 
-def copyRBFNtoCMAES(rs, name, size):
-    savenametheta = rs.RBFNpath + name + ".theta"
-    savenamestruct = rs.RBFNpath + name + ".struct"
+def copyRegressiontoCMAES(rs, name, size):
     cmaname =  rs.CMAESpath + str(size) + "/"
     checkIfFolderExists(cmaname)
+    savenametheta = rs.path + name + ".theta"
     copyfile(savenametheta, cmaname + name + ".theta")
-    copyfile(savenamestruct, cmaname + name + ".struct")
+    
+    if(rs.regression=="RBFN"):
+        savenamestruct = rs.path + name + ".struct"
+        copyfile(savenamestruct, cmaname + name + ".struct")
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
     os.system("rm "+foldername+"Log/*.log")
@@ -48,7 +51,7 @@ def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, s
         exp.saveCost()
 
 def generateFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     for el in rs.sizeOfTarget:
         c = Chrono()
         thetaName = rs.CMAESpath + str(el) + "/" + thetaFile
@@ -58,7 +61,7 @@ def generateFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
     print("CMAES:End of generation")
 
 def generateRichDataFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     for el in rs.sizeOfTarget:
         thetaName = rs.CMAESpath + str(el) + "/" + thetaFile
         saveName = rs.CMAESpath + str(el) + "/" + saveDir + "/"
@@ -66,35 +69,37 @@ def generateRichDataFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
     print("CMAES:End of generation")
 
 def generateFromRegression(repeat, setupFile, thetaFile, saveDir):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     thetaName = rs.path + thetaFile
     saveName = rs.path + saveDir + "/"
     GenerateDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")
 
 def generateRichDataFromRegression(repeat, setupFile,thetaFile, saveDir):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     thetaName = rs.path + thetaFile
     saveName = rs.path + saveDir + "/"        
     GenerateRichDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")
 
-def launchCMAESForSpecificTargetSize(sizeOfTarget, setupFile, thetaFile, save):
+def launchCMAESForSpecificTargetSize(sizeOfTarget, setupFile, save):
     '''
     Run cmaes for a specific target size
 
     Input:	-sizeOfTarget, size of the target, float
+            -setuFile, file of setup, string
+            -save, for saving result, bool
     '''
     print("Starting the CMAES Optimization for target " + str(sizeOfTarget) + " !")
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     foldername = rs.CMAESpath + str(sizeOfTarget) + "/"
-    thetaname = foldername + thetaFile
+    thetaname = foldername + rs.thetaFile
     if save:
-        copyRBFNtoCMAES(rs, thetaFile, sizeOfTarget)
+        copyRegressiontoCMAES(rs, rs.thetaFile, sizeOfTarget)
 
     #Initializes all the class used to generate trajectory
     exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
-    theta = exp.tm.controller.theta
+    theta = exp.tm.controller.getTheta()
     thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)
@@ -102,7 +107,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, setupFile, thetaFile, save):
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
 def launchCMAESForAllTargetSizes(setupFile, thetaName, save):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     for el in rs.sizeOfTarget:
         launchCMAESForSpecificTargetSize(el, thetaName,save)
 
@@ -116,7 +121,7 @@ def launchCMAESForAllTargetSizesMulti(setupFile):
     Launch in parallel (on differents processor) the cmaes optimization for each target size
     '''
     #initializes setup variables
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     #initializes a pool of worker, ie multiprocessing
     p = Pool()
     #run cmaes on each targets size on separate processor

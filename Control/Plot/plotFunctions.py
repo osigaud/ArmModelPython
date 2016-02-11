@@ -19,16 +19,18 @@ from matplotlib.mlab import griddata
 plt.rc("figure", facecolor="white")
 
 from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getCommandData, getNoiselessCommandData, getInitPos, getCostData, getTrajTimeData, getTrajTimeData, getLastXData
-from Utils.ReadSetupFile import ReadSetupFile
+
+from Utils.ReadXmlFile import ReadXmlFile
 
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
-
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
+
+#TODO: remove GlobalVariables and default setup file
 
 #--------------------------- trajectory animations ---------------------------------------------------------------------------------------------
 
 def trajectoriesAnimation(what, setupFile = "setupFile",foldername = "None", targetSize = "0.05"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     if what == "CMAES":
         name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
@@ -106,7 +108,7 @@ def plotInitPos(filename, setupFile="setupFile"):
     Plots the initial position of trajectories present in the Brent directory
     '''
     plt.figure()
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     makeInitPlot(rs,filename)
     
     plt.show(block = True)
@@ -133,7 +135,7 @@ def makeVelocityData(rs,arm,name,media):
                 media.plot(index, speed, c ='red')
 
 def plotVelocityProfile(what, setupFile="setupFile", foldername = "None"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     arm = Arm()
     plt.figure(1, figsize=(16,9))
 
@@ -232,7 +234,7 @@ def plotEstimErrorOfSpeed(name, media):
             media.plot(speed,er, c ='b')
 
 def plotTrajsInRepo(setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
     plotPos(pathDataFolder+"TrajRepository/", plt, False)
     plt.xlabel("X (m)")
@@ -244,7 +246,7 @@ def plotTrajsInRepo(setupFile="setupFile"):
     plt.show(block = True)
 
 def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize = "All", plotEstim=False):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
@@ -277,7 +279,7 @@ def plotXYPositions(what, setupFile="setupFile", foldername = "None", targetSize
     plt.show(block = True)
 
 def plotXYEstimError(what, setupFile="setupFile",foldername = "None", targetSize = "All"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -310,7 +312,7 @@ def plotXYEstimError(what, setupFile="setupFile",foldername = "None", targetSize
     plt.show(block = True)
 
 def plotXYEstimErrorOfSpeed(what, setupFile="setupFile",foldername = "None", targetSize = "All"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -343,7 +345,7 @@ def plotXYEstimErrorOfSpeed(what, setupFile="setupFile",foldername = "None", tar
     plt.show(block = True)
 
 def plotArticularPositions(what, setupFile="setupFile",foldername = "None", targetSize = "0.05"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
  
     if what == "CMAES":
         name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
@@ -378,7 +380,7 @@ def plotMuscularActivations(what, setupFile="setupFile", foldername = "None", ta
               -what: get from Brent, rbfn or from cmaes controllers
 
     '''
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     if what == "CMAES":
         name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
@@ -431,7 +433,7 @@ def plotCostColorMap(what, setupFile="setupFile", foldername = "None", targetSiz
     
     Entrees:  -what: choix des donnees a afficher
     '''
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -507,7 +509,7 @@ def plotTimeColorMap(what, setupFile="setupFile", foldername = "None", targetSiz
     
     Entrees:      -what: choix des donnees a afficher
     '''
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -577,7 +579,7 @@ def plotTimeColorMap(what, setupFile="setupFile", foldername = "None", targetSiz
 #-----------------------------------------------------------------------------------------------------------
     
 def plotTimeDistanceTarget(foldername,setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
 
     dicoTime = {}
  
@@ -609,7 +611,7 @@ def plotTimeDistanceTarget(foldername,setupFile="setupFile"):
 #-----------------------------------------------------------------------------------------------------------
     
 def plotPerfSizeDist(foldername, setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     dicoCost = {}
  
     for i in range(len(rs.sizeOfTarget)):
@@ -639,7 +641,7 @@ def plotPerfSizeDist(foldername, setupFile="setupFile"):
 #-----------------------------------------------------------------------------------------------------------
             
 def plotFittsLaw(foldername, setupFile="setupFile", rbfn = False):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
 
     timeDistWidth = []
     for i in range(len(rs.sizeOfTarget)):
@@ -680,7 +682,7 @@ def plotFittsLaw(foldername, setupFile="setupFile", rbfn = False):
 # ---------------- hit dispersion ---------------------------------------
 
 def plotHitDispersion(foldername,sizeT, setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+    rs = ReadXmlFile(setupFile)
     name =  rs.CMAESpath + sizeT + "/" + foldername + "/finalX/"
     data = getLastXData(name)
 
@@ -699,8 +701,8 @@ def plotHitDispersion(foldername,sizeT, setupFile="setupFile"):
     plt.savefig("ImageBank/hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
     plt.show(block = True)
 
-def plotScattergram(what,foldername,setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+def plotScattergram(what,foldername,setupFile="setup.xml"):
+    rs = ReadXmlFile(setupFile)
     data = {}
 
     if what=="CMAES":
@@ -747,8 +749,8 @@ def plotCMAESProgress():
     plotCMAESCostProgress()
     plotCMAESTimeProgress()
 
-def plotCMAESCostProgress(setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+def plotCMAESCostProgress(setupFile="setup.xml"):
+    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
 
     for i in range(len(rs.sizeOfTarget)):
@@ -771,8 +773,8 @@ def plotCMAESCostProgress(setupFile="setupFile"):
     plt.savefig("ImageBank/costProgress.png")
     plt.show(block = True)
 
-def plotCMAESTimeProgress(setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+def plotCMAESTimeProgress(setupFile="setup.xml"):
+    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
 
     for i in range(len(rs.sizeOfTarget)):
@@ -796,8 +798,8 @@ def plotCMAESTimeProgress(setupFile="setupFile"):
     plt.savefig("ImageBank/timeProgress.png")
     plt.show(block = True)
 
-def plotExperimentSetup(setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+def plotExperimentSetup(setupFile="setup.xml"):
+    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
     arm = Arm()
     q1 = np.linspace(-0.6, 2.6, 100, True)
@@ -837,8 +839,8 @@ def plotExperimentSetup(setupFile="setupFile"):
 
 #TODO: both functions below can be much improved
 
-def plotManipulability(setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+def plotManipulability(setupFile="setup.xml"):
+    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
     arm = Arm()
     q1 = np.linspace(-0.6, 2.6, 100, True)
@@ -879,8 +881,8 @@ def plotManipulability(setupFile="setupFile"):
     plt.show(block = True)
 
 
-def plotManipulability2(setupFile="setupFile"):
-    rs = ReadSetupFile(setupFile)
+def plotManipulability2(setupFile="setup.xml"):
+    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
     arm = Arm()
     q1 = np.linspace(-0.6, 2.6, 100, True)

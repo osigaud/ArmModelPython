@@ -14,24 +14,29 @@ from pybrain.utilities           import percentError
 from pybrain.tools.shortcuts     import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules   import SoftmaxLayer
-from pybrain.structure.modules   import LinearLayer, SigmoidLayer, TanhLayer
+from pybrain.structure.modules   import LinearLayer, SigmoidLayer, TanhLayer, BiasUnit
 from pybrain.structure           import FullConnection
 from pybrain.structure           import FeedForwardNetwork
 
-from Utils.CartesianProduct import cartesian
-from Regression import *
+from Regression import regression
+
+
+layersDict={"linear" : LinearLayer, "sigmoid" : SigmoidLayer, "tanh" : TanhLayer, "softmax" : SoftmaxLayer}
 
 class NeuralNet(regression):
     
+    
+    '''
+    #depreciated
     def __init__(self, inputDim, outputDim):
-        '''
+        \'''
 	Initializes class parameters
 	
 	Input:   
 
-        '''
+        \'''
         regression.__init__(self,inputDim, outputDim)
-        #self.net = buildNetwork(inputDim, 4, 4, outputDim)
+        #self.net = buildNetwork(inputDim, outputDim)
         self.net = FeedForwardNetwork()
         inLayer = LinearLayer(inputDim)
         hiddenLayer1 = TanhLayer(10)
@@ -50,12 +55,72 @@ class NeuralNet(regression):
         self.net.addConnection(hidden2_to_out)
 
         self.net.sortModules()
-
+        self.shape=self.net.params.shape
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
+    
+    '''
+    #TODO: this constructor have to replace the older   
+    def __init__(self, rs):
+        regression.__init__(self,rs)
+        self.net = FeedForwardNetwork()
         
-
+        #input Layer
+        inLayer = layersDict[rs.inputLayer](rs.inputDim)
+        self.net.addInputModule(inLayer)
+        
+        #outputLayer
+        outLayer = layersDict[rs.outputLayer](rs.outputDim)
+        self.net.addOutputModule(outLayer)
+        
+        #no hidden Layer
+        if(len(rs.hiddenLayers)==0):
+            #connection between input and output Layer
+            in_to_out = FullConnection(inLayer, outLayer)
+            self.net.addConnection(in_to_out)
+            if(rs.bias==True):
+                bias= BiasUnit('bias')
+                self.net.addModule(bias)
+                bias_to_out = FullConnection(bias, outLayer)
+                self.net.addConnection(bias_to_out)
+        else :
+            #hidden Layers
+            hiddenLayers=[]
+            for layer in rs.hiddenLayers:
+                tmp=layersDict[layer[0]](layer[1])
+                self.net.addModule(tmp)
+                hiddenLayers.append(tmp)
+             
+            #connection between input and first hidden Layer  
+            in_to_hidden=FullConnection(inLayer,hiddenLayers[0])
+            self.net.addConnection(in_to_hidden)
+            
+            #connection between hidden Layers
+            i=1
+            for i in range(1,len(hiddenLayers)):
+                hidden_to_hidden=FullConnection(hiddenLayers[i-1],hiddenLayers[i])
+                self.net.addConnection(hidden_to_hidden)
+            
+            #connection between last hidden Layer and output Layer    
+            hidden_to_out= FullConnection(hiddenLayers[i],outLayer)
+            self.net.addConnection(hidden_to_out)     
+            
+            if(self.bias==True):
+                bias=BiasUnit('bias')
+                self.net.addModule(bias)
+                for layer in hiddenLayers :
+                    bias_to_hidden = FullConnection(bias, layer)
+                    self.net.addConnection(bias_to_hidden)
+                
+                bias_to_out = FullConnection(bias, outLayer)
+                self.net.addConnection(bias_to_out)
+        #initilisation of weight
+        self.net.sortModules()
+            
+        self.shape=self.net.params.shape
+        self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
+            
     def setTheta(self, theta):
-        self.net._setParameters(theta)
+        self.net._setParameters(theta.reshape(self.shape))
 
     def getTheta(self):
         return self.net.params
@@ -113,12 +178,12 @@ class NeuralNet(regression):
 
 def UnitTest():
     fa = NeuralNet(2,3)
-    input, output = [], []
+    myInput, output = [], []
     for i in range(10000):
         x,y = 3*random.random(), 3*random.random()
-        input.append([x,y])
+        myInput.append([x,y])
         output.append([x*y, x-y, x+y])
-    fa.getTrainingData(np.vstack(np.array(input)), np.vstack(np.array(output)))
+    fa.getTrainingData(np.vstack(np.array(myInput)), np.vstack(np.array(output)))
     fa.train()
     fa.saveTheta("test.theta")
 

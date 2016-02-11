@@ -15,19 +15,19 @@ from Regression import regression
 
 class rbfn(regression):
     
-    def __init__(self, inputDim, outputDim, numfeats):
+    def __init__(self, rs):
         '''
 	Initializes class parameters
 	
 	Input:     -nbFeature: int, number of feature in order to perform the regression
 
         '''
-        regression.__init__(self, inputDim, outputDim)
-        self.nbFeat = numfeats
+        regression.__init__(self, rs)
+        self.nbFeat = rs.numfeats
         self.theta = np.zeros((self.nbFeat, self.outputDimension))
 
     def setTheta(self, theta):
-        self.theta = theta
+        self.theta = theta.reshape((self.inputDimension, self.nbFeats**self.outputDimension))
 
     def load(self,fileName):
         self.theta = np.loadtxt(fileName+".theta")

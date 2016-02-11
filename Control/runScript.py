@@ -205,7 +205,7 @@ def chooseFunction(choix):
         elif rorc == 2:
             plotScattergram("CMAES",nameF)
     elif choix == 23:
-        name = raw_input('Name of the controller file: ')
+        name = raw_input('Name of the setup file: ')
         rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
         save = False
         rorc = int(rorc)
@@ -222,7 +222,7 @@ def chooseFunction(choix):
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         c = Chrono()
-        generateRichDataFromRBFN(nbret, name, fname)
+        generateRichDataFromRegression(nbret, name, fname)
         c.stop()
     elif choix == 26:
         nameTheta = raw_input('Name of the controller file: ')
@@ -312,7 +312,7 @@ def generateRBFNs():
 def testRBFNs():
      for i in range(3):
         c = Chrono()
-        generateFromRBFN(3, "R"+str(i), "SR"+str(i))
+        generateFromRegression(3, "R"+str(i), "SR"+str(i))
         c.stop()
 '''
      for i in range(12):

@@ -160,7 +160,7 @@ class TrajMaker:
         vectarget = [0.0, 0.0, qtarget1, qtarget2]
 
         #loop to generate next position until the target is reached 
-        while coordHand[1] < self.rs.YTarget and i < self.rs.numMaxIter:
+        while coordHand[1] < self.rs.YTarget and i < self.rs.maxStep:
             stepStore = []
             #computation of the next muscular activation vector using the controller theta
             #print ("state :",self.arm.getState())
