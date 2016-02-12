@@ -221,7 +221,8 @@ def chooseFunction(choix):
         launchCMAESForSpecificTargetSize(float(tSize),name,save)
         c.stop()
     elif choix == 24:
-        plotCMAESProgress()
+        name = raw_input('Name of the setup file: ')
+        plotCMAESProgress(name)
     elif choix == 25:
         name = raw_input('Name of the RBFN controller file: ')
         fname = raw_input('Folder where you want to save the results: ')
