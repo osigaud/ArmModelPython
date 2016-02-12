@@ -745,11 +745,11 @@ def plotScattergram(what,foldername,setupFile="setup.xml"):
         
 # ---------------- end of hit dispersion ---------------------------------------
 
-def plotCMAESProgress():
-    plotCMAESCostProgress()
-    plotCMAESTimeProgress()
+def plotCMAESProgress(setupFile):
+    plotCMAESCostProgress(setupFile)
+    plotCMAESTimeProgress(setupFile)
 
-def plotCMAESCostProgress(setupFile="setup.xml"):
+def plotCMAESCostProgress(setupFile):
     rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
 
@@ -770,7 +770,7 @@ def plotCMAESCostProgress(setupFile="setup.xml"):
 
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 
-    plt.savefig("ImageBank/costProgress.png")
+    plt.savefig("ImageBank/"+rs.thetaFile+"costProgress.png")
     plt.show(block = True)
 
 def plotCMAESTimeProgress(setupFile="setup.xml"):
