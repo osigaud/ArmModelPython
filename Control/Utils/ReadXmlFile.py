@@ -40,7 +40,7 @@ class ReadXmlFile(object):
         elif(self.regression == "RBFN"):
             self.rbfnParse(reg[0])
         self.thetaFile=reg[1].text 
-        self.path=path.abspath(reg[2].text)
+        self.path=path.abspath(path.expanduser(reg[2].text))
 
             
     def neuralNetParse(self, reg):
@@ -72,7 +72,7 @@ class ReadXmlFile(object):
         self.maxIterCmaes=int(cmaesElement[1].text)
         self.popsizeCmaes=int(cmaesElement[2].text)
         self.numberOfRepeatEachTraj=int(cmaesElement[3].text)
-        self.CMAESpath=path.abspath(cmaesElement[4].text)
+        self.CMAESpath=path.abspath(path.expanduser(cmaesElement[4].text))
         
     def targetParse(self, targetElement):
         self.sizeOfTarget = []
