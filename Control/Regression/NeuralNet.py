@@ -96,16 +96,16 @@ class NeuralNet(regression):
             self.net.addConnection(in_to_hidden)
             
             #connection between hidden Layers
-            i=1
+            i=0
             for i in range(1,len(hiddenLayers)):
                 hidden_to_hidden=FullConnection(hiddenLayers[i-1],hiddenLayers[i])
                 self.net.addConnection(hidden_to_hidden)
             
-            #connection between last hidden Layer and output Layer    
+            #connection between last hidden Layer and output Layer   
             hidden_to_out= FullConnection(hiddenLayers[i],outLayer)
             self.net.addConnection(hidden_to_out)     
             
-            if(self.bias==True):
+            if(rs.bias==True):
                 bias=BiasUnit('bias')
                 self.net.addModule(bias)
                 for layer in hiddenLayers :

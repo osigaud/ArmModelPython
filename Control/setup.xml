@@ -11,6 +11,10 @@
 		<type>linear</type>
       </inputLayer>
       <hiddenLayers>
+        <hiddenLayer>
+        	<type>linear</type>
+        	<size>10</size>
+        </hiddenLayer>
       </hiddenLayers>
       <outputLayer>
 		<type>linear</type>
@@ -19,7 +23,7 @@
       <learningrate>0.0001</learningrate>
       <momentum>0</momentum>
     </NeuralNet>
-    <thetaFile>NNtest</thetaFile>
+    <thetaFile>NN1test</thetaFile>
     <resultPath>/home/arnaud/stage/ArmModelPython/Data/NN/</resultPath>
   </regression>
   <costFunction>

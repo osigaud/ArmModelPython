@@ -46,7 +46,7 @@ class regression(object) :
         
         Input:    -fileName: name of the file where theta will be recorded
         '''
-        print(self.getTheta())
+        #print(self.getTheta())
         np.savetxt(fileName, self.getTheta())
 
     def getTrainingData(self, inputData, outputData):

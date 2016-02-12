@@ -83,7 +83,7 @@ class ReadXmlFile(object):
         
     def trajectoryParse(self, trajectoryElement):
         self.experimentFilePosIni=trajectoryElement[0].text
-        self.maxStep=int(trajectoryElement[1].text)
+        self.maxSteps=int(trajectoryElement[1].text)
         self.dt=float(trajectoryElement[2].text)
         
     def kalmanParse(self, kalmanElement):
