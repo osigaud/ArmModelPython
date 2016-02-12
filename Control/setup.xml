@@ -24,7 +24,7 @@
       <momentum>0</momentum>
     </NeuralNet>
     <thetaFile>NN1test</thetaFile>
-    <resultPath>/home/arnaud/stage/ArmModelPython/Data/NN/</resultPath>
+    <resultPath>~/stage/ArmModelPython/Data/NN/</resultPath>
   </regression>
   <costFunction>
     <gamma>0.01</gamma>
@@ -36,7 +36,7 @@
     <maxIteration>50000</maxIteration>
     <popsize>30</popsize>
     <numberRepetition>1</numberRepetition>
-    <resultPath>/home/arnaud/stage/ArmModelPython/Data/CMAES/</resultPath>
+    <resultPath>~/stage/ArmModelPython/Data/CMAES/</resultPath>
   </CMAES>
   <target>
     <sizes>
