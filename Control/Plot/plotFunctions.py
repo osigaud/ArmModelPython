@@ -275,7 +275,7 @@ def plotXYPositions(what, setupFile="setup.xml", foldername = "None", targetSize
         plt.ylabel("Y (m)")
         plt.title("XY Positions for " + what)
 
-    plt.savefig("ImageBank/"+what+'_trajectories'+foldername+'.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile++'.png', bbox_inches='tight')
     plt.show(block = True)
 
 def plotXYEstimError(what, setupFile="setup.xml",foldername = "None", targetSize = "All"):
@@ -344,29 +344,43 @@ def plotXYEstimErrorOfSpeed(what, setupFile="setup.xml",foldername = "None", tar
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
-def plotArticularPositions(what, setupFile="setup.xml",foldername = "None", targetSize = "0.05"):
+def plotArticularPositions(what, setupFile="setup.xml",foldername = "None"):
     rs = ReadXmlFile(setupFile)
  
     if what == "CMAES":
-        name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
-    elif what == "Brent":
-        name = BrentTrajectoriesFolder
-    else:
-        name = rs.path + foldername + "/Log/"
-
-    state = getStateData(name)
-
-    plt.figure(1, figsize=(16,9))
-    for k,v in state.items():
-        if rd.random()<0.06 or what != "Brent":
-            Q1, Q2 = [], []
-            for j in range(len(v)):
-                Q1.append(v[j][2])
-                Q2.append(v[j][3])
-            plt.plot(Q1,Q2, c ='b')
-    plt.xlabel("Q1 (rad)")
-    plt.ylabel("Q2 (rad)")
-    plt.title("Articular positions for " + what)
+        for i in range(len(rs.sizeOfTarget)):
+            ax = plt.subplot2grid((2,2), (i/2,i%2))
+            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            state = getStateData(name)
+            for k,v in state.items():
+                Q1, Q2 = [], []
+                for j in range(len(v)):
+                    Q1.append(v[j][2])
+                    Q2.append(v[j][3])
+                ax.plot(Q1,Q2, c ='b')
+            ax.set_xlabel("Q1 (rad)")
+            ax.set_ylabel("Q2 (rad)")
+            ax.set_title("Articular positions for " + str(rs.sizeOfTarget[i]))
+    else :
+        if what == "Brent":
+            name = BrentTrajectoriesFolder
+        else:
+            name = rs.path + foldername + "/Log/"
+    
+        state = getStateData(name)
+    
+        plt.figure(1, figsize=(16,9))
+        for k,v in state.items():
+            if rd.random()<0.06 or what != "Brent":
+                Q1, Q2 = [], []
+                for j in range(len(v)):
+                    Q1.append(v[j][2])
+                    Q2.append(v[j][3])
+                plt.plot(Q1,Q2, c ='b')
+        plt.xlabel("Q1 (rad)")
+        plt.ylabel("Q2 (rad)")
+        plt.title("Articular positions for " + what)
+        
     plt.savefig("ImageBank/"+what+'_articular'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 

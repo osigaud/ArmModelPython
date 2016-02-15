@@ -63,7 +63,7 @@ class rbfn(regression):
         widthConstant = 2.0*rangeForEachDim / self.nbFeat
         #create the diagonal matrix of sigmas to compute the gaussian
         self.widths = np.diag(widthConstant)
-         #coef for Gaussian features
+        #coef for Gaussian features
         self.norma = 1/np.sqrt(((2*np.pi)**self.inputDimension)*np.linalg.det(self.widths))
         #print ("RBFN : constante de normalisation : ", self.norma)
         self.invcovar = np.linalg.pinv(self.widths)
@@ -76,9 +76,9 @@ class rbfn(regression):
         self.nbFeatures = len(self.centersInEachDimensions)
         print("nbfeatures:", self.nbFeatures)
         
-    def train(self, lamb=None):
-        if(lamb==None): self.train_rbfn()
-        else : self.train_reg_rbfn(lamb)
+    def train(self):
+        if(self.rs.lamb==None): self.train_rbfn()
+        else : self.train_reg_rbfn(self.rs.lamb)
 
     def train_rbfn(self):
         '''
@@ -89,7 +89,7 @@ class rbfn(regression):
         for i in range(self.outputDimension):
             K = []
             for val in self.inputData:
-                 K.append(self.computeAllWeights(val))
+                K.append(self.computeAllWeights(val))
             Kmat = np.matrix(K).T
             A = np.dot(Kmat, Kmat.T)
             #inv = np.linalg.pinv(A)
@@ -107,7 +107,7 @@ class rbfn(regression):
         for i in range(self.outputDimension):
             K = []
             for val in self.inputData:
-                 K.append(self.computeAllWeights(val))
+                K.append(self.computeAllWeights(val))
             Kmat = np.matrix(K).T
             A = np.dot(Kmat, Kmat.T)
             B = lamb*np.identity(np.shape(A)[0])
@@ -162,7 +162,13 @@ class rbfn(regression):
             output.append(np.dot(tmp, self.theta[i]))
         return output
 
-
+    def getTrainingData(self, inputData, outputData):
+        super().getTrainingData(self, inputData, outputData)
+        if(self.rs.fromStruct == True):
+            self.initFromExistingStruct(self.rs.path+self.rs.thetaFile+".struct")
+        else:
+            self.initFromData(self.rs.path+self.rs.thetaFile+".struct")
+    
     def initFromData(self,name):
         self.saveFeatures(name)
         self.setCentersAndWidths()    
@@ -173,12 +179,12 @@ class rbfn(regression):
 
 def UnitTest():
     fa = rbfn(3,2,3)
-    input, output = [], []
+    myInput, output = [], []
     for i in range(10000):
         x,y = random.random(), random.random()
-        input.append([x,y])
+        myInput.append([x,y])
         output.append([x*y, x-y, x+y])
-    fa.getTrainingData(np.vstack(np.array(input)), np.vstack(np.array(output)))
+    fa.getTrainingData(np.vstack(np.array(myInput)), np.vstack(np.array(output)))
     fa.saveFeatures("test.struct")
     fa.setCentersAndWidths()
     fa.train_rbfn()

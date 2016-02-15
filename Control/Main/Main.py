@@ -32,7 +32,7 @@ def copyRegressiontoCMAES(rs, name, size):
         copyfile(savenamestruct, cmaname + name + ".struct")
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
-    os.system("rm "+foldername+"Log/*.log")
+    os.system("rm "+foldername+"Log/*.log 2>/dev/null")
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost, time = exp.runTrajectoriesForResultsGeneration(repeat)
     print("Average cost: ", cost)

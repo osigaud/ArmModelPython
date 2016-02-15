@@ -155,8 +155,9 @@ def chooseFunction(choix):
         nbret = int(nbret)
         generateFromCMAES(nbret, fileName, nameTheta, name)
     elif choix == 13:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotVelocityProfile("CMAES",nameF)
+        plotVelocityProfile("CMAES",fileName,nameF)
     elif choix == 14:
         fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
@@ -165,50 +166,57 @@ def chooseFunction(choix):
         if rorc == 1:
             plotXYPositions("CMAES",fileName, nameF,"All",False)
         else:
-            tSize = raw_input('Target Size: ')
-            plotArticularPositions("CMAES",fileName, nameF,tSize)
+            plotArticularPositions("CMAES",fileName, nameF)
     elif choix == 15:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         tSize = raw_input('Target Size: ')
-        plotMuscularActivations("CMAES",nameF,tSize)
+        plotMuscularActivations("CMAES",fileName,nameF,tSize)
     elif choix == 16:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         #tSize = raw_input('Target Size: ')
         #plotCostColorMap("CMAES",nameF,tSize)
-        plotCostColorMap("CMAES",nameF)
+        plotCostColorMap("CMAES",fileName, nameF)
     elif choix == 17:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotTimeDistanceTarget(nameF)
+        plotTimeDistanceTarget(nameF, fileName)
     elif choix == 18:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotPerfSizeDist(nameF)
+        plotPerfSizeDist(nameF, fileName)
     elif choix == 19:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotFittsLaw(nameF)
+        plotFittsLaw(nameF, fileName)
     elif choix == 20:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotTimeColorMap("CMAES",nameF)
+        plotTimeColorMap("CMAES",fileName, nameF)
     elif choix == 21:
-        rorc = input("enter 0 if Brent, 1 if RBFN or 2 if CMAES results: ")
+        fileName = raw_input('Name of file to load setup : ')
+        rorc = input("enter 0 if Brent, 1 if Regression or 2 if CMAES results: ")
         rorc = int(rorc)
         if rorc == 0:
-            trajectoriesAnimation("Brent")
+            trajectoriesAnimation("Brent", fileName)
         elif rorc == 1:
             nameF = raw_input('Folder where the results are saved: ')
-            trajectoriesAnimation("RBFN",nameF)
+            trajectoriesAnimation("RBFN",fileName, nameF)
         elif rorc == 2:
             nameF = raw_input('Folder where the results are saved: ')
             tSize = raw_input('Target Size: ')
-            trajectoriesAnimation("CMAES",nameF, tSize)
+            trajectoriesAnimation("CMAES",fileName, nameF, tSize)
     elif choix == 22:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if RBFN or 2 if CMAES results: ")
         #plotHitDispersion(nameF,"0.05")
         rorc = int(rorc)
         if rorc == 1:
-            plotScattergram("RBFN",nameF)
+            plotScattergram("RBFN",nameF, fileName)
         elif rorc == 2:
-            plotScattergram("CMAES",nameF)
+            plotScattergram("CMAES",nameF, fileName)
     elif choix == 23:
         name = raw_input('Name of the setup file: ')
         rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
@@ -224,34 +232,41 @@ def chooseFunction(choix):
         name = raw_input('Name of the setup file: ')
         plotCMAESProgress(name)
     elif choix == 25:
-        name = raw_input('Name of the RBFN controller file: ')
+        fileName = raw_input('Name of file to load setup : ')
+        name = raw_input('Name of the Regression controller file: ')
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         c = Chrono()
-        generateRichDataFromRegression(nbret, name, fname)
+        generateRichDataFromRegression(nbret,fileName, name, fname)
         c.stop()
     elif choix == 26:
+        fileName = raw_input('Name of file to load setup : ')
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
         c = Chrono()
-        generateRichDataFromCMAES(nbret, nameTheta, name)
+        generateRichDataFromCMAES(nbret,fileName, nameTheta, name)
         c.stop()
     elif choix == 27:
         plotTrajsInRepo()
     elif choix == 30:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimError("CMAES",nameF,"All")
+        plotXYEstimError("CMAES",fileName,nameF,"All")
     elif choix == 31:
+        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimErrorOfSpeed("CMAES",nameF,"All")
+        plotXYEstimErrorOfSpeed("CMAES",fileName,nameF,"All")
     elif choix == 32:
-        plotExperimentSetup()
+        fileName = raw_input('Name of file to load setup : ')
+        plotExperimentSetup(fileName)
     elif choix == 33:
-        plotManipulability()
+        fileName = raw_input('Name of file to load setup : ')
+        plotManipulability(fileName)
     elif choix == 34:
-        plotManipulability2()
+        fileName = raw_input('Name of file to load setup : ')
+        plotManipulability2(fileName)
 
 def setPosCircu15():
     rs=ReadSetupFile()

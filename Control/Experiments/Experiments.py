@@ -7,7 +7,7 @@ Module: Experiments
 
 Description: Class used to generate all the trajectories of the experimental setup and also used for CMAES optimization
 '''
-import os
+
 
 import numpy as np
 
@@ -17,20 +17,7 @@ from Utils.Chrono import Chrono
 from GlobalVariables import pathDataFolder
 
 from TrajMaker import TrajMaker
-
-def checkIfFolderExists(name):
-    if not os.path.isdir(name):
-        os.makedirs(name)
-
-def findDataFilename(foldername, name, extension):
-    i = 1
-    checkIfFolderExists(foldername)
-    tryName = name + "1" + extension
-    while tryName in os.listdir(foldername):
-        i += 1
-        tryName = name + str(i) + extension
-    filename = foldername + tryName
-    return filename
+from Utils.FileWritting import checkIfFolderExists, findDataFilename
 
 #------------------------------------------------------------------------------
 

@@ -9,6 +9,7 @@
     <RBFN>
       <nbFeatures>3</nbFeatures>
       <lambda>0.00001</lambda>
+      <fromStruct>no</fromStruct>
     </RBFN>
     <thetaFile>NNtest</thetaFile>
     <resultPath>/home/arnaud/stage/ArmModelPython/Data/RBFN/</resultPath>

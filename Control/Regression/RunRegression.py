@@ -37,8 +37,8 @@ def initController(rs,fileName):
     fa.load(fileName)
     return fa
 
-#TODO: put fromStruct in xml file, and take care of that in RBFN
-def run(fileName, fromStruct=None):
+
+def run(fileName):
     ''' 
     Takes the Brent trajectories as input, shuffles them, and then runs the NN regression algorithm
     '''
@@ -48,7 +48,7 @@ def run(fileName, fromStruct=None):
     #print ("old:", stateAll[0])
 
     #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "Brent/", 0.1, rs.det))
-    stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.01, rs.det)
+    stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.1, rs.det)
     print("RunRegression L52")
     #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
     #print ("len:", len(commandAll[0]))
@@ -65,18 +65,10 @@ def run(fileName, fromStruct=None):
 
     print("nombre d'echantillons: ", len(stateAll))
     
-    if(rs.regression=="RBFN"):
-        fa = rbfn(rs)
-        fa.getTrainingData(stateAll, commandAll)
-        if(fromStruct == True):
-            fa.initFromExistingStruct(rs.path+rs.thetaFile+".struct")
-        else:
-            fa.initFromData(rs.path+rs.thetaFile+".struct")
-        fa.train(rs.lamb)
-    else :
-        fa = NeuralNet(rs)
-        fa.getTrainingData(stateAll, commandAll)
-        fa.train()
+
+    fa = NeuralNet(rs)
+    fa.getTrainingData(stateAll, commandAll)
+    fa.train()
     fa.saveTheta(rs.path+ rs.thetaFile+".theta")
 
 def test(fa, state):

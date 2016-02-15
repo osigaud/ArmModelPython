@@ -11,6 +11,7 @@ Description: read a setup xml file
 
 from lxml import etree
 from os import path
+import math
 
 class ReadXmlFile(object):
     def __init__(self, xmlFile):
@@ -44,34 +45,37 @@ class ReadXmlFile(object):
 
             
     def neuralNetParse(self, reg):
-        inputLayer=reg[0]
-        hiddenLayers=reg[1]
-        outputLayer=reg[2]
+        inputLayer   = reg[0]
+        hiddenLayers = reg[1]
+        outputLayer  = reg[2]
+        
         self.bias=reg[3].text=="yes"
-        self.learningRate=float(reg[4].text)
-        self.momentum=float(reg[5].text)
+        
+        self.learningRate =float(reg[4].text)
+        self.momentum     =float(reg[5].text)
 
         
-        self.inputLayer = inputLayer[0].text
+        self.inputLayer  = inputLayer[0] .text
         self.outputLayer = outputLayer[0].text
         self.hiddenLayers=[]
         for layer in hiddenLayers :
             self.hiddenLayers.append((layer[0].text, int(layer[1].text)))
             
     def rbfnParse(self, rbfnElement):
-        self.numfeats = int(rbfnElement[0].text)
-        self.lamb     = float(rbfnElement[1].text)
+        self.numfeats   = int  (rbfnElement[0].text)
+        self.lamb       = float(rbfnElement[1].text)
+        self.fromStruct = rbfnElement[2].text == "yes"
         
     def costFunctionParse(self, cf):
         self.gammaCF=float(cf[0].text)
-        self.rhoCF=float(cf[1].text)
-        self.upsCF=float(cf[2].text)
+        self.rhoCF  =float(cf[1].text)
+        self.upsCF  =float(cf[2].text)
         
     def CMAESParse(self, cmaesElement):
-        self.sigmaCmaes=float(cmaesElement[0].text)
-        self.maxIterCmaes=int(cmaesElement[1].text)
-        self.popsizeCmaes=int(cmaesElement[2].text)
-        self.numberOfRepeatEachTraj=int(cmaesElement[3].text)
+        self.sigmaCmaes             =float(cmaesElement[0].text)
+        self.maxIterCmaes           =int  (cmaesElement[1].text)
+        self.popsizeCmaes           =int  (cmaesElement[2].text)
+        self.numberOfRepeatEachTraj =int  (cmaesElement[3].text)
         self.CMAESpath=path.abspath(path.expanduser(cmaesElement[4].text))+"/"
         
     def targetParse(self, targetElement):
@@ -91,5 +95,7 @@ class ReadXmlFile(object):
         
     def plotParse(self, plotElement):
         self.period=float(plotElement[0].text)
-        
+      
+    def getDistanceToTarget(self, x, y):
+        return math.sqrt((x - self.XTarget)**2 + (y - self.YTarget)**2) 
      
