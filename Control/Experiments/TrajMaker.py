@@ -8,34 +8,21 @@ Module: TrajMaker
 Description: Class to generate a trajectory
 '''
 import numpy as np
-import os
 
 
 from Utils.CreateVectorUtil import createVector
 from ArmModel.Arm import Arm, getDotQAndQFromStateVector
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
-
+from Utils.FileWritting import findDataFilename
 
 from Regression.RunRegression import initController
 
 from StateEstimator import StateEstimator
 
 
-def checkFolder(name):
-    if not os.path.isdir(name):
-        os.makedirs(name)
 
-def findFilename(foldername, name, extension):
-    i = 1
-    checkFolder(foldername)
-    tryName = name + "1" + extension
-    while tryName in os.listdir(foldername):
-        i += 1
-        tryName = name + str(i) + extension
-    filename = foldername + tryName
-    return filename
 
-#------------------------------------------------------------------------
+
 
 class TrajMaker:
     
@@ -231,7 +218,7 @@ class TrajMaker:
         cost += self.computeFinalReward(t,coordHand)
 
         if self.saveTraj == True:
-            filename = findFilename(foldername+"Log/","traj",".log")
+            filename = findDataFilename(foldername+"Log/","traj",".log")
             np.savetxt(filename,dataStore)
             '''
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget and i<230:

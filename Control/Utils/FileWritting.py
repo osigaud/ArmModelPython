@@ -5,7 +5,7 @@ Created on 15 févr. 2016
 
 @author: arnaud
 '''
-
+from shutil import copyfile
 import os
 
 def checkIfFolderExists(name):
@@ -21,3 +21,13 @@ def findDataFilename(foldername, name, extension):
         tryName = name + str(i) + extension
     filename = foldername + tryName
     return filename
+
+def copyRegressiontoCMAES(rs, name, size):
+    cmaname =  rs.CMAESpath + str(size) + "/"
+    checkIfFolderExists(cmaname)
+    savenametheta = rs.path + name + ".theta"
+    copyfile(savenametheta, cmaname + name + ".theta")
+    
+    if(rs.regression=="RBFN"):
+        savenamestruct = rs.path + name + ".struct"
+        copyfile(savenamestruct, cmaname + name + ".struct")

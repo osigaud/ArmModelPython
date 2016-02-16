@@ -19,7 +19,8 @@ from Utils.ReadXmlFile import ReadXmlFile
 from Utils.Chrono import Chrono
 
 from ArmModel.Arm import Arm
-from Experiments.Experiments import Experiments, checkIfFolderExists
+from Experiments.Experiments import Experiments
+from Utils.FileWritting import checkIfFolderExists
 
 def copyRegressiontoCMAES(rs, name, size):
     cmaname =  rs.CMAESpath + str(size) + "/"

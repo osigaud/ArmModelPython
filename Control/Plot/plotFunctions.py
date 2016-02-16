@@ -275,7 +275,7 @@ def plotXYPositions(what, setupFile="setup.xml", foldername = "None", targetSize
         plt.ylabel("Y (m)")
         plt.title("XY Positions for " + what)
 
-    plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile++'.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 def plotXYEstimError(what, setupFile="setup.xml",foldername = "None", targetSize = "All"):

@@ -68,21 +68,22 @@ def printMainMenu():
 
 def runChoice():
     checkL = True
+    fileName = raw_input('Name of file to load setup : ')
     while checkL:
         try:
             printMainMenu()
             choix = input('Enter the number corresponding to the script you want to run: ')
             choix = int(choix)
-            checkL = False
+            chooseFunction(choix, fileName)
         except NameError:
             print("Enter a number.")
-    chooseFunction(choix)
+    
 
 def runAuto():
     for choix in range(21):
         chooseFunction(choix)
 
-def chooseFunction(choix):
+def chooseFunction(choix, fileName):
     if choix == 1:
         plotVelocityProfile("Brent")
     elif choix == 2:
@@ -94,24 +95,20 @@ def chooseFunction(choix):
 
 #------------------------------------------- RBFN
     elif choix == 5:
-        fileName = raw_input('Name of file to load setup : ')
         c = Chrono()
 #        run(name,True)
         run(fileName,False)
         c.stop()
     elif choix == 6:
-        fileName = raw_input('Name of file to load setup : ')
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         c = Chrono()
         generateFromRegression(nbret, fileName, fname)
         c.stop()
     elif choix == 7:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotVelocityProfile("Regression",fileName, nameF)
     elif choix == 8:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
@@ -120,19 +117,15 @@ def chooseFunction(choix):
         else:
             plotArticularPositions("Regression",fileName, nameF)
     elif choix == 9:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotMuscularActivations("Regression",fileName, nameF)
     elif choix == 10:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotCostColorMap("Regression", fileName, nameF)
     elif choix == 28:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotXYEstimError("Regression", fileName, nameF,"All")
     elif choix == 29:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotXYEstimErrorOfSpeed("Regression", fileName, nameF,"All")
 
@@ -148,18 +141,15 @@ def chooseFunction(choix):
         launchCMAESForAllTargetSizes(fileName,save)
         c.stop()
     elif choix == 12:
-        fileName = raw_input('Name of file to load setup : ')
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
         generateFromCMAES(nbret, fileName, nameTheta, name)
     elif choix == 13:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotVelocityProfile("CMAES",fileName,nameF)
     elif choix == 14:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
@@ -168,34 +158,27 @@ def chooseFunction(choix):
         else:
             plotArticularPositions("CMAES",fileName, nameF)
     elif choix == 15:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         tSize = raw_input('Target Size: ')
         plotMuscularActivations("CMAES",fileName,nameF,tSize)
     elif choix == 16:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         #tSize = raw_input('Target Size: ')
         #plotCostColorMap("CMAES",nameF,tSize)
         plotCostColorMap("CMAES",fileName, nameF)
     elif choix == 17:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotTimeDistanceTarget(nameF, fileName)
     elif choix == 18:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotPerfSizeDist(nameF, fileName)
     elif choix == 19:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotFittsLaw(nameF, fileName)
     elif choix == 20:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotTimeColorMap("CMAES",fileName, nameF)
     elif choix == 21:
-        fileName = raw_input('Name of file to load setup : ')
         rorc = input("enter 0 if Brent, 1 if Regression or 2 if CMAES results: ")
         rorc = int(rorc)
         if rorc == 0:
@@ -208,7 +191,6 @@ def chooseFunction(choix):
             tSize = raw_input('Target Size: ')
             trajectoriesAnimation("CMAES",fileName, nameF, tSize)
     elif choix == 22:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if RBFN or 2 if CMAES results: ")
         #plotHitDispersion(nameF,"0.05")
@@ -218,7 +200,6 @@ def chooseFunction(choix):
         elif rorc == 2:
             plotScattergram("CMAES",nameF, fileName)
     elif choix == 23:
-        name = raw_input('Name of the setup file: ')
         rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
         save = False
         rorc = int(rorc)
@@ -226,13 +207,11 @@ def chooseFunction(choix):
             save = True
         tSize = raw_input('Target Size: ')
         c = Chrono()
-        launchCMAESForSpecificTargetSize(float(tSize),name,save)
+        launchCMAESForSpecificTargetSize(float(tSize),fileName,save)
         c.stop()
     elif choix == 24:
-        name = raw_input('Name of the setup file: ')
-        plotCMAESProgress(name)
+        plotCMAESProgress(fileName)
     elif choix == 25:
-        fileName = raw_input('Name of file to load setup : ')
         name = raw_input('Name of the Regression controller file: ')
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
@@ -240,7 +219,6 @@ def chooseFunction(choix):
         generateRichDataFromRegression(nbret,fileName, name, fname)
         c.stop()
     elif choix == 26:
-        fileName = raw_input('Name of file to load setup : ')
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
@@ -251,21 +229,16 @@ def chooseFunction(choix):
     elif choix == 27:
         plotTrajsInRepo()
     elif choix == 30:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotXYEstimError("CMAES",fileName,nameF,"All")
     elif choix == 31:
-        fileName = raw_input('Name of file to load setup : ')
         nameF = raw_input('Folder where the results are saved: ')
         plotXYEstimErrorOfSpeed("CMAES",fileName,nameF,"All")
     elif choix == 32:
-        fileName = raw_input('Name of file to load setup : ')
         plotExperimentSetup(fileName)
     elif choix == 33:
-        fileName = raw_input('Name of file to load setup : ')
         plotManipulability(fileName)
     elif choix == 34:
-        fileName = raw_input('Name of file to load setup : ')
         plotManipulability2(fileName)
 
 def setPosCircu15():
