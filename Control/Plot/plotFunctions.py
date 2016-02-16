@@ -252,6 +252,7 @@ def plotXYPositions(what, setupFile="setup.xml", foldername = "None", targetSize
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            ax.plot([rs.XTarget-rs.sizeOfTarget[i]/2, rs.XTarget+rs.sizeOfTarget[i]/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
             plotPos(name, ax, plotEstim)
 
             #makeInitPlot(rs)
