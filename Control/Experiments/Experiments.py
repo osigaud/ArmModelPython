@@ -17,7 +17,7 @@ from Utils.Chrono import Chrono
 from GlobalVariables import pathDataFolder
 
 from TrajMaker import TrajMaker
-from Utils.FileWritting import checkIfFolderExists, findDataFilename, writeNumpy
+from Utils.FileWritting import checkIfFolderExists, findDataFilename, writeArray
 
 #------------------------------------------------------------------------------
 
@@ -69,9 +69,9 @@ class Experiments:
         np.savetxt(filenameTime, self.trajTimeStore)
         np.savetxt(filenameX, self.lastCoord)
         '''
-        writeNumpy(self.costStore,self.foldername+"Cost/","traj",".cost")
-        writeNumpy(self.trajTimeStore, self.foldername+"TrajTime/","traj",".time")
-        writeNumpy(self.lastCoord, self.foldername+"finalX/","x",".last")
+        writeArray(self.costStore,self.foldername+"Cost/","traj",".cost")
+        writeArray(self.trajTimeStore, self.foldername+"TrajTime/","traj",".time")
+        writeArray(self.lastCoord, self.foldername+"finalX/","x",".last")
          
     def runOneTrajectory(self, x, y):
         #self.tm.saveTraj = True
