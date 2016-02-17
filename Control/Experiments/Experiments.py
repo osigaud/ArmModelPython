@@ -60,10 +60,15 @@ class Experiments:
         self.theta=theta
         self.tm.setTheta(self.theta)
 
-    def saveCost(self): 
+    def saveCost(self):
+        ''' 
         filename = findDataFilename(self.foldername+"Cost/","traj",".cost")
         filenameTime = findDataFilename(self.foldername+"TrajTime/","traj",".time")
         filenameX = findDataFilename(self.foldername+"finalX/","x",".last")
+        '''
+        filename=self.foldername+"Cost/traj.cost"
+        filenameTime=self.foldername+"TrajTime/traj.time"
+        filenameX=self.foldername+"finalX/x.cost"
         np.savetxt(filename, self.costStore)
         np.savetxt(filenameTime, self.trajTimeStore)
         np.savetxt(filenameX, self.lastCoord)
