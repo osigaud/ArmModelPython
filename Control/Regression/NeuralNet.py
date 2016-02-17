@@ -12,14 +12,14 @@ import numpy as np
 from pybrain.datasets            import SupervisedDataSet
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules   import SoftmaxLayer
-from pybrain.structure.modules   import LinearLayer, SigmoidLayer, TanhLayer, BiasUnit
+from pybrain.structure.modules   import LinearLayer, SigmoidLayer, TanhLayer, BiasUnit, ReluLayer
 from pybrain.structure           import FullConnection
 from pybrain.structure           import FeedForwardNetwork
 
 from Regression import regression
 
 
-layersDict={"linear" : LinearLayer, "sigmoid" : SigmoidLayer, "tanh" : TanhLayer, "softmax" : SoftmaxLayer}
+layersDict={"linear" : LinearLayer, "sigmoid" : SigmoidLayer, "tanh" : TanhLayer, "softmax" : SoftmaxLayer, "relu" : ReluLayer}
 
 class NeuralNet(regression):
     
