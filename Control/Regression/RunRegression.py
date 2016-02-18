@@ -38,11 +38,10 @@ def initController(rs,fileName):
     return fa
 
 
-def run(fileName):
+def run(rs):
     ''' 
     Takes the Brent trajectories as input, shuffles them, and then runs the NN regression algorithm
     '''
-    rs = ReadXmlFile(fileName)
     #state, command = getStateAndCommandData(BrentTrajectoriesFolder)
     #stateAll, commandAll = dicToArray(state), dicToArray(command)
     #print ("old:", stateAll[0])

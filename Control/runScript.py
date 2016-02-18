@@ -19,7 +19,7 @@ from Regression.Regression import UnitTest
 from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 
 from Utils.Chrono import Chrono
-from Utils.ReadSetupFile import ReadSetupFile
+from Utils.ReadXmlFile import ReadXmlFile
 from GlobalVariables import pathDataFolder
 
 #----------------------------- main list of available actions ----------------------------------------------------------------------
@@ -69,21 +69,20 @@ def printMainMenu():
 def runChoice():
     checkL = True
     fileName = raw_input('Name of file to load setup : ')
+    rs = ReadXmlFile(fileName)
     while checkL:
-        try:
-            printMainMenu()
-            choix = input('Enter the number corresponding to the script you want to run: ')
-            choix = int(choix)
-            chooseFunction(choix, fileName)
-        except NameError:
-            print("Enter a number.")
+        printMainMenu()
+        choix = input('Enter the number corresponding to the script you want to run: ')
+        choix = int(choix)
+        if(chooseFunction(choix, rs)==0): break
+
     
 
 def runAuto():
     for choix in range(21):
         chooseFunction(choix)
 
-def chooseFunction(choix, fileName):
+def chooseFunction(choix, rs):
     if choix == 1:
         plotVelocityProfile("Brent")
     elif choix == 2:
@@ -97,37 +96,37 @@ def chooseFunction(choix, fileName):
     elif choix == 5:
         c = Chrono()
 #        run(name,True)
-        run(fileName,False)
+        run(rs)
         c.stop()
     elif choix == 6:
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         c = Chrono()
-        generateFromRegression(nbret, fileName, fname)
+        generateFromRegression(nbret, rs, fname)
         c.stop()
     elif choix == 7:
         nameF = raw_input('Folder where the results are saved: ')
-        plotVelocityProfile("Regression",fileName, nameF)
+        plotVelocityProfile("Regression",rs, nameF)
     elif choix == 8:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
-            plotXYPositions("Regression", fileName, nameF,"All",True)#False)#
+            plotXYPositions("Regression", rs, nameF,"All",True)#False)#
         else:
-            plotArticularPositions("Regression",fileName, nameF)
+            plotArticularPositions("Regression",rs, nameF)
     elif choix == 9:
         nameF = raw_input('Folder where the results are saved: ')
-        plotMuscularActivations("Regression",fileName, nameF)
+        plotMuscularActivations("Regression",rs, nameF)
     elif choix == 10:
         nameF = raw_input('Folder where the results are saved: ')
-        plotCostColorMap("Regression", fileName, nameF)
+        plotCostColorMap("Regression", rs, nameF)
     elif choix == 28:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimError("Regression", fileName, nameF,"All")
+        plotXYEstimError("Regression", rs, nameF,"All")
     elif choix == 29:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimErrorOfSpeed("Regression", fileName, nameF,"All")
+        plotXYEstimErrorOfSpeed("Regression", rs, nameF,"All")
 
 #------------------------------------------- CMAES
     elif choix == 11:
@@ -136,69 +135,68 @@ def chooseFunction(choix, fileName):
         rorc = int(rorc)
         if rorc == 1:
             save = True
-        fileName = raw_input('Name of file to load setup : ')
         c = Chrono()
-        launchCMAESForAllTargetSizes(fileName,save)
+        launchCMAESForAllTargetSizes(rs,save)
         c.stop()
     elif choix == 12:
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
-        generateFromCMAES(nbret, fileName, nameTheta, name)
+        generateFromCMAES(nbret, rs, nameTheta, name)
     elif choix == 13:
         nameF = raw_input('Folder where the results are saved: ')
-        plotVelocityProfile("CMAES",fileName,nameF)
+        plotVelocityProfile("CMAES",rs,nameF)
     elif choix == 14:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
-            plotXYPositions("CMAES",fileName, nameF,"All",False)
+            plotXYPositions("CMAES",rs, nameF,"All",False)
         else:
-            plotArticularPositions("CMAES",fileName, nameF)
+            plotArticularPositions("CMAES",rs, nameF)
     elif choix == 15:
         nameF = raw_input('Folder where the results are saved: ')
         tSize = raw_input('Target Size: ')
-        plotMuscularActivations("CMAES",fileName,nameF,tSize)
+        plotMuscularActivations("CMAES",rs,nameF,tSize)
     elif choix == 16:
         nameF = raw_input('Folder where the results are saved: ')
         #tSize = raw_input('Target Size: ')
         #plotCostColorMap("CMAES",nameF,tSize)
-        plotCostColorMap("CMAES",fileName, nameF)
+        plotCostColorMap("CMAES",rs, nameF)
     elif choix == 17:
         nameF = raw_input('Folder where the results are saved: ')
-        plotTimeDistanceTarget(nameF, fileName)
+        plotTimeDistanceTarget(nameF, rs)
     elif choix == 18:
         nameF = raw_input('Folder where the results are saved: ')
-        plotPerfSizeDist(nameF, fileName)
+        plotPerfSizeDist(nameF, rs)
     elif choix == 19:
         nameF = raw_input('Folder where the results are saved: ')
-        plotFittsLaw(nameF, fileName)
+        plotFittsLaw(nameF, rs)
     elif choix == 20:
         nameF = raw_input('Folder where the results are saved: ')
-        plotTimeColorMap("CMAES",fileName, nameF)
+        plotTimeColorMap("CMAES",rs, nameF)
     elif choix == 21:
         rorc = input("enter 0 if Brent, 1 if Regression or 2 if CMAES results: ")
         rorc = int(rorc)
         if rorc == 0:
-            trajectoriesAnimation("Brent", fileName)
+            trajectoriesAnimation("Brent", rs)
         elif rorc == 1:
             nameF = raw_input('Folder where the results are saved: ')
-            trajectoriesAnimation("RBFN",fileName, nameF)
+            trajectoriesAnimation("RBFN",rs, nameF)
         elif rorc == 2:
             nameF = raw_input('Folder where the results are saved: ')
             tSize = raw_input('Target Size: ')
-            trajectoriesAnimation("CMAES",fileName, nameF, tSize)
+            trajectoriesAnimation("CMAES",rs, nameF, tSize)
     elif choix == 22:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if RBFN or 2 if CMAES results: ")
         #plotHitDispersion(nameF,"0.05")
         rorc = int(rorc)
         if rorc == 1:
-            plotScattergram("RBFN",nameF, fileName)
+            plotScattergram("RBFN",nameF, rs)
         elif rorc == 2:
-            plotScattergram("CMAES",nameF, fileName)
+            plotScattergram("CMAES",nameF, rs)
     elif choix == 23:
         rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
         save = False
@@ -207,16 +205,16 @@ def chooseFunction(choix, fileName):
             save = True
         tSize = raw_input('Target Size: ')
         c = Chrono()
-        launchCMAESForSpecificTargetSize(float(tSize),fileName,save)
+        launchCMAESForSpecificTargetSize(float(tSize),rs,save)
         c.stop()
     elif choix == 24:
-        plotCMAESProgress(fileName)
+        plotCMAESProgress(rs)
     elif choix == 25:
         name = raw_input('Name of the Regression controller file: ')
         fname = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         c = Chrono()
-        generateRichDataFromRegression(nbret,fileName, name, fname)
+        generateRichDataFromRegression(nbret,rs, name, fname)
         c.stop()
     elif choix == 26:
         nameTheta = raw_input('Name of the controller file: ')
@@ -224,25 +222,37 @@ def chooseFunction(choix, fileName):
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
         c = Chrono()
-        generateRichDataFromCMAES(nbret,fileName, nameTheta, name)
+        generateRichDataFromCMAES(nbret,rs, nameTheta, name)
         c.stop()
     elif choix == 27:
         plotTrajsInRepo()
     elif choix == 30:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimError("CMAES",fileName,nameF,"All")
+        plotXYEstimError("CMAES",rs,nameF,"All")
     elif choix == 31:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimErrorOfSpeed("CMAES",fileName,nameF,"All")
+        plotXYEstimErrorOfSpeed("CMAES",rs,nameF,"All")
     elif choix == 32:
-        plotExperimentSetup(fileName)
+        plotExperimentSetup(rs)
     elif choix == 33:
-        plotManipulability(fileName)
+        plotManipulability(rs)
     elif choix == 34:
-        plotManipulability2(fileName)
+        plotManipulability2(rs)
+    else :
+        return 0
+    return 1
 
+
+def setPosCircu1():
+    rs=ReadXmlFile("setup.xml")
+    filename = pathDataFolder + "PosCircu1"
+    data = []
+    point = [rs.XTarget+ (0.1+3*0.1)*np.cos(-3*np.pi/12-np.pi/4), rs.YTarget+ (0.1+3*0.1)*np.sin(-3*np.pi/12-np.pi/4)]
+    data.append(point)
+    np.savetxt(filename,data)
+    
 def setPosCircu15():
-    rs=ReadSetupFile()
+    rs=ReadXmlFile("setup.xml")
     filename = pathDataFolder + "PosCircu15"
     data = []
     for i in range(3):
@@ -258,7 +268,7 @@ def setPosCircu15():
 
     #------- **** --rayon de 0.1 à 0.6, angle de -pi/5 à -4pi/5 ---------
 def setPosCircu540():
-    rs=ReadSetupFile()
+    rs=ReadXmlFile("setup.xml")
     filename2 = pathDataFolder + "PosCircu540"
     data2 = []
     for j in range(20):
@@ -268,7 +278,7 @@ def setPosCircu540():
     np.savetxt(filename2,data2)
 
 def setPosCircu56():
-    rs=ReadSetupFile()
+    rs=ReadXmlFile("setup.xml")
     filename = pathDataFolder + "PosCircu56"
     data2 = []
     for j in range(8):
@@ -278,7 +288,7 @@ def setPosCircu56():
     np.savetxt(filename,data2)
 
 def setPosCircu28():
-    rs=ReadSetupFile()
+    rs=ReadXmlFile("setup.xml")
     filename = pathDataFolder + "PosCircu28"
     data2 = []
     for j in range(4):
@@ -288,7 +298,7 @@ def setPosCircu28():
     np.savetxt(filename,data2)
 
 def setPosSquare():
-    rs=ReadSetupFile()
+    rs=ReadXmlFile("setup.xml")
     filename3 = pathDataFolder + "PosSquare"
     data3 = []
     for j in range(20):
@@ -298,13 +308,13 @@ def setPosSquare():
     np.savetxt(filename3,data3)
 
 def generateRBFNs():
-     for i in range(20):
+    for i in range(20):
         c = Chrono()
         run("X"+str(i),True)
         c.stop()
 
 def testRBFNs():
-     for i in range(3):
+    for i in range(3):
         c = Chrono()
         generateFromRegression(3, "R"+str(i), "SR"+str(i))
         c.stop()
@@ -316,7 +326,7 @@ def testRBFNs():
 '''
 
 def plotRBFNs():
-     for i in range(3):
+    for i in range(3):
         plotXYPositions("RBFN","SR"+str(i),"All",True)
 '''
      for i in range(12):

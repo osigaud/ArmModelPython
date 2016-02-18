@@ -51,8 +51,7 @@ def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, s
     if (save):
         exp.saveCost()
 
-def generateFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
-    rs = ReadXmlFile(setupFile)
+def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.sizeOfTarget:
         c = Chrono()
         thetaName = rs.CMAESpath + str(el) + "/" + thetaFile
@@ -61,29 +60,26 @@ def generateFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
         c.stop()
     print("CMAES:End of generation")
 
-def generateRichDataFromCMAES(repeat, setupFile, thetaFile, saveDir = 'Data'):
-    rs = ReadXmlFile(setupFile)
+def generateRichDataFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.sizeOfTarget:
         thetaName = rs.CMAESpath + str(el) + "/" + thetaFile
         saveName = rs.CMAESpath + str(el) + "/" + saveDir + "/"
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
     print("CMAES:End of generation")
 
-def generateFromRegression(repeat, setupFile, saveDir):
-    rs = ReadXmlFile(setupFile)
+def generateFromRegression(repeat, rs, saveDir):
     thetaName = rs.path + rs.thetaFile
     saveName = rs.path + saveDir + "/"
     GenerateDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")
 
-def generateRichDataFromRegression(repeat, setupFile,thetaFile, saveDir):
-    rs = ReadXmlFile(setupFile)
+def generateRichDataFromRegression(repeat, rs,thetaFile, saveDir):
     thetaName = rs.path + thetaFile
     saveName = rs.path + saveDir + "/"        
     GenerateRichDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")
 
-def launchCMAESForSpecificTargetSize(sizeOfTarget, setupFile, save):
+def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
     '''
     Run cmaes for a specific target size
 
@@ -92,7 +88,6 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, setupFile, save):
             -save, for saving result, bool
     '''
     print("Starting the CMAES Optimization for target " + str(sizeOfTarget) + " !")
-    rs = ReadXmlFile(setupFile)
     foldername = rs.CMAESpath + str(sizeOfTarget) + "/"
     thetaname = foldername + rs.thetaFile
     if save:
@@ -107,8 +102,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, setupFile, save):
     resCma = cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
-def launchCMAESForAllTargetSizes(setupFile, save):
-    rs = ReadXmlFile(setupFile)
+def launchCMAESForAllTargetSizes(rs, save):
     for el in rs.sizeOfTarget:
         launchCMAESForSpecificTargetSize(el, rs.thetaFile,save)
 
@@ -117,12 +111,11 @@ def term():
 
 #--------------------------- multiprocessing -------------------------------------------------------
     
-def launchCMAESForAllTargetSizesMulti(setupFile):
+def launchCMAESForAllTargetSizesMulti(rs):
     '''
     Launch in parallel (on differents processor) the cmaes optimization for each target size
     '''
     #initializes setup variables
-    rs = ReadXmlFile(setupFile)
     #initializes a pool of worker, ie multiprocessing
     p = Pool()
     #run cmaes on each targets size on separate processor

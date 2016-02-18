@@ -37,6 +37,8 @@ class Experiments:
         self.foldername = foldername
         self.tm = TrajMaker(rs, sizeOfTarget, saveTraj, thetafile)
         self.posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+        if(self.posIni.shape[0]!=1):
+            self.posIni=self.posIni.reshape((1,self.posIni.shape[0]))
         self.costStore = []
         self.CMAESCostStore = []
         self.CMAESTimeStore = []

@@ -7,7 +7,6 @@ Module: plotFunctions
 
 Description: some plotting functions
 '''
-import os
 import random as rd
 import numpy as np
 from scipy import stats
@@ -18,19 +17,17 @@ from matplotlib import animation
 from matplotlib.mlab import griddata
 plt.rc("figure", facecolor="white")
 
-from Utils.FileReading import getStateData, getEstimatedStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getCommandData, getNoiselessCommandData, getInitPos, getCostData, getTrajTimeData, getTrajTimeData, getLastXData
+from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData
 
-from Utils.ReadXmlFile import ReadXmlFile
 
-from ArmModel.Arm import Arm, getDotQAndQFromStateVector
+from ArmModel.Arm import Arm
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
 #TODO: remove GlobalVariables and default setup file
 
 #--------------------------- trajectory animations ---------------------------------------------------------------------------------------------
 
-def trajectoriesAnimation(what, setupFile = "setup.xml",foldername = "None", targetSize = "0.05"):
-    rs = ReadXmlFile(setupFile)
+def trajectoriesAnimation(what, rs,foldername = "None", targetSize = "0.05"):
     if what == "CMAES":
         name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
@@ -75,7 +72,7 @@ def trajectoriesAnimation(what, setupFile = "setup.xml",foldername = "None", tar
         foreArm.set_data(xh, yh)
         return upperArm, foreArm
     
-    ani = animation.FuncAnimation(fig, animate, init_func=init, frames=len(xEl), blit=True, interval=20, repeat=True)
+    animation.FuncAnimation(fig, animate, init_func=init, frames=len(xEl), blit=True, interval=20, repeat=True)
     plt.show(block = True)
 
 #----------------------------------------------------------------------------------------------------------------------------
@@ -94,8 +91,7 @@ def makeInitPlot(rs,filename):
     #xy = getInitPos(BrentTrajectoriesFolder)
     xy = getInitPos(pathDataFolder+"TrajRepository/")
     x, y = [], []
-    aa, keyy = [], []
-    for key, el in xy.items():
+    for _, el in xy.items():
         x.append(el[0])
         y.append(el[1])
         
@@ -103,12 +99,11 @@ def makeInitPlot(rs,filename):
     plt.scatter(rs.XTarget, rs.YTarget, c = "r", marker=u'*', s = 100)
     plt.scatter(x0, y0, c = "r", marker=u'o', s=25)  
 
-def plotInitPos(filename, setupFile="setup.xml"):
+def plotInitPos(filename, rs):
     '''
     Plots the initial position of trajectories present in the Brent directory
     '''
     plt.figure()
-    rs = ReadXmlFile(setupFile)
     makeInitPlot(rs,filename)
     
     plt.show(block = True)
@@ -119,7 +114,7 @@ def plotInitPos(filename, setupFile="setup.xml"):
 def makeVelocityData(rs,arm,name,media):
     state = getStateData(name)
     factor = min(1, 100./len(state.items()))
-    for k,v in state.items():
+    for _,v in state.items():
         index, speed = [], []
         if  rd.random()<factor:
             handxy = arm.mgdEndEffector([v[0][2],v[0][3]])
@@ -134,8 +129,7 @@ def makeVelocityData(rs,arm,name,media):
             else:
                 media.plot(index, speed, c ='red')
 
-def plotVelocityProfile(what, setupFile="setup.xml", foldername = "None"):
-    rs = ReadXmlFile(setupFile)
+def plotVelocityProfile(what, rs, foldername = "None"):
     arm = Arm()
     plt.figure(1, figsize=(16,9))
 
@@ -169,7 +163,7 @@ def plotPos(name, media, plotEstim):
     states = getXYHandData(name)
     factor = min(1, 100./len(states.items()))
     print(len(states.items()))
-    for k,v in states.items():
+    for _,v in states.items():
         if  rd.random()<factor:
             posX, posY = [], []
             for j in range(len(v)):
@@ -179,7 +173,7 @@ def plotPos(name, media, plotEstim):
 
     if plotEstim==True:
         estimStates = getEstimatedXYHandData(name)
-        for k,v in estimStates.items():
+        for _,v in estimStates.items():
             if  rd.random()<factor:
                 eX, eY = [], []
                 for j in range(len(v)):
@@ -211,7 +205,7 @@ def plotEstimError(rs,name, media):
     errors = getXYEstimError(name)
     factor = min(1, 100./len(errors.items()))
 
-    for k,v in errors.items():
+    for _,v in errors.items():
         if  rd.random()<factor:
             index, er = [], []
             for j in range(len(v)):
@@ -225,7 +219,7 @@ def plotEstimErrorOfSpeed(name, media):
     errors = getXYEstimErrorOfSpeed(name)
     factor = min(1, 100./len(errors.items()))
 
-    for k,v in errors.items():
+    for _,v in errors.items():
         if  rd.random()<factor:
             speed, er = [], []
             for j in range(len(v)):
@@ -233,8 +227,7 @@ def plotEstimErrorOfSpeed(name, media):
                 er.append(v[j][1])
             media.plot(speed,er, c ='b')
 
-def plotTrajsInRepo(setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
+def plotTrajsInRepo():
     plt.figure(1, figsize=(16,9))
     plotPos(pathDataFolder+"TrajRepository/", plt, False)
     plt.xlabel("X (m)")
@@ -245,8 +238,7 @@ def plotTrajsInRepo(setupFile="setup.xml"):
     #plt.savefig("ImageBank/"+what+'_trajectories.png')
     plt.show(block = True)
 
-def plotXYPositions(what, setupFile="setup.xml", foldername = "None", targetSize = "All", plotEstim=False):
-    rs = ReadXmlFile(setupFile)
+def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim=False):
     plt.figure(1, figsize=(16,9))
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
@@ -279,8 +271,7 @@ def plotXYPositions(what, setupFile="setup.xml", foldername = "None", targetSize
     plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile+'.png', bbox_inches='tight')
     plt.show(block = True)
 
-def plotXYEstimError(what, setupFile="setup.xml",foldername = "None", targetSize = "All"):
-    rs = ReadXmlFile(setupFile)
+def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -312,8 +303,7 @@ def plotXYEstimError(what, setupFile="setup.xml",foldername = "None", targetSize
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
-def plotXYEstimErrorOfSpeed(what, setupFile="setup.xml",foldername = "None", targetSize = "All"):
-    rs = ReadXmlFile(setupFile)
+def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -345,15 +335,14 @@ def plotXYEstimErrorOfSpeed(what, setupFile="setup.xml",foldername = "None", tar
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
-def plotArticularPositions(what, setupFile="setup.xml",foldername = "None"):
-    rs = ReadXmlFile(setupFile)
+def plotArticularPositions(what, rs,foldername = "None"):
  
     if what == "CMAES":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             state = getStateData(name)
-            for k,v in state.items():
+            for _,v in state.items():
                 Q1, Q2 = [], []
                 for j in range(len(v)):
                     Q1.append(v[j][2])
@@ -371,7 +360,7 @@ def plotArticularPositions(what, setupFile="setup.xml",foldername = "None"):
         state = getStateData(name)
     
         plt.figure(1, figsize=(16,9))
-        for k,v in state.items():
+        for _,v in state.items():
             if rd.random()<0.06 or what != "Brent":
                 Q1, Q2 = [], []
                 for j in range(len(v)):
@@ -387,7 +376,7 @@ def plotArticularPositions(what, setupFile="setup.xml",foldername = "None"):
 
 #------------------ muscular activations --------------------------------
 
-def plotMuscularActivations(what, setupFile="setup.xml", foldername = "None", targetSize = "0.05"):
+def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
     '''
     plots the muscular activations from a folder
     
@@ -395,7 +384,6 @@ def plotMuscularActivations(what, setupFile="setup.xml", foldername = "None", ta
               -what: get from Brent, rbfn or from cmaes controllers
 
     '''
-    rs = ReadXmlFile(setupFile)
     if what == "CMAES":
         name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
@@ -442,13 +430,12 @@ def plotMuscularActivations(what, setupFile="setup.xml", foldername = "None", ta
 
 #-------------------------- cost maps ----------------------------------------------
 
-def plotCostColorMap(what, setupFile="setup.xml", foldername = "None", targetSize = "All"):
+def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
     '''
     Cette fonction permet d'afficher le profil de cout des trajectoires
     
     Entrees:  -what: choix des donnees a afficher
     '''
-    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -461,7 +448,7 @@ def plotCostColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
             y0 = []
             cost = []
 
-            for k, v in costs.items():
+            for _, v in costs.items():
                 for j in range(len(v)):
                     x0.append(v[j][0])
                     y0.append(v[j][1])
@@ -473,7 +460,7 @@ def plotCostColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
 
             t1 = ax.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
             ax.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-            CS = ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+            ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
             fig.colorbar(t1, shrink=0.5, aspect=5)
             t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
             ax.set_xlabel("X (m)")
@@ -494,7 +481,7 @@ def plotCostColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
         y0 = []
         cost = []
 
-        for k, v in costs.items():
+        for _, v in costs.items():
             for j in range(len(v)):
                 x0.append(v[j][0])
                 y0.append(v[j][1])
@@ -506,7 +493,7 @@ def plotCostColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
     
         t1 = plt.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
         plt.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-        CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+        plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
         fig.colorbar(t1, shrink=0.5, aspect=5)
         t1 = plt.scatter(x0, y0, c='b', marker=u'o', s=20)
         plt.xlabel("X (m)")
@@ -518,13 +505,12 @@ def plotCostColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
 
 #-------------------------- time maps ----------------------------------------------
 
-def plotTimeColorMap(what, setupFile="setup.xml", foldername = "None", targetSize = "All"):
+def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
     '''
     Cette fonction permet d'afficher le profil de temps des trajectoires
     
     Entrees:      -what: choix des donnees a afficher
     '''
-    rs = ReadXmlFile(setupFile)
     fig = plt.figure(1, figsize=(16,9))
 
     if what == "CMAES" and targetSize == "All":
@@ -537,7 +523,7 @@ def plotTimeColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
             y0 = []
             time = []
 
-            for k, v in times.items():
+            for _, v in times.items():
                 for j in range(len(v)):
                     x0.append(v[j][0])
                     y0.append(v[j][1])
@@ -549,7 +535,7 @@ def plotTimeColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
 
             t1 = ax.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdYlBu'))
             ax.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-            CS = ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+            ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
             ax.set_title(str("Time map for target " + str(rs.sizeOfTarget[i])))
@@ -570,7 +556,7 @@ def plotTimeColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
         y0 = []
         time = []
 
-        for k, v in times.items():
+        for _, v in times.items():
             for j in range(len(v)):
                 x0.append(v[j][0])
                 y0.append(v[j][1])
@@ -582,7 +568,7 @@ def plotTimeColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
     
         t1 = plt.scatter(x0, y0, c=time, marker=u'o', s=50, cmap=cm.get_cmap('RdYlBu'))
         plt.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
-        CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+        plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
         fig.colorbar(t1, shrink=0.5, aspect=5)
         plt.scatter(x0, y0, c='b', marker=u'o', s=20)
         plt.xlabel("X (m)")
@@ -593,8 +579,7 @@ def plotTimeColorMap(what, setupFile="setup.xml", foldername = "None", targetSiz
 
 #-----------------------------------------------------------------------------------------------------------
     
-def plotTimeDistanceTarget(foldername,setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
+def plotTimeDistanceTarget(foldername,rs):
 
     dicoTime = {}
  
@@ -603,7 +588,7 @@ def plotTimeDistanceTarget(foldername,setupFile="setup.xml"):
 
         trajTimes = getTrajTimeData(name)
 
-        for k, v in trajTimes.items():
+        for _, v in trajTimes.items():
             for j in range(len(v)):
                 distance = round(rs.getDistanceToTarget(v[j][0],v[j][1]),2)
                 if not distance in dicoTime.keys():
@@ -614,7 +599,7 @@ def plotTimeDistanceTarget(foldername,setupFile="setup.xml"):
  
     plotTab = []
 
-    fig = plt.figure(1, figsize=(16,9))
+    plt.figure(1, figsize=(16,9))
     plt.ylabel("time (s)")
     plt.xlabel("Target size (mm)")
     for key in sorted(dicoTime.keys()):
@@ -625,8 +610,7 @@ def plotTimeDistanceTarget(foldername,setupFile="setup.xml"):
 
 #-----------------------------------------------------------------------------------------------------------
     
-def plotPerfSizeDist(foldername, setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
+def plotPerfSizeDist(foldername, rs):
     dicoCost = {}
  
     for i in range(len(rs.sizeOfTarget)):
@@ -634,7 +618,7 @@ def plotPerfSizeDist(foldername, setupFile="setup.xml"):
 
         costs = getCostData(name)
 
-        for k, v in costs.items():
+        for _, v in costs.items():
             for j in range(len(v)):
                 distance = round(rs.getDistanceToTarget(v[j][0],v[j][1]),2)
                 if not distance in dicoCost.keys():
@@ -644,7 +628,7 @@ def plotPerfSizeDist(foldername, setupFile="setup.xml"):
                 dicoCost[distance][rs.sizeOfTarget[i]].append(v[j][2])
 
     plotTab = []
-    fig = plt.figure(1, figsize=(16,9))
+    plt.figure(1, figsize=(16,9))
     plt.ylabel("performance")
     plt.xlabel("Target size (mm)")
     for key in sorted(dicoCost.keys()):
@@ -655,8 +639,7 @@ def plotPerfSizeDist(foldername, setupFile="setup.xml"):
 
 #-----------------------------------------------------------------------------------------------------------
             
-def plotFittsLaw(foldername, setupFile="setup.xml", rbfn = False):
-    rs = ReadXmlFile(setupFile)
+def plotFittsLaw(foldername, rs, rbfn = False):
 
     timeDistWidth = []
     for i in range(len(rs.sizeOfTarget)):
@@ -664,7 +647,7 @@ def plotFittsLaw(foldername, setupFile="setup.xml", rbfn = False):
 
         trajTimes = getTrajTimeData(name)
 
-        for k, v in trajTimes.items():
+        for _, v in trajTimes.items():
             for j in range(len(v)):
                 distance = rs.getDistanceToTarget(v[j][0],v[j][1])
                 trajtime = v[j][2]
@@ -675,7 +658,7 @@ def plotFittsLaw(foldername, setupFile="setup.xml", rbfn = False):
     for el in timeDistWidth:
         MT.append(el[2])
         DI.append(np.log2(el[0]/el[1]))
-    slope, intercept, r_value, p_value, std_err = stats.linregress(DI,MT)
+    slope, intercept, r_value, _, _ = stats.linregress(DI,MT)
     yLR = slope * np.asarray(DI) + intercept
     plt.figure()
 
@@ -696,18 +679,17 @@ def plotFittsLaw(foldername, setupFile="setup.xml", rbfn = False):
  
 # ---------------- hit dispersion ---------------------------------------
 
-def plotHitDispersion(foldername,sizeT, setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
+def plotHitDispersion(foldername,sizeT, rs):
     name =  rs.CMAESpath + sizeT + "/" + foldername + "/finalX/"
     data = getLastXData(name)
 
     tabx, taby = [], []
     for el in data.values():
-           for j in range(len(el)):
-               tabx.append(el[j])
-               taby.append(rs.YTarget)
+        for j in range(len(el)):
+            tabx.append(el[j])
+            taby.append(rs.YTarget)
 
-    fig = plt.figure(1, figsize=(16,9))
+    plt.figure(1, figsize=(16,9))
     plt.plot([-rs.sizeOfTarget[0]/2, rs.sizeOfTarget[0]/2], [rs.YTarget, rs.YTarget], c = 'r')
     plt.scatter([-rs.sizeOfTarget[0]/2, rs.sizeOfTarget[0]/2], [rs.YTarget, rs.YTarget], marker=u'|', s = 100)
     plt.scatter(tabx, taby, c = 'b')
@@ -716,8 +698,7 @@ def plotHitDispersion(foldername,sizeT, setupFile="setup.xml"):
     plt.savefig("ImageBank/hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
     plt.show(block = True)
 
-def plotScattergram(what,foldername,setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
+def plotScattergram(what,foldername,rs):
     data = {}
 
     if what=="CMAES":
@@ -760,13 +741,12 @@ def plotScattergram(what,foldername,setupFile="setup.xml"):
         
 # ---------------- end of hit dispersion ---------------------------------------
 
-def plotCMAESProgress(setupFile):
-    plotCMAESCostProgress(setupFile)
-    plotCMAESTimeProgress(setupFile)
+def plotCMAESProgress(rs):
+    plotCMAESCostProgress(rs)
+    plotCMAESTimeProgress(rs)
 
-def plotCMAESCostProgress(setupFile):
-    rs = ReadXmlFile(setupFile)
-    fig = plt.figure(1, figsize=(16,9))
+def plotCMAESCostProgress(rs):
+    plt.figure(1, figsize=(16,9))
 
     for i in range(len(rs.sizeOfTarget)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
@@ -788,9 +768,8 @@ def plotCMAESCostProgress(setupFile):
     plt.savefig("ImageBank/"+rs.thetaFile+"costProgress.png")
     plt.show(block = True)
 
-def plotCMAESTimeProgress(setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
-    fig = plt.figure(1, figsize=(16,9))
+def plotCMAESTimeProgress(rs):
+    plt.figure(1, figsize=(16,9))
 
     for i in range(len(rs.sizeOfTarget)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
@@ -813,9 +792,8 @@ def plotCMAESTimeProgress(setupFile="setup.xml"):
     plt.savefig("ImageBank/timeProgress.png")
     plt.show(block = True)
 
-def plotExperimentSetup(setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
-    fig = plt.figure(1, figsize=(16,9))
+def plotExperimentSetup(rs):
+    plt.figure(1, figsize=(16,9))
     arm = Arm()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
@@ -854,8 +832,7 @@ def plotExperimentSetup(setupFile="setup.xml"):
 
 #TODO: both functions below can be much improved
 
-def plotManipulability(setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
+def plotManipulability(rs):
     fig = plt.figure(1, figsize=(16,9))
     arm = Arm()
     q1 = np.linspace(-0.6, 2.6, 100, True)
@@ -885,7 +862,7 @@ def plotManipulability(setupFile="setup.xml"):
     #CS = plt.contourf(xi, xi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
 
     t1 = plt.scatter(x, y, c=cost, s=5, cmap=cm.get_cmap('RdYlBu'))
-    CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+    plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
     fig.colorbar(t1, shrink=0.5, aspect=5)
     plt.scatter(rs.XTarget, rs.YTarget, c = "g", marker=u'*', s = 200)
     #plt.plot([-0.3,0.3], [rs.YTarget, rs.YTarget], c = 'g')
@@ -896,8 +873,7 @@ def plotManipulability(setupFile="setup.xml"):
     plt.show(block = True)
 
 
-def plotManipulability2(setupFile="setup.xml"):
-    rs = ReadXmlFile(setupFile)
+def plotManipulability2(rs):
     fig = plt.figure(1, figsize=(16,9))
     arm = Arm()
     q1 = np.linspace(-0.6, 2.6, 100, True)
@@ -927,7 +903,7 @@ def plotManipulability2(setupFile="setup.xml"):
     #CS = plt.contourf(xi, xi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
 
     t1 = plt.scatter(x, y, c=cost, s=5, cmap=cm.get_cmap('RdYlBu'))
-    CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+    plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
     fig.colorbar(t1, shrink=0.5, aspect=5)
     plt.scatter(rs.XTarget, rs.YTarget, c = "g", marker=u'*', s = 200)
     #plt.plot([-0.3,0.3], [rs.YTarget, rs.YTarget], c = 'g')
