@@ -3,7 +3,7 @@
   <data>
   	<inputSize>4</inputSize>
   	<outputSize>6</outputSize>
-  	<noise>no</noise>
+  	<noise>yes</noise>
   </data>
   <regression>
     <NeuralNet>
@@ -35,7 +35,7 @@
     <sigma>0.01</sigma>
     <maxIteration>50000</maxIteration>
     <popsize>30</popsize>
-    <numberRepetition>1</numberRepetition>
+    <numberRepetition>10</numberRepetition>
     <resultPath>~/stage/ArmModelPython/Data/CMAESth/</resultPath>
   </CMAES>
   <target>
