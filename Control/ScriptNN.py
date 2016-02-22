@@ -1,27 +1,20 @@
-import numpy as np
-import random as rd
-import os
 
-from Main.Main import generateFromRegression, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.Main import generateFromRegression
 
-from Regression.RunRegression import run, UnitTestController, UnitTestArmModel
-from Regression.Regression import UnitTest
 
-from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
-
+from Regression.RunRegression import run
+from Plot.plotFunctions import  plotXYPositions, plotArticularPositions
 from Main.Test import testRegression
-from Utils.Chrono import Chrono
-from Utils.ReadSetupFile import ReadSetupFile
-from GlobalVariables import pathDataFolder
+from Utils.ReadXmlFile import ReadXmlFile
 
 setupFile="setupNN1ReLu.xml"
 thetaName="NN1ReLu"
 folder="TrajNN1ReLu"
 
-#c = Chrono()
-#run(setupFile)
-#c.stop()
-generateFromRegression(1, setupFile, folder)
-plotXYPositions("Regression", foldername =folder,targetSize ="All",plotEstim=True)
-plotArticularPositions("Regression",setupFile, folder)
+
+rs=ReadXmlFile(setupFile)
+run(rs)
+generateFromRegression(1, rs, folder)
+plotXYPositions("Regression",rs, foldername =folder,targetSize ="All",plotEstim=True)
+plotArticularPositions("Regression",rs, folder)
 testRegression(setupFile)

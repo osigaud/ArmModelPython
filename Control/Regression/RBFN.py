@@ -163,7 +163,7 @@ class rbfn(regression):
         return output
 
     def getTrainingData(self, inputData, outputData):
-        super().getTrainingData(self, inputData, outputData)
+        regression.getTrainingData(self, inputData, outputData)
         if(self.rs.fromStruct == True):
             self.initFromExistingStruct(self.rs.path+self.rs.thetaFile+".struct")
         else:

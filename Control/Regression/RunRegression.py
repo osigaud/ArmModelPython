@@ -47,7 +47,7 @@ def run(rs):
     #print ("old:", stateAll[0])
 
     #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(pathDataFolder + "Brent/", 0.1, rs.det))
-    stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 1, rs.det)
+    stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.01, rs.det)
     print("RunRegression L52")
     #stateAll, commandAll = stateAndCommandDataFromTrajs(loadStateCommandPairsByStartCoords(BrentTrajectoriesFolder))
     #print ("len:", len(commandAll[0]))
@@ -65,7 +65,7 @@ def run(rs):
     print("nombre d'echantillons: ", len(stateAll))
     
 
-    fa = NeuralNet(rs)
+    fa = regressionDict[rs.regression](rs)
     fa.getTrainingData(stateAll, commandAll)
     fa.train()
     fa.saveTheta(rs.path+ rs.thetaFile+".theta")

@@ -88,7 +88,9 @@ class TrajMaker:
         dotq, q = getDotQAndQFromStateVector(self.arm.getState())
         J = self.arm.jacobian(q)
         xi = np.dot(J,dotq)
-        xi = xi/np.linalg.norm(xi)
+        norm=np.linalg.norm(xi)
+        if(norm!=0):
+            xi = xi/norm
         return 500-1000*xi[0]*xi[0]
 
     def computeFinalReward(self, t, coordHand):
