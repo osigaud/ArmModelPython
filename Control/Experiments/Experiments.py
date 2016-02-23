@@ -129,7 +129,7 @@ class Experiments:
             self.localWorstTime = 1000000.0
             self.periodMeanCost = 0.0
             self.periodMeanTime = 0.0
-        c = Chrono()
+        #c = Chrono()
         self.initTheta(theta)
         #print "theta avant appel :", theta
         #compute all the trajectories x times each, x = numberOfRepeat
@@ -137,9 +137,9 @@ class Experiments:
         #cma.plot()
         #opt = cma.CMAOptions()
         #print "CMAES options :", opt
-        c.stop()
+        #c.stop()
 
-        print("Indiv #: ", self.call, "\n Cost: ", meanCost)
+        #print("Indiv #: ", self.call, "\n Cost: ", meanCost)
 
         if meanCost>self.localBestCost:
             self.localBestCost = meanCost
@@ -175,8 +175,14 @@ class Experiments:
             self.CMAESTimeStore.append((self.localWorstTime,self.periodMeanTime,self.localBestTime))
             costfoldername = self.foldername+"Cost/"
             checkIfFolderExists(costfoldername)
-            np.savetxt(costfoldername+"cmaesCost.log",self.CMAESCostStore) #Note: inefficient, should rather add to the file
-            np.savetxt(costfoldername+"cmaesTime.log",self.CMAESTimeStore) #Note: inefficient, should rather add to the file
+            cost = open(costfoldername+"cmaesCost.log","a")
+            time = open(costfoldername+"cmaesTime.log","a")
+            cost.write(str(self.localWorstCost)+" "+str(self.periodMeanCost)+" "+str(self.localBestCost)+"\n")
+            time.write(str(self.localWorstTime)+" "+str(self.periodMeanTime)+" "+str(self.localBestTime)+"\n")
+            cost.close()
+            time.close()
+            #np.savetxt(costfoldername+"cmaesCost.log",self.CMAESCostStore) #Note: inefficient, should rather add to the file
+            #np.savetxt(costfoldername+"cmaesTime.log",self.CMAESTimeStore) #Note: inefficient, should rather add to the file
 
         return 10.0*(self.rs.rhoCF-meanCost)/self.rs.rhoCF
     
