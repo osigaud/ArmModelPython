@@ -23,7 +23,7 @@ from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandDat
 from ArmModel.Arm import Arm
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
-#TODO: remove GlobalVariables and default setup file
+#TODO: remove GlobalVariables
 
 #--------------------------- trajectory animations ---------------------------------------------------------------------------------------------
 

@@ -18,6 +18,7 @@ from GlobalVariables import pathDataFolder
 
 from TrajMaker import TrajMaker
 from Utils.FileWritting import checkIfFolderExists, findDataFilename, writeArray
+from multiprocessing.pool import Pool
 
 #------------------------------------------------------------------------------
 
@@ -78,6 +79,7 @@ class Experiments:
     def runOneTrajectory(self, x, y):
         #self.tm.saveTraj = True
         cost, trajTime, lastX = self.tm.runTrajectory(x, y, self.foldername)
+        #cost, trajTime, lastX = self.tm.runTrajectoryOpti(x, y)
         #print "Exp local x y cost : ", x, y, cost
         if lastX != -1000:
             self.lastCoord.append(lastX)
@@ -99,8 +101,8 @@ class Experiments:
         return np.mean(globCost)
             
     def runTrajectoriesForResultsGeneration(self, repeat):
-        globCost = []
-        globTime = []
+        globMeanCost=0.
+        globTimeCost=0.
         for xy in self.posIni:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
@@ -109,10 +111,38 @@ class Experiments:
             meanTrajTime = np.mean(trajTimeAll)
             self.costStore.append([xy[0], xy[1], meanCost])
             self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
-            globCost.append(meanCost)
-            globTime.append(meanTrajTime)
+            globMeanCost+=meanCost
+            globTimeCost+=meanTrajTime
         #self.printLastCoordInfo()
-        return np.mean(globCost), np.mean(globTime)
+        return globMeanCost, globTimeCost
+    
+    
+    #TODO MultiProcess
+    def runTrajectoriesForResultsGenerationOpti(self, repeat):
+        globMeanCost=0.
+        globTimeCost=0.
+        pool=Pool()
+        for xy in self.posIni:
+            costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+            for i in range(repeat):
+                costAll[i], trajTimeAll[i]  = self.runOneTrajectoryOpti(xy[0], xy[1]) 
+            meanCost = np.mean(costAll)
+            meanTrajTime = np.mean(trajTimeAll)
+            self.costStore.append([xy[0], xy[1], meanCost])
+            self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
+            globMeanCost+=meanCost
+            globTimeCost+=meanTrajTime
+        #self.printLastCoordInfo()
+        return globMeanCost, globTimeCost
+    
+    def runOneTrajectoryOpti(self, x, y):
+        #self.tm.saveTraj = True
+        cost, trajTime, lastX = self.tm.runTrajectoryOpti(x, y, self.foldername)
+        #cost, trajTime, lastX = self.tm.runTrajectoryOpti(x, y)
+        #print "Exp local x y cost : ", x, y, cost
+        if lastX != -1000:
+            self.lastCoord.append(lastX)
+        return cost, trajTime
     
     def runTrajectoriesCMAES(self, theta):
         '''
@@ -133,7 +163,7 @@ class Experiments:
         self.initTheta(theta)
         #print "theta avant appel :", theta
         #compute all the trajectories x times each, x = numberOfRepeat
-        meanCost, meanTime = self.runTrajectoriesForResultsGeneration(self.numberOfRepeat)
+        meanCost, meanTime = self.runTrajectoriesForResultsGenerationOpti(self.numberOfRepeat)
         #cma.plot()
         #opt = cma.CMAOptions()
         #print "CMAES options :", opt
