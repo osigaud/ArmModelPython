@@ -137,7 +137,7 @@ class Experiments:
     
     def runOneTrajectoryOpti(self, x, y):
         #self.tm.saveTraj = True
-        cost, trajTime, lastX = self.tm.runTrajectoryOpti(x, y, self.foldername)
+        cost, trajTime, lastX = self.tm.runTrajectoryOpti(x, y)
         #cost, trajTime, lastX = self.tm.runTrajectoryOpti(x, y)
         #print "Exp local x y cost : ", x, y, cost
         if lastX != -1000:
