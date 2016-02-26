@@ -18,7 +18,7 @@ from Utils.FileReading import loadTrajs
 from Utils.ReadXmlFile import ReadXmlFile
 from ArmModel.Arm import Arm
 
-def testRegression(setupFile):
+def testRegression(setupFile, thetaFile):
     """ 
     
     """
@@ -27,7 +27,7 @@ def testRegression(setupFile):
     stateAll=np.array(stateAll)
     arm=Arm()
     trajReg = np.empty_like(stateAll)
-    trajMaker = TrajMaker(rs,0.02,None,rs.path+rs.thetaFile)
+    trajMaker = TrajMaker(rs,0.02,None,rs.path+thetaFile)
 
     for i in range(stateAll.shape[0]):
         coordHand = arm.mgdEndEffector(stateAll[i][0][2:])
