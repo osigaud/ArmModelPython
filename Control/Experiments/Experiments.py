@@ -121,7 +121,7 @@ class Experiments:
     def runTrajectoriesForResultsGenerationOpti(self, repeat):
         globMeanCost=0.
         globTimeCost=0.
-        pool=Pool()
+        #pool=Pool()
         for xy in self.posIni:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
@@ -133,7 +133,7 @@ class Experiments:
             globMeanCost+=meanCost
             globTimeCost+=meanTrajTime
         #self.printLastCoordInfo()
-        return globMeanCost, globTimeCost
+        return globMeanCost/len(self.posIni), globTimeCost/len(self.posIni)
     
     def runOneTrajectoryOpti(self, x, y):
         #self.tm.saveTraj = True
