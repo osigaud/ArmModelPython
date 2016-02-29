@@ -19,6 +19,7 @@ from GlobalVariables import pathDataFolder
 from TrajMaker import TrajMaker
 from Utils.FileWritting import checkIfFolderExists, findDataFilename, writeArray
 from multiprocess.pool import Pool
+from multiprocess import cpu_count
 from functools import partial
 #------------------------------------------------------------------------------
 
@@ -137,8 +138,10 @@ class Experiments:
         return globMeanCost/size, globTimeCost/size
     
     def runMultiProcessTrajectories(self, repeat):
-        pool=Pool(processes=len(self.posIni))
+        pool=Pool(processes=cpu_count())
         result = pool.map(partial(self.runNtrajectory, repeat=repeat) , [(x, y) for x, y in self.posIni])
+        pool.close()
+        pool.join()
         meanCost, meanTraj=0, 0
         for Cost, traj in result:
             meanCost+=Cost
@@ -176,13 +179,7 @@ class Experiments:
     
     	Ouput:		-meanAll: the mean of the cost of all trajectories generated, float
     	'''
-        if (self.call==0):
-            self.localBestCost = -1000000.0
-            self.localWorstCost = 1000000.0
-            self.localBestTime = -1000000.0
-            self.localWorstTime = 1000000.0
-            self.periodMeanCost = 0.0
-            self.periodMeanTime = 0.0
+        
         #c = Chrono()
         self.initTheta(theta)
         #print "theta avant appel :", theta
@@ -194,18 +191,24 @@ class Experiments:
         #c.stop()
 
         #print("Indiv #: ", self.call, "\n Cost: ", meanCost)
-
-        if meanCost>self.localBestCost:
+        
+        if (self.call==0):
             self.localBestCost = meanCost
-
-        if meanTime>self.localBestTime:
-            self.localBestTime = meanTime
-
-        if meanCost<self.localWorstCost:
             self.localWorstCost = meanCost
-
-        if meanTime<self.localWorstTime:
+            self.localBestTime = meanTime
             self.localWorstTime = meanTime
+            self.periodMeanCost = 0.0
+            self.periodMeanTime = 0.0
+        else:    
+            if meanCost>self.localBestCost:
+                self.localBestCost = meanCost
+            elif meanCost<self.localWorstCost:
+                self.localWorstCost = meanCost
+                
+            if meanTime>self.localBestTime:
+                self.localBestTime = meanTime
+            elif meanTime<self.localWorstTime:
+                self.localWorstTime = meanTime
 
         if meanCost>self.bestCost:
             self.bestCost = meanCost
