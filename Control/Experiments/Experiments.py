@@ -114,7 +114,7 @@ class Experiments:
             globMeanCost+=meanCost
             globTimeCost+=meanTrajTime
         #self.printLastCoordInfo()
-        return globMeanCost, globTimeCost
+        return globMeanCost/len(self.posIni), globTimeCost/len(self.posIni)
     
     
     #TODO MultiProcess
