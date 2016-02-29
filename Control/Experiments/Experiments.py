@@ -10,7 +10,7 @@ Description: Class used to generate all the trajectories of the experimental set
 
 
 import numpy as np
-
+import time
 #from Utils.ThetaNormalization import normalization, unNormalization
 from Utils.Chrono import Chrono
 
@@ -18,8 +18,8 @@ from GlobalVariables import pathDataFolder
 
 from TrajMaker import TrajMaker
 from Utils.FileWritting import checkIfFolderExists, findDataFilename, writeArray
-from multiprocessing.pool import Pool
-
+from multiprocess.pool import Pool
+from functools import partial
 #------------------------------------------------------------------------------
 
 class Experiments:
@@ -117,7 +117,7 @@ class Experiments:
         return globMeanCost/len(self.posIni), globTimeCost/len(self.posIni)
     
     
-    #TODO MultiProcess
+    #TODO:  MultiProcess
     def runTrajectoriesForResultsGenerationOpti(self, repeat):
         globMeanCost=0.
         globTimeCost=0.
@@ -133,7 +133,31 @@ class Experiments:
             globMeanCost+=meanCost
             globTimeCost+=meanTrajTime
         #self.printLastCoordInfo()
-        return globMeanCost/len(self.posIni), globTimeCost/len(self.posIni)
+        size=len(self.posIni)
+        return globMeanCost/size, globTimeCost/size
+    
+    def runMultiProcessTrajectories(self, repeat):
+        pool=Pool(processes=len(self.posIni))
+        result = pool.map(partial(self.runNtrajectory, repeat=repeat) , [(x, y) for x, y in self.posIni])
+        meanCost, meanTraj=0, 0
+        for Cost, traj in result:
+            meanCost+=Cost
+            meanTraj+=traj
+        size = len(result)
+        return meanCost/size, meanTraj/size
+
+
+       
+    def runNtrajectory(self, (x, y), repeat):
+        costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+        for i in range(repeat):
+            costAll[i], trajTimeAll[i]  = self.runOneTrajectoryOpti(x, y) 
+        meanCost = np.mean(costAll)
+        meanTrajTime = np.mean(trajTimeAll)
+        #TODO: put this in the func below for cost map
+        #self.costStore.append([x, y, meanCost])
+        #self.trajTimeStore.append([x, y, meanTrajTime])
+        return meanCost, meanTrajTime
     
     def runOneTrajectoryOpti(self, x, y):
         #self.tm.saveTraj = True
@@ -163,7 +187,7 @@ class Experiments:
         self.initTheta(theta)
         #print "theta avant appel :", theta
         #compute all the trajectories x times each, x = numberOfRepeat
-        meanCost, meanTime = self.runTrajectoriesForResultsGenerationOpti(self.numberOfRepeat)
+        meanCost, meanTime = self.runMultiProcessTrajectories(self.numberOfRepeat)
         #cma.plot()
         #opt = cma.CMAOptions()
         #print "CMAES options :", opt
@@ -215,7 +239,4 @@ class Experiments:
             #np.savetxt(costfoldername+"cmaesTime.log",self.CMAESTimeStore) #Note: inefficient, should rather add to the file
 
         return 10.0*(self.rs.rhoCF-meanCost)/self.rs.rhoCF
-    
-    
-    
     
