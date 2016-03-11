@@ -33,14 +33,12 @@ def loadTrajs(folderName, prct, det=False):
     listdir = os.listdir(folderName)
     state=[]
     activity=[]
-    hand=[]
     nbTraj = 0
     for trajFile in listdir:
         if(rd.random() < prct):
             tmpData = np.loadtxt(folderName + trajFile)
             stateTrajectory    = np.empty((tmpData.shape[0],4))
             activityTrajectory = np.empty((tmpData.shape[0],6))
-            handPos = np.empty((tmpData.shape[0],2))
             for i in range(tmpData.shape[0]):
                 stateTrajectory[i] = tmpData[i][8:12]
                 #wiht noise
@@ -48,7 +46,6 @@ def loadTrajs(folderName, prct, det=False):
                     activityTrajectory[i] = tmpData[i][12:18]
                 else :
                     activityTrajectory[i] = tmpData[i][18:24]
-                handPos = tmpData[i][34:]
             state.append(stateTrajectory)
             activity.append(activityTrajectory)
             nbTraj+=1
@@ -64,7 +61,6 @@ def loadStateCommandPairsByStartCoords(foldername, prct, det=False):
     arm = Arm()
     dataOut = {}
     listdir = os.listdir(foldername)
-    nbTraj = len(listdir)
     for el in listdir:
 #        j = j+1
 #        if j>4500 or rd.random()<0.5:
@@ -97,9 +93,9 @@ def stateAndCommandDataFromTrajs(data):
         Output:    -dataA: numpy array
         '''
         state, command = [], []
-        for key, v in data.items():
+        for key, _ in data.items():
             #if float(key) < 0.58:
-                for k2, xvals in data[key].items():
+                for _, xvals in data[key].items():
                     for i in range(len(xvals)):
                         stateVec, commandVec = [], []
                         for j in range(len(xvals[i])):
@@ -213,8 +209,8 @@ def getXYHandData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordHand = arm.mgdEndEffector(np.array([[data[i][10]], [data[i][11]]]))
-           xy[el].append((coordHand[0], coordHand[1]))
+            coordHand = arm.mgdEndEffector(np.array([[data[i][10]], [data[i][11]]]))
+            xy[el].append((coordHand[0], coordHand[1]))
     return xy
 
 def getXYElbowData(foldername):
@@ -229,8 +225,8 @@ def getXYElbowData(foldername):
         xy[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           coordElbow, coordHand = arm.mgdFull(np.array([[data[i][10]], [data[i][11]]]))
-           xy[el].append((coordElbow[0], coordElbow[1]))
+            coordElbow, _ = arm.mgdFull(np.array([[data[i][10]], [data[i][11]]]))
+            xy[el].append((coordElbow[0], coordElbow[1]))
     return xy
 
 def getEstimatedStateData(foldername):
@@ -310,10 +306,10 @@ def getCostData(foldername):
         costDico[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           x = data[i][0]
-           y = data[i][1]
-           cost = data[i][2]
-           costDico[el].append((x, y, cost))
+            x = data[i][0]
+            y = data[i][1]
+            cost = data[i][2]
+            costDico[el].append((x, y, cost))
     return costDico
     
 def getTrajTimeData(foldername):
@@ -327,10 +323,10 @@ def getTrajTimeData(foldername):
         trajTimeDico[el] = []
         data = np.loadtxt(foldername + el)
         for i in range(data.shape[0]):
-           x = data[i][0]
-           y = data[i][1]
-           trajTime = data[i][2]
-           trajTimeDico[el].append((x, y, trajTime))
+            x = data[i][0]
+            y = data[i][1]
+            trajTime = data[i][2]
+            trajTimeDico[el].append((x, y, trajTime))
     return trajTimeDico
     
 def getLastXData(foldername):
@@ -355,13 +351,39 @@ def dicToArray(data):
         Output:    -dataA: numpy array
         '''
         retour = []
-        for k, v in data.items():
+        for _, v in data.items():
             retour.append(v)
         return np.vstack(np.array(retour))
             
     
 
-
+def loadTrajForModel(folderName, delay):
+    '''
+    
+    Input :                -foldername : name of the folder that contain trajectory
+                           -delay : Kalman delay
+    
+    Output :               -state: np-array of trajectory's states
+                           -activity: np-array of trajectory's activity
+    '''
+    listdir = os.listdir(folderName)
+    stateAndCommand=[]
+    nextState=[]
+    nbTraj = 0
+    for trajFile in listdir:
+        tmpData = np.loadtxt(folderName + trajFile)
+        stateAndCommandtmp    = np.empty((tmpData.shape[0]-delay,4+6*delay))
+        nextStatetmp = np.empty((tmpData.shape[0]-delay,4))
+        for i in range(tmpData.shape[0]-delay):
+            stateAndCommandtmp[i][:4] = tmpData[i][8:12]
+            for j in range(delay):
+                stateAndCommandtmp[i][4+6*j:4+6*(j+1)]=tmpData[i+j][12:18]
+            nextStatetmp[i]=tmpData[i+j+1][8:12]
+        stateAndCommand.append(stateAndCommandtmp)
+        nextState.append(nextStatetmp)
+        nbTraj+=1
+    print(str(nbTraj) + " Trajectory charged")
+    return np.vstack(stateAndCommand), np.vstack(nextState)
     
 
 
