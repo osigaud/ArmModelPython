@@ -1,0 +1,16 @@
+eclipse.preferences.version=1
+encoding//ArmModel/ArmDynamics.py=utf-8
+encoding//ArmModel/ArmParameters.py=utf-8
+encoding//CostComputation/NextStateComputation.py=utf-8
+encoding//Main/Main.py=utf-8
+encoding//Plot/MuscularActivationsPlotFunctions.py=utf-8
+encoding//Regression/functionApproximator_RBFN.py=utf-8
+encoding//Script/RunRegressionRBFN.py=utf-8
+encoding//TrajectoryGenerator/TrajectoryGenerator.py=utf-8
+encoding//Utils/FileReading.py=utf-8
+encoding//Utils/InitUtil.py=utf-8
+encoding//Utils/ReadSetupFile.py=utf-8
+encoding//Utils/ThetaNormalization.py=utf-8
+encoding//runExperimentalSetupTrajectories/runExperimentalSetupTrajectories.py=utf-8
+encoding/GlobalVariables.py=utf-8
+encoding/runScript.py=utf-8
