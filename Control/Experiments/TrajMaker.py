@@ -11,22 +11,24 @@ import numpy as np
 
 
 from Utils.CreateVectorUtil import createVector
-from ArmModel.Arm import Arm, getDotQAndQFromStateVector
+from ArmModel.Arm2 import getDotQAndQFromStateVector
+from ArmModel.Arm2 import Arm2
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
 from Utils.FileWritting import findDataFilename
 
 from Regression.RunRegression import initController
 
 from StateEstimator import StateEstimator
+from StateEstimatorRegression import StateEstimatorRegression
 
-
+from StateEstimatorHyb import StateEstimatorHyb
 
 
 
 
 class TrajMaker:
     
-    def __init__(self, rs, sizeOfTarget, saveTraj, thetaFile):
+    def __init__(self, rs, sizeOfTarget, saveTraj, thetaFile, estim="Inv"):
         '''
     	Initializes the parameters used to run the functions below
     
@@ -37,7 +39,7 @@ class TrajMaker:
     			-Ukf, unscented kalman filter, class object
     			-saveTraj, Boolean: true = Data are saved, false = data are not saved
     	'''
-        self.arm = Arm()
+        self.arm = Arm2()
         self.arm.setDT(rs.dt)
 
         self.controller = initController(rs,thetaFile)
@@ -48,7 +50,12 @@ class TrajMaker:
         self.rs = rs
         self.sizeOfTarget = sizeOfTarget
         #6 is the dimension of the state for the filter, 4 is the dimension of the observation for the filter, 25 is the delay used
-        self.stateEstimator = StateEstimator(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
+        if estim=="Inv" :
+            self.stateEstimator = StateEstimator(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
+        elif estim=="Reg":
+            self.stateEstimator = StateEstimatorRegression(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
+        else :
+            self.stateEstimator = StateEstimatorHyb(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
         self.saveTraj = saveTraj
         #Initializes variables used to save trajectory
  
@@ -84,7 +91,12 @@ class TrajMaker:
         #return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
         return -self.rs.upsCF*mvtCost
     
-    def computePerpendCost(self):  
+    def computePerpendCost(self): 
+        '''
+        compute the Perpendicular cost for one trajectory
+        
+        Ouput :        -cost, the perpendicular cost
+        ''' 
         dotq, q = getDotQAndQFromStateVector(self.arm.getState())
         J = self.arm.jacobian(q)
         xi = np.dot(J,dotq)
@@ -98,14 +110,15 @@ class TrajMaker:
         '''
 		Computes the cost on final step if the target is reached
 		
-		Input:		-cost: cost at the end of the trajectory, float
-					-t: time, float
+		Input:		-t: time, float
+					-coordHand: coordinate of the end effector, numpy array
 					
-		Output:		-cost: final cost if the target is reached
+		Output:		-cost: final cost , float
 		'''
-        #check if the target is reached and give the reward if yes
+        #check if the Ordinate of the target is reached and give the reward if yes
         if coordHand[1] >= self.rs.YTarget:
             #print "main X:", coordHand[0]
+            #check if target is reached
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
                 cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF
             else:
@@ -149,12 +162,12 @@ class TrajMaker:
             stepStore = []
             #computation of the next muscular activation vector using the controller theta
             #print ("state :",self.arm.getState())
-
             U = self.controller.computeOutput(estimState)
 
             if self.rs.det:
                 Unoisy = muscleFilter(U)
             else:
+                #Unoisy = getNoisyCommand(U,self.arm.getMusclesParameters().getKnoiseU())
                 Unoisy = getNoisyCommand(U,self.arm.musclesP.knoiseU)
                 Unoisy = muscleFilter(Unoisy)
             #computation of the arm state
@@ -351,27 +364,33 @@ class TrajMaker:
         while coordHand[1] < self.rs.YTarget and i < self.rs.maxSteps:
             #computation of the next muscular activation vector using the controller theta
             #print ("state :",self.arm.getState())
-
             U = self.controller.computeOutput(estimState)
 
             if self.rs.det:
                 realU = muscleFilter(U)
+                #computation of the arm state
+                realNextState = self.arm.computeNextState(realU, self.arm.getState())
+     
+                #computation of the approximated state
+                tmpState = self.arm.getState()
+                
+                estimNextState = realNextState
             else:
+                #realU = getNoisyCommand(U,self.arm.getMusclesParameters().getKnoiseU())
                 realU = getNoisyCommand(U,self.arm.musclesP.knoiseU)
                 realU = muscleFilter(realU)
 
 
-            #computation of the arm state
-            realNextState = self.arm.computeNextState(realU, self.arm.getState())
- 
-            #computation of the approximated state
-            tmpState = self.arm.getState()
-
-            if self.rs.det:
-                estimNextState = realNextState
-            else:
+                #computation of the arm state
+                realNextState = self.arm.computeNextState(realU, self.arm.getState())
+     
+                #computation of the approximated state
+                tmpState = self.arm.getState()
+                
                 U = muscleFilter(U)
                 estimNextState = self.stateEstimator.getEstimState(tmpState,U)
+
+
             
             #print estimNextState
 
@@ -379,9 +398,8 @@ class TrajMaker:
 
             #computation of the cost
             cost += self.computeStateTransitionCost(realU)
-
             #get dotq and q from the state vector
-            _, q = getDotQAndQFromStateVector(realNextState)
+            _, q = getDotQAndQFromStateVector(tmpState)
             coordHand = self.arm.mgdEndEffector(q)
             #print ("dotq :",dotq)
             #computation of the coordinates to check if the target is reach or not
@@ -397,3 +415,7 @@ class TrajMaker:
         if coordHand[1] >= self.rs.YTarget:
             lastX = coordHand[0]
         return cost, t, lastX
+    
+
+    
+    

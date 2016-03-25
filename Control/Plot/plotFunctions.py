@@ -15,12 +15,12 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib import animation
 from matplotlib.mlab import griddata
-plt.rc("figure", facecolor="white")
+
 
 from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData
 
 
-from ArmModel.Arm import Arm
+from ArmModel.Arm2 import Arm2
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 
 #TODO: remove GlobalVariables
@@ -130,7 +130,7 @@ def makeVelocityData(rs,arm,name,media):
                 media.plot(index, speed, c ='red')
 
 def plotVelocityProfile(what, rs, foldername = "None"):
-    arm = Arm()
+    arm = Arm2()
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES":
@@ -188,7 +188,7 @@ def plotRegBrent(trajReg, trajBrent):
                       -trajBrent: array of Brent trajectory
     """
     plt.figure(1, figsize=(16,9))
-    arm = Arm()
+    arm = Arm2()
     for i in range(trajBrent.shape[0]):
         ligneReg=np.empty((trajReg[i].shape[0],2))
         for j in range(trajReg[i].shape[0]):
@@ -239,6 +239,7 @@ def plotTrajsInRepo():
     plt.show(block = True)
 
 def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim=False):
+    plt.ion()
     plt.figure(1, figsize=(16,9))
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
@@ -269,7 +270,6 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
         plt.title("XY Positions for " + what)
 
     plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile+'.png', bbox_inches='tight')
-    plt.show(block = True)
 
 def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
@@ -794,7 +794,7 @@ def plotCMAESTimeProgress(rs):
 
 def plotExperimentSetup(rs):
     plt.figure(1, figsize=(16,9))
-    arm = Arm()
+    arm = Arm2()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
@@ -834,7 +834,7 @@ def plotExperimentSetup(rs):
 
 def plotManipulability(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = Arm()
+    arm = Arm2()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]
@@ -875,7 +875,7 @@ def plotManipulability(rs):
 
 def plotManipulability2(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = Arm()
+    arm = Arm2()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]

@@ -10,15 +10,12 @@ Description: useful functions to run cmaes and some scripts to run trajectories
 #TODO: Make a optimisation and CMAES class
 import os
 import cma
-import numpy as np
 from shutil import copyfile
+from functools import partial
+from multiprocess.pool import ThreadPool
 
-from multiprocessing.pool import Pool
-
-from Utils.ReadXmlFile import ReadXmlFile
 from Utils.Chrono import Chrono
 
-from ArmModel.Arm import Arm
 from Experiments.Experiments import Experiments
 from Utils.FileWritting import checkIfFolderExists
 
@@ -117,6 +114,8 @@ def launchCMAESForAllTargetSizesMulti(rs):
     '''
     #initializes setup variables
     #initializes a pool of worker, ie multiprocessing
-    p = Pool()
+    p = ThreadPool(processes=4)
     #run cmaes on each targets size on separate processor
-    p.map(launchCMAESForSpecificTargetSize, rs.sizeOfTarget, "theta")
+    p.map(partial(launchCMAESForSpecificTargetSize, rs=rs, save=False), rs.sizeOfTarget)
+    p.close()
+    p.join()

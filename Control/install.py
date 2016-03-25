@@ -37,7 +37,8 @@ def installMissingPackage(packageList):
     if b == 2:
         try:
             os.system('sudo pip2 install numpy scipy Sphinx numpydoc nose pykalman')
-            os.system('sudo pip2 install cma pybrain')
+            os.system('sudo pip2 install cma lxml multiprocess')
+            os.system('sudo pip2 install https://github.com/pybrain/pybrain/archive/0.3.3.zip')
             os.system('sudo pip2 install cython')
             os.system('sudo pip2 install distlib')
         except:
@@ -46,7 +47,7 @@ def installMissingPackage(packageList):
         try:
             os
             os.system('sudo pip3 numpy scipy Sphinx numpydoc nose pykalman')
-            os.system('sudo pip3 install cma')
+            os.system('sudo pip3 install cma lxml multiprocess')
             os.system('sudo pip3 install https://github.com/pybrain/pybrain/archive/0.3.3.zip')
             os.system('sudo pip3 install cython')
             os.system('sudo pip3 install distlib')

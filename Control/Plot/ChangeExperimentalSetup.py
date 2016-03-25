@@ -11,7 +11,7 @@ Description: Script to change the initial position
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-from Utils.FileSaving import saveBin
+from Utils.FileWritting import writeArray
 
 def changeExperimentCircular():
     x0, y0 = 0, 0.6175
@@ -30,8 +30,8 @@ def changeExperimentCircular():
     plt.figure()
     plt.scatter(x, y, c = 'b')
     plt.show()
-    
-    saveBin("PosIniExperimentCircular48", exper)
+    writeArray(exper,".","PosIniExperimentCircular48","")
+
 
 #changeExperimentCircular()
 

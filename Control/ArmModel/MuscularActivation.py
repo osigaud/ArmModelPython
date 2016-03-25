@@ -38,8 +38,8 @@ def muscleFilter(UnoiseTmp):
             #print "U unfiltered :", UnoiseTmp[i]
             UnoiseTmp[i] = 0
         elif UnoiseTmp[i] > 1:
-           #print "U unfiltered :", UnoiseTmp[i]
-           UnoiseTmp[i] = 1
+            #print "U unfiltered :", UnoiseTmp[i]
+            UnoiseTmp[i] = 1
     return UnoiseTmp
     
     

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Author: Olivier Sigaud
+Author: Olivier Sigaud, Corentin Arnaud
 
 Module: NeuralNet
 
@@ -173,7 +173,7 @@ class NeuralNet(regression):
         
         Output:     -fa_out: numpy N-D array, output approximated
         '''
-        assert(inputVal.shape[0]==self.inputDimension), "NeuralNet: Bad input format"
+        assert(inputVal.shape[0]==self.inputDimension), "NeuralNet: Bad input format : " + str(inputVal.shape[0])+"/"+str(self.inputDimension)
         output=self.net.activate(inputVal)
         #print(output)
         return output
@@ -181,22 +181,5 @@ class NeuralNet(regression):
 
 
 
-def UnitTest():
-    fa = NeuralNet(2,3)
-    myInput, output = [], []
-    for i in range(10000):
-        x,y = 3*random.random(), 3*random.random()
-        myInput.append([x,y])
-        output.append([x*y, x-y, x+y])
-    fa.getTrainingData(np.vstack(np.array(myInput)), np.vstack(np.array(output)))
-    fa.train()
-    fa.saveTheta("test.theta")
 
-    fa.load("test")
-    for i in range(20):
-        x,y = 3*random.random(), 3*random.random()
-        approx = fa.computeOutput(np.array([x,y]))
-        print("in:", [x,y])
-        print(" out:", approx)
-        print(" real:",  [x*y, x-y, x+y])
   

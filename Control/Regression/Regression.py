@@ -10,6 +10,8 @@ Description:
 
 import numpy as np
 
+
+
 class regression(object) :
     
     def __init__(self, rs):

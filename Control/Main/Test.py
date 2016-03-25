@@ -8,15 +8,13 @@ Module: Test
 Description: Functions to test experimentation
 '''
 
-
-from Regression.Regression import *
-from Regression.RunRegression import *
 import numpy as np
 from Plot.plotFunctions import plotRegBrent
 from Experiments.TrajMaker import TrajMaker
 from Utils.FileReading import loadTrajs
 from Utils.ReadXmlFile import ReadXmlFile
-from ArmModel.Arm import Arm
+from ArmModel.Arm2 import Arm2
+from GlobalVariables import pathDataFolder
 
 def testRegression(setupFile, thetaFile):
     """ 
@@ -25,7 +23,7 @@ def testRegression(setupFile, thetaFile):
     rs=ReadXmlFile(setupFile)
     stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.01, rs.det)
     stateAll=np.array(stateAll)
-    arm=Arm()
+    arm=Arm2()
     trajReg = np.empty_like(stateAll)
     trajMaker = TrajMaker(rs,0.02,None,rs.path+thetaFile)
 

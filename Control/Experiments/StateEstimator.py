@@ -42,11 +42,8 @@ class StateEstimator:
     
     	Input:		-state: the state stored
     	'''
-        self.stateStore = []
-        self.commandStore = []
-        for i in range(self.delay):
-            self.stateStore.append([0] * self.dimState)
-            self.commandStore.append([0] * self.dimCommand)
+        self.stateStore = np.zeros((self.delay,self.dimState))
+        self.commandStore = np.zeros((self.delay,self.dimCommand))
         #print ("InitStore:", self.stateStore)
         self.currentEstimState = state
     
@@ -56,9 +53,9 @@ class StateEstimator:
     
     	Input:		-state: the state to store
     	'''
-        for i in range (self.delay-1):
-            self.stateStore[self.delay-i-1]=self.stateStore[self.delay-i-2]
-            self.commandStore[self.delay-i-1]=self.commandStore[self.delay-i-2]
+
+        self.stateStore[1:]=self.stateStore[:-1]
+        self.commandStore[1:]=self.commandStore[:-1]        
         self.stateStore[0]=state
         self.commandStore[0]=command
         #print ("After store:", self.stateStore)
@@ -75,6 +72,7 @@ class StateEstimator:
     	Output:		-stateApprox: the next state approximation, numpy array of dimension (x, 1), here x = 4
     	'''
         #store the state of the arm to feed the filter with a delay on the observation
+
         inferredState = self.storeInfo(state, command)
         if isNull(inferredState):
             self.currentEstimState = self.arm.computeNextState(command,self.currentEstimState)

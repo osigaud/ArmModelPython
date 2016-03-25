@@ -13,16 +13,17 @@ import numpy as np
 import random as rd
 
 from Utils.ReadXmlFile import ReadXmlFile
-from Utils.FileReading import getStateAndCommandData, dicToArray,stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords, loadTrajs
+from Utils.FileReading import stateAndCommandDataFromTrajs,loadStateCommandPairsByStartCoords, loadTrajs
 
 
 from RBFN import rbfn
 from NeuralNet import NeuralNet
-from ArmModel.Arm import Arm
+from ArmModel.Arm2 import Arm2
 
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
+from NeuraNetTF import NeuralNetTF
 
-regressionDict = {"NeuralNet" : NeuralNet, "RBFN" : rbfn}
+regressionDict = {"NeuralNet" : NeuralNet, "NeuralNetTF" : NeuralNetTF, "RBFN" : rbfn}
 
 def initController(rs,fileName):
     '''
@@ -99,7 +100,7 @@ def UnitTestController(fileName):
     fa.saveTheta("test")
     fa.loadTheta("test")
 
-    for el in os.listdir(BrentTrajectoriesFolder):
+    for _ in os.listdir(BrentTrajectoriesFolder):
             for i in range(len(state)):
                 if rd.random()<0.06:
                     outNN = fa.computeOutput(np.array(state[i]))
@@ -114,7 +115,7 @@ def UnitTestArmModel(fileName):
     '''
     rs = ReadXmlFile(fileName)
 
-    arm = Arm()
+    arm = Arm2()
     arm.setDT(rs.dt)
 
     state, estimState, command, noisycommand, nextEstimState, nextState = {}, {}, {}, {}, {}, {}
@@ -140,5 +141,5 @@ def UnitTestArmModel(fileName):
                     print("---------------------------------------------------------")
                     print("Real :", nextState[el][i]) 
                     print("ArmN :", outNextStateNoisy)
-                    print("Arm :", outNextState)
+                    print("Arm2 :", outNextState)
                     print("---------------------------------------------------------")

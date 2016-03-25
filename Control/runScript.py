@@ -11,7 +11,7 @@ Description: main script to run what we want in the project
 import numpy as np
 import random as rd
 
-from Main.Main import generateFromRegression, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.Main import generateFromRegression, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Regression.RunRegression import run, UnitTestController, UnitTestArmModel
 from Regression.Regression import UnitTest
@@ -136,7 +136,7 @@ def chooseFunction(choix, rs):
         if rorc == 1:
             save = True
         c = Chrono()
-        launchCMAESForAllTargetSizes(rs,save)
+        launchCMAESForAllTargetSizesMulti(rs)
         c.stop()
     elif choix == 12:
         nameTheta = raw_input('Name of the controller file: ')

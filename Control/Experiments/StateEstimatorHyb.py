@@ -11,8 +11,8 @@ import numpy as np
 import random as rd
 import os
 from Regression.NeuralNet import NeuralNet
-
-
+from Regression.NeuraNetTF import NeuralNetTF
+from TrainStateEstimator import NeuraNetParameter
 
 #from ArmModel.MuscularActivation import getNoisyCommand
 
@@ -37,8 +37,9 @@ class StateEstimatorHyb:
         self.dimCommand = dimCommand
         self.delay = delay
         self.arm = arm
-        para= self.NeuraNetParameter(delay)
-        self.regression = NeuralNet(para)
+        para= NeuraNetParameter(delay)
+        self.regression = NeuralNetTF(para)
+        self.regressionInput = np.empty(para.inputDim)
 
     def initStore(self, state):
         '''
@@ -46,12 +47,9 @@ class StateEstimatorHyb:
     
     	Input:		-state: the state stored
     	'''
-        self.stateStore = []
-        self.commandStore = []
-        for i in range(self.delay):
-            self.stateStore.append([0] * self.dimState)
-            self.commandStore.append([0] * self.dimCommand)
-        #print ("InitStore:", self.stateStore)
+        self.stateStore = np.zeros((self.delay,self.dimState))
+        self.commandStore = np.zeros((self.delay,self.dimCommand))
+
         self.currentEstimState = state
     
     def storeInfo(self, state, command):
@@ -60,9 +58,13 @@ class StateEstimatorHyb:
     
     	Input:		-state: the state to store
     	'''
+        '''
         for i in range (self.delay-1):
             self.stateStore[self.delay-i-1]=self.stateStore[self.delay-i-2]
             self.commandStore[self.delay-i-1]=self.commandStore[self.delay-i-2]
+        '''
+        self.stateStore[1:]=self.stateStore[:-1]
+        self.commandStore[1:]=self.commandStore[:-1]
         self.stateStore[0]=state
         self.commandStore[0]=command
         #print ("After store:", self.stateStore)
@@ -84,7 +86,7 @@ class StateEstimatorHyb:
             self.currentEstimState = self.arm.computeNextState(command,self.currentEstimState)
             return self.currentEstimState
         newEstimState = self.arm.computeNextState(command,self.currentEstimState)
-        inferredState = self.regression.computeOutput(np.hstack((np.hstack((self.commandStore)),inferredState)))
+        inferredState = self.regression.computeOutput(self.stackInput(self.commandStore,inferredState))
         '''
         qdot,q = getDotQAndQFromStateVector(state)
         speed = self.arm.cartesianspeed(state)
@@ -93,8 +95,16 @@ class StateEstimatorHyb:
         '''
         for i in range(4):
             self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
-        #return self.currentEstimState
-        return state
+        return self.currentEstimState
+    
+    
+    def stackInput(self, command, state):
+        cpt=0
+        for ligne in command :
+            self.regressionInput[cpt:cpt+ligne.shape[0]]=ligne
+            cpt+=ligne.shape[0]
+        self.regressionInput[cpt:]=state
+        return self.regressionInput
     
     def debugStore(self):
         state = np.array([1,2,3,4])
@@ -103,19 +113,5 @@ class StateEstimatorHyb:
             tmpS = [rd.random() for x in range(4)]
             tmpU = [rd.random() for x in range(6)]
             self.storeInfo(tmpS,tmpU)
-            
-    class NeuraNetParameter():
-        def __init__(self, delay):
-            self.thetaFile="EstimTheta.theta"
-            self.path = os.getcwd()+"/theta"
-            self.inputLayer="linear"
-            self.outputLayer="tanh"
-            self.hiddenLayers=[]
-            for i in range(2):
-                self.hiddenLayers.append(("tanh",10))
-            self.inputDim=4+6*delay
-            self.outputDim=4
-            self.learningRate=0.0001
-            self.momentum=0.
-            self.bias=True
+
     

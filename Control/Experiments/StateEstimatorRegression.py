@@ -11,7 +11,9 @@ import numpy as np
 import random as rd
 import os
 from Regression.NeuralNet import NeuralNet
+
 from TrainStateEstimator import NeuraNetParameter
+from Regression.NeuraNetTF import NeuralNetTF
 
 
 #from ArmModel.MuscularActivation import getNoisyCommand
@@ -37,8 +39,9 @@ class StateEstimatorRegression:
         self.dimCommand = dimCommand
         self.delay = delay
         self.arm = arm
-        para= NeuraNetParameter()
+        para= NeuraNetParameter(1)
         self.regression = NeuralNet(para)
+        self.regressionInput=np.empty((para.inputDim))
 
     def initStore(self, state):
         '''
@@ -46,11 +49,8 @@ class StateEstimatorRegression:
     
     	Input:		-state: the state stored
     	'''
-        self.stateStore = []
-        self.commandStore = []
-        for _ in range(self.delay):
-            self.stateStore.append([0] * self.dimState)
-            self.commandStore.append([0] * self.dimCommand)
+        self.stateStore = np.zeros((self.delay,self.dimState))
+        self.commandStore = np.zeros((self.delay,self.dimCommand))
         #print ("InitStore:", self.stateStore)
         self.currentEstimState = state
     
@@ -60,9 +60,8 @@ class StateEstimatorRegression:
     
     	Input:		-state: the state to store
     	'''
-        for i in range (self.delay-1):
-            self.stateStore[self.delay-i-1]=self.stateStore[self.delay-i-2]
-            self.commandStore[self.delay-i-1]=self.commandStore[self.delay-i-2]
+        self.stateStore[1:]=self.stateStore[:-1]
+        self.commandStore[1:]=self.commandStore[:-1]
         self.stateStore[0]=state
         self.commandStore[0]=command
         #print ("After store:", self.stateStore)
@@ -81,12 +80,18 @@ class StateEstimatorRegression:
         #store the state of the arm to feed the filter with a delay on the observation
         inferredState = self.storeInfo(state, command)
         if isNull(inferredState):
-            self.currentEstimState = self.regression.computeOutput(np.hstack((command,self.currentEstimState)))
+            self.regressionInput[:command.shape[0]]=command
+            self.regressionInput[command.shape[0]:]=self.currentEstimState
+            self.currentEstimState = self.regression.computeOutput(self.regressionInput)
             return self.currentEstimState
-        newEstimState = self.regression.computeOutput(np.hstack((command,self.currentEstimState)))
+        self.regressionInput[:command.shape[0]]=command
+        self.regressionInput[command.shape[0]:]=self.currentEstimState
+        newEstimState = self.regression.computeOutput(self.regressionInput)
         for i in range (self.delay):
             U = self.commandStore[self.delay-i-1]
-            inferredState = self.regression.computeOutput(np.hstack((U,inferredState)))
+            self.regressionInput[:command.shape[0]]=U
+            self.regressionInput[command.shape[0]:]=inferredState
+            inferredState = self.regression.computeOutput(self.regressionInput)
         '''
         qdot,q = getDotQAndQFromStateVector(state)
         speed = self.arm.cartesianspeed(state)
@@ -95,8 +100,8 @@ class StateEstimatorRegression:
         '''
         for i in range(4):
             self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
-        #return self.currentEstimState
-        return state
+        return self.currentEstimState
+
     
     def debugStore(self):
         state = np.array([1,2,3,4])
