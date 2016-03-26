@@ -27,7 +27,7 @@ class NeuralNet():
         '''
         self.inputDimension = inputDim
         self.outputDimension = outputDim
-        self.net = buildNetwork(inputDim, 4, outputDim)
+        self.net = buildNetwork(inputDim, 10, outputDim)
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
 
         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
@@ -63,11 +63,22 @@ class NeuralNet():
                     output.append(rd.random()/2)
                 self.ds.addSample([x, y],output)
 
+    def getTrainingData2(self):
+        for i in range(40000):
+                output = []
+                x = rd.random()
+                y = x + x*rd.random()
+                if x>0.5 and y>0.5:
+                    output.append(rd.random()/2+1.5)
+                else:
+                    output.append(rd.random()/2)
+                self.ds.addSample([x, y],output)
+
     def train(self):
         '''
         Perform batch regression
         '''
-        self.getTrainingData()
+        self.getTrainingData2()
         trainer = BackpropTrainer(self.net, self.ds)
         trainer.train()
 

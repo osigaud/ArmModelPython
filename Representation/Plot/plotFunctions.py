@@ -54,7 +54,7 @@ def plotInput():
     plt.ylabel("handle")
     plt.title("Input map")
 
-    plt.savefig("ImageBank/4input.png", bbox_inches='tight')
+    plt.savefig("ImageBank/10input.png", bbox_inches='tight')
     plt.show(block = True)
 
 def plotOutputMap(net,step):
@@ -95,5 +95,5 @@ def plotOutputMap(net,step):
     plt.ylabel("handle")
     plt.title("Output map")
 
-    plt.savefig("ImageBank/4outputmap"+str(step)+".png", bbox_inches='tight')
+    plt.savefig("ImageBank/10outputmap"+str(step)+".png", bbox_inches='tight')
     plt.show(block = True)

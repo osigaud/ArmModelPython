@@ -41,6 +41,7 @@ def run():
         plotOutputMap(n,i*2)
         n.train()
         n.train()
+    plotOutputMap(n,10)
 
 run()
 
