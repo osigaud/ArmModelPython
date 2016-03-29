@@ -22,7 +22,7 @@ from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandDat
 
 from ArmModel.Arm2 import Arm2
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
-
+plt.rc("figure", facecolor="white")
 #TODO: remove GlobalVariables
 
 #--------------------------- trajectory animations ---------------------------------------------------------------------------------------------
@@ -239,7 +239,7 @@ def plotTrajsInRepo():
     plt.show(block = True)
 
 def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim=False):
-    plt.ion()
+    #plt.ion()
     plt.figure(1, figsize=(16,9))
     if what == "CMAES" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
@@ -268,8 +268,8 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
         plt.xlabel("X (m)")
         plt.ylabel("Y (m)")
         plt.title("XY Positions for " + what)
-
     plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile+'.png', bbox_inches='tight')
+    plt.show(block = True)
 
 def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
