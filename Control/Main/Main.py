@@ -90,7 +90,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
         thetaname = foldername + rs.thetaFile
         copyRegressiontoCMAES(rs, rs.thetaFile, sizeOfTarget)
     else:
-        thetaname = foldername + "Best.theta"
+        thetaname = foldername + "Best"
 
     #Initializes all the class used to generate trajectory
     exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
