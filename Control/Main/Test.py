@@ -13,7 +13,7 @@ from Plot.plotFunctions import plotRegBrent
 from Experiments.TrajMaker import TrajMaker
 from Utils.FileReading import loadTrajs
 from Utils.ReadXmlFile import ReadXmlFile
-from ArmModel.Arm2 import Arm2
+from ArmModel import Arm26.Arm2
 from GlobalVariables import pathDataFolder
 
 def testRegression(setupFile, thetaFile):
@@ -23,7 +23,7 @@ def testRegression(setupFile, thetaFile):
     rs=ReadXmlFile(setupFile)
     stateAll, commandAll = loadTrajs(pathDataFolder + "Brent/", 0.01, rs.det)
     stateAll=np.array(stateAll)
-    arm=Arm2()
+    arm=Arm26()
     trajReg = np.empty_like(stateAll)
     trajMaker = TrajMaker(rs,0.02,None,rs.path+thetaFile)
 

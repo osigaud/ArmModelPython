@@ -21,7 +21,7 @@ import random as rd
 import numpy as np
 import os
 
-from ArmModel.Arm2 import Arm2
+from ArmModel.Arm26 import Arm26
 
 def loadTrajs(folderName, prct, det=False):
     '''
@@ -58,7 +58,7 @@ def loadStateCommandPairsByStartCoords(foldername, prct, det=False):
     
     Output : dictionary of data whose keys are y then x coordinates
     '''
-    arm = Arm2()
+    arm = Arm26()
     dataOut = {}
     listdir = os.listdir(foldername)
     for el in listdir:
@@ -118,7 +118,7 @@ def getInitPos(foldername):
     
     Output : dictionary of initial position of all trajectories
     '''
-    arm = Arm2()
+    arm = Arm26()
     xy = {}
     for el in os.listdir(foldername):
             data = np.loadtxt(foldername + el)
@@ -203,7 +203,7 @@ def getXYHandData(foldername):
     
     Outputs:    -state: dictionary keys = filenames, values = array of data
     '''
-    arm = Arm2()
+    arm = Arm26()
     xy = {}
     for el in os.listdir(foldername):
         xy[el] = []
@@ -219,7 +219,7 @@ def getXYElbowData(foldername):
     
     Outputs:    -state: dictionary keys = filenames, values = array of data
     '''
-    arm = Arm2()
+    arm = Arm26()
     xy = {}
     for el in os.listdir(foldername):
         xy[el] = []
@@ -249,7 +249,7 @@ def getEstimatedXYHandData(foldername):
     
     Outputs:    -state: dictionary keys = filenames, values = array of data
     '''
-    arm = Arm2()
+    arm = Arm26()
     xyEstim = {}
     for el in os.listdir(foldername):
         xyEstim[el] = []
@@ -265,7 +265,7 @@ def getXYEstimError(foldername):
     
     Outputs:    -errors: dictionary keys = filenames, values = array of data
     '''
-    arm = Arm2()
+    arm = Arm26()
     errors = {}
     for el in os.listdir(foldername):
         errors[el] = []
@@ -282,7 +282,7 @@ def getXYEstimErrorOfSpeed(foldername):
     
     Outputs:    -state: dictionary keys = filenames, values = array of data
     '''
-    arm = Arm2()
+    arm = Arm26()
     errors = {}
     for el in os.listdir(foldername):
         errors[el] = []

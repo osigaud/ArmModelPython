@@ -20,7 +20,7 @@ from matplotlib.mlab import griddata
 from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData
 
 
-from ArmModel.Arm2 import Arm2
+from ArmModel.Arm26 import Arm26
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 plt.rc("figure", facecolor="white")
 #TODO: remove GlobalVariables
@@ -130,7 +130,7 @@ def makeVelocityData(rs,arm,name,media):
                 media.plot(index, speed, c ='red')
 
 def plotVelocityProfile(what, rs, foldername = "None"):
-    arm = Arm2()
+    arm = Arm26()
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES":
@@ -188,7 +188,7 @@ def plotRegBrent(trajReg, trajBrent):
                       -trajBrent: array of Brent trajectory
     """
     plt.figure(1, figsize=(16,9))
-    arm = Arm2()
+    arm = Arm26()
     for i in range(trajBrent.shape[0]):
         ligneReg=np.empty((trajReg[i].shape[0],2))
         for j in range(trajReg[i].shape[0]):
@@ -794,7 +794,7 @@ def plotCMAESTimeProgress(rs):
 
 def plotExperimentSetup(rs):
     plt.figure(1, figsize=(16,9))
-    arm = Arm2()
+    arm = Arm26()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
@@ -834,7 +834,7 @@ def plotExperimentSetup(rs):
 
 def plotManipulability(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = Arm2()
+    arm = Arm26()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]
@@ -875,7 +875,7 @@ def plotManipulability(rs):
 
 def plotManipulability2(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = Arm2()
+    arm = Arm26()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]

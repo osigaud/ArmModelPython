@@ -11,8 +11,8 @@ import numpy as np
 
 
 from Utils.CreateVectorUtil import createVector
-from ArmModel.Arm2 import getDotQAndQFromStateVector
-from ArmModel.Arm2 import Arm2
+from ArmModel.Arm26 import getDotQAndQFromStateVector
+from ArmModel.Arm26 import Arm26
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
 from Utils.FileWritting import findDataFilename
 
@@ -39,7 +39,7 @@ class TrajMaker:
     			-Ukf, unscented kalman filter, class object
     			-saveTraj, Boolean: true = Data are saved, false = data are not saved
     	'''
-        self.arm = Arm2()
+        self.arm = Arm26()
         self.arm.setDT(rs.dt)
 
         self.controller = initController(rs,thetaFile)

@@ -13,45 +13,20 @@ Description:
 import numpy as np
 import math
 
-from ArmModel.ArmParameters import ArmParameters
-from ArmModel.MusclesParameters import MusclesParameters
-from ArmModel.Arm import Arm
+from ArmModel.ArmParametersXML import ArmParameters
+from ArmModel.MusclesParametersXML import MusclesParameters
+from ArmModel.Arm import Arm, getDotQAndQFromStateVector
 
-def getDotQAndQFromStateVector(state):
-    '''
-    Returns dotq and q from the state vector state
-    
-    Input:    -state: numpy array, state vector
-    
-    Outputs:    -dotq: numpy array
-    -q: numpy array
-    '''
-    dotq = np.array([state[0], state[1]])
-    q = np.array([state[2], state[3]])
-    return dotq, q
+
 
 #-----------------------------------------------------------------------------
 
-class Arm2(Arm):
+class Arm26(Arm):
     def __init__(self):
         self.__dotq0 = np.array([0.,0.])
-        self.armP = ArmParameters()
-        self.musclesP = MusclesParameters()
-      
-    def setState(self, state):
-        self.state = state
-      
-    def getState(self):
-        return self.state
-      
-    def setDT(self, dt):
-        self.dt = dt
-      
-    def get_dotq_0(self):
-        return np.array(self.__dotq0)
-
-    def set_dotq_0(self, value):
-        self.__dotq0 = value
+        self.armP = ArmParameters(2,6)
+        self.musclesP = MusclesParameters(2,6)
+        self.k = np.array([self.armP.I[0] + self.armP.I[1] + self.armP.m[1]*(self.armP.l[1]**2), self.armP.m[1]*self.armP.l[0]*self.armP.s[1], self.armP.I[1]])
 
     def computeNextState(self, U, state):
         '''
@@ -66,11 +41,14 @@ class Arm2(Arm):
         dotq, q = getDotQAndQFromStateVector(state)
         #print ("U :",U)
         #print ("dotq:",dotq)
-        M = np.array([[self.armP.k1+2*self.armP.k2*math.cos(q[1]),self.armP.k3+self.armP.k2*math.cos(q[1])],[self.armP.k3+self.armP.k2*math.cos(q[1]),self.armP.k3]])
+        M = np.array([[self.k[0]+2*self.k[1]*math.cos(q[1]),
+                       self.k[2]+self.k[1]*math.cos(q[1])],
+                      [self.k[2]+self.k[1]*math.cos(q[1]),
+                       self.k[2]]])
         #print ("M:",M)
         #Minv = np.linalg.inv(M)
         #print ("Minv:",Minv)
-        C = np.array([-dotq[1]*(2*dotq[0]+dotq[1])*self.armP.k2*math.sin(q[1]),(dotq[0]**2)*self.armP.k2*math.sin(q[1])])
+        C = np.array([-dotq[1]*(2*dotq[0]+dotq[1])*self.k[1]*math.sin(q[1]),(dotq[0]**2)*self.k[1]*math.sin(q[1])])
         #print ("C:",C)
         #the commented version uses a non null stiffness for the muscles
         #beware of dot product Kraid times q: q may not be the correct vector/matrix
@@ -100,26 +78,6 @@ class Arm2(Arm):
         nextState = np.array([dotq[0], dotq[1], q[0], q[1]])
         return nextState
 
-    def jointStop(self,q):
-        '''
-        Articular stop for the human arm
-        The stops are included in the arm parameters file
-        Shoulder: -0.6 <= q1 <= 2.6
-        Elbow: -0.2 <= q2 <= 3.0
-    
-        Inputs:    -q: (2,1) numpy array
-    
-        Outputs:    -q: (2,1) numpy array
-        '''
-        if q[0] < self.armP.slb:
-            q[0] = self.armP.slb
-        elif q[0] > self.armP.sub:
-            q[0] = self.armP.sub
-        if q[1] < self.armP.elb:
-            q[1] = self.armP.elb
-        elif q[1] > self.armP.eub:
-            q[1] = self.armP.eub
-        return q
     
     def mgdFull(self, q):
         '''
@@ -131,16 +89,16 @@ class Arm2(Arm):
         -coordElbow: elbow coordinate
         -coordHand: hand coordinate
         '''
-        coordElbow = [self.armP.l1*np.cos(q[0]), self.armP.l1*np.sin(q[0])]
-        coordHand = [self.armP.l1*np.cos(q[0])+self.armP.l2*np.cos(q[0] + q[1]), self.armP.l1*np.sin(q[0]) + self.armP.l2*np.sin(q[0] + q[1])]
+        coordElbow = [self.armP.l[0]*np.cos(q[0]), self.armP.l[0]*np.sin(q[0])]
+        coordHand = [self.armP.l[0]*np.cos(q[0])+self.armP.l[1]*np.cos(q[0] + q[1]), self.armP.l[0]*np.sin(q[0]) + self.armP.l[1]*np.sin(q[0] + q[1])]
         return coordElbow, coordHand
     
     def jacobian(self, q):
         J = np.array([
-                    [-self.armP.l1*np.sin(q[0]) - self.armP.l2*np.sin(q[0] + q[1]),
-                     -self.armP.l2*np.sin(q[0] + q[1])],
-                    [self.armP.l1*np.cos(q[0]) + self.armP.l2*np.cos(q[0] + q[1]),
-                     self.armP.l2*np.cos(q[0] + q[1])]])
+                    [-self.armP.l[0]*np.sin(q[0]) - self.armP.l[1]*np.sin(q[0] + q[1]),
+                     -self.armP.l[1]*np.sin(q[0] + q[1])],
+                    [self.armP.l[0]*np.cos(q[0]) + self.armP.l[1]*np.cos(q[0] + q[1]),
+                     self.armP.l[1]*np.cos(q[0] + q[1])]])
         return J
 
 
@@ -181,7 +139,7 @@ class Arm2(Arm):
         Outputs:
         -coordHand: hand coordinate
         '''
-        coordHand = [self.armP.l1*np.cos(q[0])+self.armP.l2*np.cos(q[0] + q[1]), self.armP.l1*np.sin(q[0]) + self.armP.l2*np.sin(q[0] + q[1])]
+        coordHand = [self.armP.l[0]*np.cos(q[0])+self.armP.l[1]*np.cos(q[0] + q[1]), self.armP.l[0]*np.sin(q[0]) + self.armP.l[1]*np.sin(q[0] + q[1])]
         return coordHand
 
     def mgi(self, xi, yi):
@@ -195,11 +153,11 @@ class Arm2(Arm):
                     -q1: arm angle
                     -q2: foreArm angle
         '''
-        a = ((xi**2)+(yi**2)-(self.armP.l1**2)-(self.armP.l2**2))/(2*self.armP.l1*self.armP.l2)
+        a = ((xi**2)+(yi**2)-(self.armP.l[0]**2)-(self.armP.l[1]**2))/(2*self.armP.l[0]*self.armP.l[1])
         try:
             q2 = math.acos(a)
-            c = self.armP.l1 + self.armP.l2*(math.cos(q2))
-            d = self.armP.l2*(math.sin(q2))
+            c = self.armP.l[0] + self.armP.l[1]*(math.cos(q2))
+            d = self.armP.l[1]*(math.sin(q2))
             q1 = math.atan2(yi,xi) - math.atan2(d,c)
             return q1, q2
         except ValueError:
@@ -207,32 +165,9 @@ class Arm2(Arm):
             print (xi,yi)
         return "None"    
 
-    def directionalManipulability(self, q, target):
-        J = self.jacobian(q)
-        #print "J", J
-        K = np.transpose(J)
-        #print "K", K
-        M = np.dot(J,K)
-        Minv= np.linalg.inv(M)
 
-        coordHand = self.mgdEndEffector(q)
 
-        vdir =  np.array([target[0]-coordHand[0],target[1]-coordHand[1]])
-        vdir = vdir/np.linalg.norm(vdir)
-        vdirt = np.transpose(vdir)
 
-        root = np.dot(vdirt,np.dot(Minv,vdir))
-       
-        manip = 1/math.sqrt(root)
-        return manip
-
-    def manipulability(self, q, target):
-        J = self.jacobian(q)
-        K = np.transpose(J)
-        M = np.dot(J,K)
-        det = np.linalg.det(M)
-
-        return math.sqrt(det)
 
 
     

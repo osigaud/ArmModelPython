@@ -18,7 +18,7 @@ from Utils.FileReading import stateAndCommandDataFromTrajs,loadStateCommandPairs
 
 from RBFN import rbfn
 from NeuralNet import NeuralNet
-from ArmModel.Arm2 import Arm2
+from ArmModel.Arm26 import Arm26
 
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 from NeuraNetTF import NeuralNetTF
@@ -115,7 +115,7 @@ def UnitTestArmModel(fileName):
     '''
     rs = ReadXmlFile(fileName)
 
-    arm = Arm2()
+    arm = Arm26()
     arm.setDT(rs.dt)
 
     state, estimState, command, noisycommand, nextEstimState, nextState = {}, {}, {}, {}, {}, {}
@@ -141,5 +141,5 @@ def UnitTestArmModel(fileName):
                     print("---------------------------------------------------------")
                     print("Real :", nextState[el][i]) 
                     print("ArmN :", outNextStateNoisy)
-                    print("Arm2 :", outNextState)
+                    print("Arm26 :", outNextState)
                     print("---------------------------------------------------------")

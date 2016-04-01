@@ -21,20 +21,21 @@ class ArmParameters:
         Intializes the class
         '''
         self.pathSetupFile = os.getcwd() + "/ArmModel/Setup/Arm.params"
-        self.readSetupFile()
+        with open(self.pathSetupFile, "r") as setupFile:
+            alls = setupFile.read()
+        #Split to read line by line
+        allsByLign = alls.split("\n")
+        self.readSetupFile(allsByLign)
         self.massMatrix()
-        self.AMatrix()
-        self.BMatrix()
-        self.readStops()
+        self.AMatrix(allsByLign)
+        self.BMatrix(allsByLign)
+        self.readStops(allsByLign)
         
-    def readSetupFile(self):
+    def readSetupFile(self,allsByLign):
         '''
         Reads the setup file
         '''
-        with open(self.pathSetupFile, "r") as file:
-            alls = file.read()
-        #Split to read line by line
-        allsByLign = alls.split("\n")
+        
         #line 1, Arm length
         self.l1 = float((allsByLign[0].split(":"))[1])
         #line 2, ForeArm length
@@ -60,13 +61,10 @@ class ArmParameters:
         self.k2 = self.m2*self.l1*self.s2
         self.k3 = self.I2
     
-    def BMatrix(self):
+    def BMatrix(self,allsByLign):
         '''
         Defines the damping matrix B
         '''
-        with open(self.pathSetupFile, "r") as file:
-            alls = file.read()
-        allsByLign = alls.split("\n")
         #line 9, Damping term k6
         b1 = float((allsByLign[8].split(":"))[1])
         #line 10, Damping term k7
@@ -78,13 +76,10 @@ class ArmParameters:
         #matrix definition
         self.B = np.array([[b1,b2],[b3,b4]])
     
-    def AMatrix(self):
+    def AMatrix(self,allsByLign):
         '''
         Defines the moment arm matrix A
         '''
-        with open(self.pathSetupFile, "r") as file:
-            alls = file.read()
-        allsByLign = alls.split("\n")
         #line 13, Moment arm matrix, a1
         a1 = float((allsByLign[12].split(":"))[1])
         #line 14, Moment arm matrix, a2
@@ -112,10 +107,7 @@ class ArmParameters:
         #matrix definition
         self.At = np.array([[a1,a2,a3,a4,a5,a6], [a7,a8,a9,a10,a11,a12]])
 
-    def readStops(self):
-        with open(self.pathSetupFile, "r") as file:
-            alls = file.read()
-        allsByLign = alls.split("\n")
+    def readStops(self,allsByLign):
         #line 25, Shoulder upper bound
         self.sub = float((allsByLign[24].split(":"))[1])
         #line 26, Shoulder lower bound
