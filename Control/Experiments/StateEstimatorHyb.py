@@ -9,7 +9,6 @@ Description: Used to estimate the current state, reproducing the human control m
 '''
 import numpy as np
 import random as rd
-import os
 from Regression.NeuralNet import NeuralNet
 from Regression.NeuraNetTF import NeuralNetTF
 from TrainStateEstimator import NeuraNetParameter
@@ -37,7 +36,7 @@ class StateEstimatorHyb:
         self.dimCommand = dimCommand
         self.delay = delay
         self.arm = arm
-        para= NeuraNetParameter(delay)
+        para= NeuraNetParameter(delay,"")
         self.regression = NeuralNetTF(para)
         self.regressionInput = np.empty(para.inputDim)
 
@@ -85,7 +84,7 @@ class StateEstimatorHyb:
         if isNull(inferredState):
             self.currentEstimState = self.arm.computeNextState(command,self.currentEstimState)
             return self.currentEstimState
-        newEstimState = self.arm.computeNextState(command,self.currentEstimState)
+        #newEstimState = self.arm.computeNextState(command,self.currentEstimState)
         inferredState = self.regression.computeOutput(self.stackInput(self.commandStore,inferredState))
         '''
         qdot,q = getDotQAndQFromStateVector(state)
@@ -93,8 +92,9 @@ class StateEstimatorHyb:
         for i in range(2,4):
             inferredState[i] = inferredState[i]*(1+ np.random.normal(0,0.01*speed))
         '''
-        for i in range(4):
-            self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
+        #for i in range(4):
+            #self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
+        self.currentEstimState = inferredState
         return self.currentEstimState
     
     

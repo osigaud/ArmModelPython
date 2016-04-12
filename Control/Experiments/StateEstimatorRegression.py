@@ -39,7 +39,7 @@ class StateEstimatorRegression:
         self.dimCommand = dimCommand
         self.delay = delay
         self.arm = arm
-        para= NeuraNetParameter(1)
+        para= NeuraNetParameter(1,"")
         self.regression = NeuralNet(para)
         self.regressionInput=np.empty((para.inputDim))
 

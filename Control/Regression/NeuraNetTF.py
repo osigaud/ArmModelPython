@@ -40,8 +40,8 @@ class NeuralNetTF(regression):
                 tmp=[self.weight_variable([precDim,layer[1]]),self.bias_variable([layer[1]])]
                 self.listTheta.append(tmp)
                 self.y=layersDict[layer[0]](tf.matmul(self.y,tmp[0]) + tmp[1])
-                precDim=layer[1]
                 size+=precDim*layer[1]+layer[1]
+                precDim=layer[1]
              
             tmp=[self.weight_variable([precDim,rs.outputDim]),self.bias_variable([rs.outputDim])]
             self.listTheta.append(tmp)
@@ -82,24 +82,26 @@ class NeuralNetTF(regression):
     def setTheta(self, theta):
         crt=0
         for W, b in self.listTheta:
-            self.W.asign(np.reshape(theta[crt:W.get_shape()[0]*W.get_shape()[1]],(W.get_shape()[0],W.get_shape()[1])))
+            self.W.asign(np.reshape(theta[crt:crt+W.get_shape()[0]*W.get_shape()[1]],(W.get_shape()[0],W.get_shape()[1])))
             crt+=W.get_shape()[0]*W.get_shape()[1]
-            self.b.asign(theta[crt:b.get_shape()[0]])
+            self.b.asign(theta[crt:crt+b.get_shape()[0]])
             crt+=b.get_shape()[0]
      
     def getTheta(self):
         crt=0
         for W, b in self.listTheta :
-            for ligne in W:
-                self.theta[crt:ligne.get_shape()[0]]=ligne
-                crt+=ligne.get_shape()[0]
-            self.theta[crt:b.get_shape()[0]]=b
-            crt+=b.get_shape()[0]
+            #TODO: It doesn't work like this !!!!!!
+            for ligne in W.eval(session=self.sess):
+                self.theta[crt:crt+ligne.shape[0]]=ligne
+                crt+=ligne.shape[0]
+            bEval=b.eval(session=self.sess)
+            self.theta[crt:crt+bEval.shape[0]]=bEval
+            crt+=bEval.shape[0]
         return self.theta      
             
     def train(self):
         
-        for i in range(10000):
+        for i in range(100000):
             #batch = self.data.next_batch(1000)
             #self.train_step.run(feed_dict={self.x: batch[0], self.y_: batch[1]}, session=self.sess)
             self.train_step.run(feed_dict={self.x: self.data.inputData, self.y_: self.data.outputData}, session=self.sess)
@@ -118,10 +120,5 @@ class NeuralNetTF(regression):
         return tf.Variable(initial)
            
     def computeOutput(self, inputData):
-        if(len(inputData.shape)==1):
-            inputData=inputData.reshape((1,inputData.shape[0]))
-            one=True
-        result = self.y.eval(session=self.sess, feed_dict={self.x: inputData})
-        if one :
-            return result[0]
-        return result 
+        result = self.y.eval(session=self.sess, feed_dict={self.x: [inputData]})
+        return result[0]

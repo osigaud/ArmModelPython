@@ -156,7 +156,7 @@ class NeuralNet(regression):
         minError=10
         while(True):
             error=trainer.train()
-            print(trainer.train())
+            print(self.meanSquareError())
             if(error<minError):
                 minError=error
                 self.saveTheta(self.rs.path+self.rs.thetaFile+".theta")
@@ -178,7 +178,9 @@ class NeuralNet(regression):
         #print(output)
         return output
 
-
+    def meanSquareError(self):
+        output=self.net.activateOnDataset(self.ds)
+        return np.mean((self.outputData - output)**2)
 
 
 
