@@ -15,7 +15,7 @@ import math
 
 from ArmModel.ArmParameters import ArmParameters
 from ArmModel.MusclesParameters import MusclesParameters
-from ArmModel.Arm import Arm, getDotQAndQFromStateVector
+from ArmModel.Arm import Arm
 
 
 
@@ -48,7 +48,7 @@ class Arm38(Arm):
         Output:    -state: (4,1) numpy array, the resulting state
         '''
         #print ("state:", state)
-        dotq, q = getDotQAndQFromStateVector(state)
+        dotq, q = self.getDotQAndQFromStateVector(state)
         #print ("U :",U)
         #print ("dotq:",dotq)
         M = np.array([[self.k4+self.k8+self.k11+self.k3+2*self.k2*math.cos(q[1])+self.k1+self.k7+2*self.k5*math.cos(q[1])+2*self.k9*math.cos(q[1]+q[2])+2*self.k10*math.cos(q[2]),

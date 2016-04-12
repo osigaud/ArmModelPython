@@ -12,7 +12,7 @@ Description: Class used to generate all the trajectories of the experimental set
 import numpy as np
 import time
 #from Utils.ThetaNormalization import normalization, unNormalization
-from Utils.Chrono import Chrono
+
 
 from GlobalVariables import pathDataFolder
 
@@ -174,9 +174,8 @@ class Experiments:
             costAll[i], trajTimeAll[i]  = self.runOneTrajectoryOpti(x, y) 
         meanCost = np.mean(costAll)
         meanTrajTime = np.mean(trajTimeAll)
-        #TODO: put this in the func below for cost map
-        #self.costStore.append([x, y, meanCost])
-        #self.trajTimeStore.append([x, y, meanTrajTime])
+        self.costStore.append([x, y, meanCost])
+        self.trajTimeStore.append([x, y, meanTrajTime])
         return meanCost, meanTrajTime
     
     def runOneTrajectoryOpti(self, x, y):
@@ -260,7 +259,6 @@ class Experiments:
             checkIfFolderExists(costfoldername)
             cost = open(costfoldername+"cmaesCost.log","a")
             time = open(costfoldername+"cmaesTime.log","a")
-            fitts = open(costfoldername+"cmaesFitts.log","a")
             cost.write(str(self.localWorstCost)+" "+str(self.periodMeanCost)+" "+str(self.localBestCost)+"\n")
             time.write(str(self.localWorstTime)+" "+str(self.periodMeanTime)+" "+str(self.localBestTime)+"\n")
             cost.close()

@@ -12,20 +12,8 @@ Description:
 import numpy as np
 import math
 
-def getDotQAndQFromStateVector(state):
-    '''
-    Returns dotq and q from the state vector state
-    
-    Input:    -state: numpy array, state vector
-    
-    Outputs:    -dotq: numpy array
-    -q: numpy array
-    '''
-    state=np.array(state)
-    midle=state.shape[0]/2
-    dotq = state[:midle]
-    q = state[midle:]
-    return dotq, q
+
+
 
 
 class Arm(object):
@@ -90,3 +78,18 @@ class Arm(object):
        
         manip = 1/math.sqrt(root)
         return manip
+    
+    def getDotQAndQFromStateVector(self, state):
+        '''
+        Returns dotq and q from the state vector state
+        
+        Input:    -state: numpy array, state vector
+        
+        Outputs:    -dotq: numpy array
+        -q: numpy array
+        '''
+        state=np.array(state)
+        midle=state.shape[0]/2
+        dotq = state[:midle]
+        q = state[midle:]
+        return dotq, q

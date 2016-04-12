@@ -84,13 +84,13 @@ def runAuto():
 
 def chooseFunction(choix, rs):
     if choix == 1:
-        plotVelocityProfile("Brent")
+        plotVelocityProfile("Brent",rs)
     elif choix == 2:
-        plotArticularPositions("Brent")
+        plotArticularPositions("Brent",rs)
     elif choix == 3:
-        plotXYPositions("Brent")
+        plotXYPositions("Brent",rs)
     elif choix == 4:
-        plotMuscularActivations("Brent")
+        plotMuscularActivations("Brent",rs)
 
 #------------------------------------------- RBFN
     elif choix == 5:

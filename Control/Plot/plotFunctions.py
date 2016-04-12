@@ -20,7 +20,7 @@ from matplotlib.mlab import griddata
 from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData
 
 
-from ArmModel.Arm26 import Arm26
+from ArmModel.ArmType import ArmType
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
 plt.rc("figure", facecolor="white")
 #TODO: remove GlobalVariables
@@ -130,7 +130,7 @@ def makeVelocityData(rs,arm,name,media):
                 media.plot(index, speed, c ='red')
 
 def plotVelocityProfile(what, rs, foldername = "None"):
-    arm = Arm26()
+    arm = ArmType[rs.Arm]()
     plt.figure(1, figsize=(16,9))
 
     if what == "CMAES":
@@ -157,29 +157,26 @@ def plotVelocityProfile(what, rs, foldername = "None"):
 
 
 # ------------------------- positions, trajectories ---------------------------------
-# factor is used to plot no more than 100 trajectories. If there are more, they are drawn randomly
-
+# We only draw 100 trajectories
 def plotPos(name, media, plotEstim):
-    states = getXYHandData(name)
-    factor = min(1, 100./len(states.items()))
+
+    states = getXYHandData(name, 100)
     print(len(states.items()))
-    for _,v in states.items():
-        if  rd.random()<factor:
-            posX, posY = [], []
-            for j in range(len(v)):
-                posX.append(v[j][0])
-                posY.append(v[j][1])
-            media.plot(posX,posY, c ='b')
+    for _,v in states.items():        
+        posX, posY = [], []
+        for j in range(len(v)):
+            posX.append(v[j][0])
+            posY.append(v[j][1])
+        media.plot(posX,posY, c ='b')
 
     if plotEstim==True:
-        estimStates = getEstimatedXYHandData(name)
+        estimStates = getEstimatedXYHandData(name, 100)
         for _,v in estimStates.items():
-            if  rd.random()<factor:
-                eX, eY = [], []
-                for j in range(len(v)):
-                    eX.append(v[j][0])
-                    eY.append(v[j][1])
-                media.plot(eX,eY, c ='r')
+            eX, eY = [], []
+            for j in range(len(v)):
+                eX.append(v[j][0])
+                eY.append(v[j][1])
+            media.plot(eX,eY, c ='r')
 
 def plotRegBrent(trajReg, trajBrent):
     """
@@ -188,7 +185,7 @@ def plotRegBrent(trajReg, trajBrent):
                       -trajBrent: array of Brent trajectory
     """
     plt.figure(1, figsize=(16,9))
-    arm = Arm26()
+    arm = ArmType["Arm26"]()
     for i in range(trajBrent.shape[0]):
         ligneReg=np.empty((trajReg[i].shape[0],2))
         for j in range(trajReg[i].shape[0]):
@@ -794,7 +791,7 @@ def plotCMAESTimeProgress(rs):
 
 def plotExperimentSetup(rs):
     plt.figure(1, figsize=(16,9))
-    arm = Arm26()
+    arm = ArmType[rs.Arm]()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
@@ -834,7 +831,7 @@ def plotExperimentSetup(rs):
 
 def plotManipulability(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = Arm26()
+    arm = ArmType[rs.Arm]()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]
@@ -875,7 +872,7 @@ def plotManipulability(rs):
 
 def plotManipulability2(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = Arm26()
+    arm = ArmType[rs.Arm]()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]

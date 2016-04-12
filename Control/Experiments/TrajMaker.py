@@ -11,8 +11,7 @@ import numpy as np
 
 
 from Utils.CreateVectorUtil import createVector
-from ArmModel.Arm26 import getDotQAndQFromStateVector
-from ArmModel.Arm26 import Arm26
+from ArmModel.ArmType import ArmType
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
 from Utils.FileWritting import findDataFilename
 
@@ -39,7 +38,7 @@ class TrajMaker:
     			-Ukf, unscented kalman filter, class object
     			-saveTraj, Boolean: true = Data are saved, false = data are not saved
     	'''
-        self.arm = Arm26()
+        self.arm = ArmType[rs.arm]()
         self.arm.setDT(rs.dt)
 
         self.controller = initController(rs,thetaFile)
@@ -70,7 +69,7 @@ class TrajMaker:
 				
         Output:		-cost: cost at time t+1, float
         '''
-        dotq, q = getDotQAndQFromStateVector(self.arm.getState())
+        dotq, q = self.arm.getDotQAndQFromStateVector(self.arm.getState())
         manip = self.arm.directionalManipulability(q,self.cartTarget)
         return 1-manip
 
@@ -97,7 +96,7 @@ class TrajMaker:
         
         Ouput :        -cost, the perpendicular cost
         ''' 
-        dotq, q = getDotQAndQFromStateVector(self.arm.getState())
+        dotq, q = self.arm.getDotQAndQFromStateVector(self.arm.getState())
         J = self.arm.jacobian(q)
         xi = np.dot(J,dotq)
         norm=np.linalg.norm(xi)
@@ -203,7 +202,7 @@ class TrajMaker:
             '''
 
             #get dotq and q from the state vector
-            dotq, q = getDotQAndQFromStateVector(tmpState)
+            dotq, q = self.arm.getDotQAndQFromStateVector(tmpState)
             coordElbow, coordHand = self.arm.mgdFull(q)
             #print ("dotq :",dotq)
             #computation of the coordinates to check if the target is reach or not
@@ -314,7 +313,7 @@ class TrajMaker:
             cost += self.computeStateTransitionCost(realU)
 
             #get dotq and q from the state vector
-            _, q = getDotQAndQFromStateVector(realNextState)
+            _, q = self.arm.getDotQAndQFromStateVector(realNextState)
             coordHand = self.arm.mgdEndEffector(q)
             #print ("dotq :",dotq)
             #computation of the coordinates to check if the target is reach or not
@@ -399,7 +398,7 @@ class TrajMaker:
             #computation of the cost
             cost += self.computeStateTransitionCost(realU)
             #get dotq and q from the state vector
-            _, q = getDotQAndQFromStateVector(tmpState)
+            _, q = self.arm.getDotQAndQFromStateVector(tmpState)
             coordHand = self.arm.mgdEndEffector(q)
             #print ("dotq :",dotq)
             #computation of the coordinates to check if the target is reach or not

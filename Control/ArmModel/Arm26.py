@@ -15,7 +15,7 @@ import math
 
 from ArmModel.ArmParametersXML import ArmParameters
 from ArmModel.MusclesParametersXML import MusclesParameters
-from ArmModel.Arm import Arm, getDotQAndQFromStateVector
+from ArmModel.Arm import *
 
 
 
@@ -38,7 +38,7 @@ class Arm26(Arm):
         Output:    -state: (4,1) numpy array, the resulting state
         '''
         #print ("state:", state)
-        dotq, q = getDotQAndQFromStateVector(state)
+        dotq, q = self.getDotQAndQFromStateVector(state)
         #print ("U :",U)
         #print ("dotq:",dotq)
         M = np.array([[self.k[0]+2*self.k[1]*math.cos(q[1]),
@@ -106,8 +106,8 @@ class Arm26(Arm):
         '''
         Computes a state estimation error as the cartesian distance between the estimated state and the current state
         '''
-        _,q = getDotQAndQFromStateVector(state)
-        _,qEstim = getDotQAndQFromStateVector(estimState)
+        _,q = self.getDotQAndQFromStateVector(state)
+        _,qEstim = self.getDotQAndQFromStateVector(estimState)
         hand = self.mgdEndEffector(q)
         handEstim = self.mgdEndEffector(qEstim)
         dx = hand[0] - handEstim[0]
@@ -126,7 +126,7 @@ class Arm26(Arm):
         return math.sqrt(dx**2 + dy**2)
 
     def cartesianSpeed(self,state):
-        qdot,q = getDotQAndQFromStateVector(state)
+        qdot,q = self.getDotQAndQFromStateVector(state)
         J = self.jacobian(q)
         return np.linalg.norm(np.dot(J,qdot))
 

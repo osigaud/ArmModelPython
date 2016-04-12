@@ -33,6 +33,7 @@ class ReadXmlFile(object):
         self.inputDim=int(dataElement[0].text)
         self.outputDim=int(dataElement[1].text)
         self.det="no"==dataElement[2].text
+        self.arm="Arm"+str(self.inputDim/2)+str(self.outputDim)
            
     def regressionParse(self, reg):
         self.regression=reg[0].tag
