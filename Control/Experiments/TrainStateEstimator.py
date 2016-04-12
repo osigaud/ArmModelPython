@@ -4,7 +4,7 @@ import numpy as np
 from Regression.RunRegression import regressionDict
 import os
 from Regression.NeuralNet import NeuralNet
-
+import sys
 
 
 
@@ -38,7 +38,7 @@ def run(regressionSetup, delay):
 class NeuraNetParameter():
         def __init__(self, delay, name):
             self.regression=name
-            self.thetaFile="EstimTheta"+name+delay
+            self.thetaFile="EstimTheta"+name+str(delay)
             self.path = os.getcwd()+"/Experiments/theta/"
             self.inputLayer="linear"
             self.outputLayer="tanh"
@@ -53,6 +53,7 @@ class NeuraNetParameter():
             
             
 if __name__ == "__main__" :
-    delay = 10
+    
+    delay = int(sys.argv[1])
     regressionSetup = NeuraNetParameter(delay, "NeuralNetTF")
     run(regressionSetup, delay)
