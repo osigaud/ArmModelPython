@@ -41,7 +41,7 @@ class NeuraNetParameter():
             self.thetaFile="EstimTheta"+name+str(delay)
             self.path = os.getcwd()+"/Experiments/theta/"
             self.inputLayer="linear"
-            self.outputLayer="tanh"
+            self.outputLayer="linear"
             self.hiddenLayers=[]
             for i in range(3):
                 self.hiddenLayers.append(("tanh",100))

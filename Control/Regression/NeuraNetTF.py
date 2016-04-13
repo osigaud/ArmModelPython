@@ -12,7 +12,11 @@ from Regression import regression
 import tensorflow as tf
 from DataSet import DataSet
 
-layersDict={"sigmoid" : tf.nn.sigmoid, "tanh" : tf.nn.tanh, "softmax" : tf.nn.softmax, "relu" : tf.nn.relu}
+
+def identity(something):
+    return something
+    
+layersDict={"sigmoid" : tf.nn.sigmoid, "tanh" : tf.nn.tanh, "softmax" : tf.nn.softmax, "relu" : tf.nn.relu, "linear" : identity}
 
 class NeuralNetTF(regression):
     def __init__(self, rs):
@@ -34,18 +38,18 @@ class NeuralNetTF(regression):
             #hidden Layers
             self.listTheta=[]
             precDim=rs.inputDim
-            self.y=self.x
+            y=self.x
             size=0
             for layer in rs.hiddenLayers:
                 tmp=[self.weight_variable([precDim,layer[1]]),self.bias_variable([layer[1]])]
                 self.listTheta.append(tmp)
-                self.y=layersDict[layer[0]](tf.matmul(self.y,tmp[0]) + tmp[1])
+                y=layersDict[layer[0]](tf.matmul(y,tmp[0]) + tmp[1])
                 size+=precDim*layer[1]+layer[1]
                 precDim=layer[1]
              
             tmp=[self.weight_variable([precDim,rs.outputDim]),self.bias_variable([rs.outputDim])]
             self.listTheta.append(tmp)
-            self.y=layersDict[rs.outputLayer](tf.matmul(self.y,tmp[0]) + tmp[1])
+            self.y=layersDict[rs.outputLayer](tf.matmul(y,tmp[0]) + tmp[1])
             size+=precDim*rs.outputDim+rs.outputDim
             self.theta=np.empty(size)
             
@@ -122,3 +126,4 @@ class NeuralNetTF(regression):
     def computeOutput(self, inputData):
         result = self.y.eval(session=self.sess, feed_dict={self.x: [inputData]})
         return result[0]
+    
