@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Author: Thomas Beucher
+Author: Thomas Beucher, Corentin Arnaud
 Module: FileReading
 Description: Functions to read project data
 
@@ -383,7 +383,7 @@ def loadTrajForModel(folderName, delay):
         for i in range(tmpData.shape[0]-delay):
             stateAndCommandtmp[i][:4] = tmpData[i][8:12]
             for j in range(delay):
-                stateAndCommandtmp[i][4+6*j:4+6*(j+1)]=tmpData[i+j][12:18]
+                stateAndCommandtmp[i][4+6*j:4+6*(j+1)]=tmpData[i+j][18:23]
             nextStatetmp[i]=tmpData[i+j+1][8:12]
         stateAndCommand.append(stateAndCommandtmp)
         nextState.append(nextStatetmp)
