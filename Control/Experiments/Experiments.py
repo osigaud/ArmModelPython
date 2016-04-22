@@ -251,7 +251,7 @@ class Experiments:
         self.call = self.call%self.period
 
         if (self.call==0):
-            self.periodMeanCost = self.periodMeanCost/self.periodio
+            self.periodMeanCost = self.periodMeanCost/self.period
             self.periodMeanTime = self.periodMeanTime/self.period
             self.CMAESCostStore.append((self.localWorstCost,self.periodMeanCost,self.localBestCost))
             self.CMAESTimeStore.append((self.localWorstTime,self.periodMeanTime,self.localBestTime))
