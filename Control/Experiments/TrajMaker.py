@@ -21,6 +21,7 @@ from StateEstimator import StateEstimator
 from StateEstimatorRegression import StateEstimatorRegression
 
 from StateEstimatorHyb import StateEstimatorHyb
+from StateEstimatorNoFeedBack import StateEstimatorNoFeedBack
 
 
 
@@ -53,8 +54,12 @@ class TrajMaker:
             self.stateEstimator = StateEstimator(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
         elif estim=="Reg":
             self.stateEstimator = StateEstimatorRegression(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
-        else :
+        elif estim == "Hyb" :
             self.stateEstimator = StateEstimatorHyb(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
+        elif estim =="No" :
+            self.stateEstimator = StateEstimatorNoFeedBack(rs.inputDim,rs.outputDim, rs.delayUKF, self.arm)
+        else :
+            raise TypeError("This Estimator do not exist")
         self.saveTraj = saveTraj
         #Initializes variables used to save trajectory
  
@@ -232,7 +237,7 @@ class TrajMaker:
         cost += self.computeFinalReward(t,coordHand)
 
         if self.saveTraj == True:
-            filename = findDataFilename(foldername+"Log/","traj",".log")
+            filename = findDataFilename(foldername+"Log/","traj"+str(x)+"-"+str(y),".log")
             np.savetxt(filename,dataStore)
             '''
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget and i<230:
@@ -248,7 +253,7 @@ class TrajMaker:
         return cost, t, lastX
 
 
-    def runTrajectory2(self, x, y):
+    def runTrajectoryForPlot(self, x, y):
         '''
     	Generates trajectory from the initial position (x, y) use for plot trajectory wihtout save them 
     
@@ -260,6 +265,7 @@ class TrajMaker:
                         -cost: the cost of the trajectory, float
                         -t:    time of the trajectory, float
     	'''
+
         #computes the articular position q1, q2 from the initial coordinates (x, y)
         q1, q2 = self.arm.mgi(x, y)
         #creates the state vector [dotq1, dotq2, q1, q2]

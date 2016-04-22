@@ -38,7 +38,7 @@ def run(regressionSetup, delay):
 class NeuraNetParameter():
         def __init__(self, delay, name):
             self.regression=name
-            self.thetaFile="EstimTheta"+name+str(delay)
+            self.thetaFile="EstimThetaNeuralNetNpTF"+str(delay)
             self.path = os.getcwd()+"/Experiments/theta/"
             self.inputLayer="linear"
             self.outputLayer="linear"
@@ -50,6 +50,7 @@ class NeuraNetParameter():
             self.learningRate=0.001
             self.momentum=0.
             self.bias=True
+            
             
             
 if __name__ == "__main__" :

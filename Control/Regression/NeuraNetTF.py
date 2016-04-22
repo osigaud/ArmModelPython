@@ -35,22 +35,30 @@ class NeuralNetTF(regression):
             in_to_out = [self.weight_variable([rs.inputDim,rs.outputDim]),self.bias_variable([rs.outputDim])]
             self.y = layersDict[rs.outputLayer](tf.matmul(self.x,in_to_out[0]) + in_to_out[1])
             self.listTheta=[in_to_out]
+            self.listBias=[in_to_out[1]]
+            self.listWeight=[in_to_out[0]]
             self.theta = np.empty(rs.inputDim*rs.outputDim+rs.outputDim)
         else :
             #hidden Layers
             self.listTheta=[]
+            self.listBias=[]
+            self.listWeight=[]
             precDim=rs.inputDim
             y=self.x
             size=0
             for layer in rs.hiddenLayers:
                 tmp=[self.weight_variable([precDim,layer[1]]),self.bias_variable([layer[1]])]
                 self.listTheta.append(tmp)
+                self.listBias.append(tmp[1])
+                self.listWeight.append(tmp[0])
                 y=layersDict[layer[0]](tf.matmul(y,tmp[0]) + tmp[1])
                 size+=precDim*layer[1]+layer[1]
                 precDim=layer[1]
              
             tmp=[self.weight_variable([precDim,rs.outputDim]),self.bias_variable([rs.outputDim])]
             self.listTheta.append(tmp)
+            self.listBias.append(tmp[1])
+            self.listWeight.append(tmp[0])
             self.y=layersDict[rs.outputLayer](tf.matmul(y,tmp[0]) + tmp[1])
             size+=precDim*rs.outputDim+rs.outputDim
             self.theta=np.empty(size)
@@ -60,7 +68,7 @@ class NeuralNetTF(regression):
         self.train_step = tf.train.AdamOptimizer(rs.learningRate).minimize(self.meanSquareError)
         
         self.init_op = tf.initialize_all_variables()
-        self.saver = tf.train.Saver()
+        self.saver = tf.train.Saver(self.listBias+self.listWeight)
         self.sess = tf.Session()
         self.sess.run(self.init_op)
         self.sess.as_default()
@@ -84,28 +92,33 @@ class NeuralNetTF(regression):
         #print ("theta LOAD : ", self.net.params)
 
     
-    #TODO: sea that
+
+
     def setTheta(self, theta):
         crt=0
         for W, b in self.listTheta:
             line = W.get_shape()[0].value
             colone=W.get_shape()[1].value
-            W.assign(np.reshape(theta[crt:crt+line*colone],(line,colone)))
+            W=W.assign(np.reshape(theta[crt:crt+line*colone],(line,colone)))
+            self.sess.run(W)
             crt+=line*colone
-            b.assign(theta[crt:crt+b.get_shape()[0].value])
+            b=b.assign(theta[crt:crt+b.get_shape()[0].value])
+            self.sess.run(b)
             crt+=b.get_shape()[0].value
-     
+
+
     def getTheta(self):
         crt=0
         for W, b in self.listTheta :
-            #TODO: It doesn't work like this !!!!!!
             for ligne in W.eval(session=self.sess):
                 self.theta[crt:crt+ligne.shape[0]]=ligne
                 crt+=ligne.shape[0]
             bEval=b.eval(session=self.sess)
             self.theta[crt:crt+bEval.shape[0]]=bEval
             crt+=bEval.shape[0]
-        return self.theta      
+        return self.theta  
+ 
+                
             
     def train(self):
         minError = 1000
@@ -120,6 +133,7 @@ class NeuralNetTF(regression):
                     self.saver.save(self.sess, self.rs.path+self.rs.thetaFile+".ckpt") 
                     self.saveTheta(self.rs.path+self.rs.thetaFile+".theta")
                     minError = error
+
                 
      
     def weight_variable(self, shape):

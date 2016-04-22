@@ -16,7 +16,7 @@ from Main.Main import generateFromRegression, launchCMAESForAllTargetSizesMulti,
 from Regression.RunRegression import run, UnitTestController, UnitTestArmModel
 from Regression.Regression import UnitTest
 
-from Plot.plotFunctions import trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
+from Plot.plotFunctions import plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 
 from Utils.Chrono import Chrono
 from Utils.ReadXmlFile import ReadXmlFile
@@ -65,6 +65,7 @@ def printMainMenu():
     print('		32 plot Experimental set-up')
     print('		33 plot Directional Manipulability')
     print('		34 plot Manipulability')
+    print('     35 plot Estimation')
 
 def runChoice():
     checkL = True
@@ -139,6 +140,7 @@ def chooseFunction(choix, rs):
         launchCMAESForAllTargetSizesMulti(rs)
         c.stop()
     elif choix == 12:
+        #TODO: Choose the kinematic model
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
@@ -238,6 +240,8 @@ def chooseFunction(choix, rs):
         plotManipulability(rs)
     elif choix == 34:
         plotManipulability2(rs)
+    elif choix == 35:
+        plotEstimator(rs, 0.04, 0., 0.25)
     else :
         return 0
     return 1

@@ -13,7 +13,7 @@ from Plot.plotFunctions import plotRegBrent
 from Experiments.TrajMaker import TrajMaker
 from Utils.FileReading import loadTrajs
 from Utils.ReadXmlFile import ReadXmlFile
-from ArmModel.Arm import ArmType
+from ArmModel.ArmType import ArmType
 from GlobalVariables import pathDataFolder
 
 def testRegression(setupFile, thetaFile):

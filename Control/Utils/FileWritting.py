@@ -3,7 +3,7 @@
 '''
 Created on 15 févr. 2016
 
-@author: arnaud
+@author: Corentin Arnaud 
 '''
 from shutil import copyfile
 import os

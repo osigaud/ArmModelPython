@@ -72,7 +72,6 @@ class StateEstimator:
     	Output:		-stateApprox: the next state approximation, numpy array of dimension (x, 1), here x = 4
     	'''
         #store the state of the arm to feed the filter with a delay on the observation
-
         inferredState = self.storeInfo(state, command)
         if isNull(inferredState):
             self.currentEstimState = self.arm.computeNextState(command,self.currentEstimState)

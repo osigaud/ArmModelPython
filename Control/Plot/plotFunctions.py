@@ -22,6 +22,7 @@ from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandDat
 
 from ArmModel.ArmType import ArmType
 from GlobalVariables import BrentTrajectoriesFolder, pathDataFolder
+from Experiments.TrajMaker import TrajMaker
 plt.rc("figure", facecolor="white")
 #TODO: remove GlobalVariables
 
@@ -909,3 +910,55 @@ def plotManipulability2(rs):
     plt.title(str("Manipulability map"))
     plt.savefig("ImageBank/manipulability2.png", bbox_inches='tight')
     plt.show(block = True)
+
+
+def plotEstimator(setupFile, sizeOfTarget, x, y):
+    thetaName = setupFile.CMAESpath + str(sizeOfTarget) + "/" + "Best"
+    arm = ArmType["Arm26"]()
+    
+    setupFile.det = True
+    tm=TrajMaker(setupFile, sizeOfTarget, False, thetaName, "Inv")
+    state1,_,_,_=tm.runTrajectoryForPlot(x, y)
+    
+    setupFile.det = False
+    state2,_,_,_=tm.runTrajectoryForPlot(x, y)
+    
+    tm=TrajMaker(setupFile, sizeOfTarget, False, thetaName, "No")
+    state3,_,_,_=tm.runTrajectoryForPlot(x, y)
+    
+    plt.figure(1, figsize=(16,9))
+    
+    hand=[]
+    for state in state1 :
+        hand.append(arm.mgdEndEffector(state[2:]))
+    hand=np.array(hand)
+    plt.plot(hand[:,0],hand[:,1], color="blue")
+    
+    hand=[]
+    for state in state2 :
+        hand.append(arm.mgdEndEffector(state[2:]))
+    hand=np.array(hand)
+    plt.plot(hand[:,0],hand[:,1], color="red")
+    
+    hand=[]
+    for state in state3 :
+        hand.append(arm.mgdEndEffector(state[2:]))
+    hand=np.array(hand)
+    plt.plot(hand[:,0],hand[:,1], color="green")
+    
+    plt.show(block = True)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

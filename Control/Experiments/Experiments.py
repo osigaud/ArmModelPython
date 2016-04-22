@@ -155,7 +155,7 @@ class Experiments:
         return globMeanCost/size, globTimeCost/size
     
     def runMultiProcessTrajectories(self, repeat):
-        pool=Pool(processes=cpu_count())
+        pool=Pool(processes=len(self.posIni))
         result = pool.map(partial(self.runNtrajectory, repeat=repeat) , [(x, y) for x, y in self.posIni])
         pool.close()
         pool.join()
@@ -251,7 +251,7 @@ class Experiments:
         self.call = self.call%self.period
 
         if (self.call==0):
-            self.periodMeanCost = self.periodMeanCost/self.period
+            self.periodMeanCost = self.periodMeanCost/self.periodio
             self.periodMeanTime = self.periodMeanTime/self.period
             self.CMAESCostStore.append((self.localWorstCost,self.periodMeanCost,self.localBestCost))
             self.CMAESTimeStore.append((self.localWorstTime,self.periodMeanTime,self.localBestTime))

@@ -119,6 +119,7 @@ class NeuralNet(regression):
             
         self.shape=self.net.params.shape
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
+        #print(self.net)
             
     def setTheta(self, theta):
         self.net._setParameters(theta.reshape(self.shape))

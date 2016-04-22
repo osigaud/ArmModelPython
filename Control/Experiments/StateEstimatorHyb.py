@@ -12,6 +12,7 @@ import random as rd
 from Regression.NeuralNet import NeuralNet
 from Regression.NeuraNetTF import NeuralNetTF
 from TrainStateEstimator import NeuraNetParameter
+from Regression.NeuralNetNp import NeuralNetNp
 
 #from ArmModel.MuscularActivation import getNoisyCommand
 
@@ -36,8 +37,10 @@ class StateEstimatorHyb:
         self.dimCommand = dimCommand
         self.delay = delay
         self.arm = arm
-        para= NeuraNetParameter(delay,"")
-        self.regression = NeuralNetTF(para)
+        para= NeuraNetParameter(delay,"NeuralNetTF")
+        self.regression = NeuralNetNp(para)
+        self.regression.setTheta(np.loadtxt(para.path+para.thetaFile+".theta"))
+        #self.regression.load(para.path+para.thetaFile)
         self.regressionInput = np.empty(para.inputDim)
 
     def initStore(self, state):
@@ -84,26 +87,26 @@ class StateEstimatorHyb:
         if isNull(inferredState):
             self.currentEstimState = self.arm.computeNextState(command,self.currentEstimState)
             return self.currentEstimState
-        #newEstimState = self.arm.computeNextState(command,self.currentEstimState)
-        inferredState = self.regression.computeOutput(self.stackInput(self.commandStore,inferredState))
+        newEstimState = self.arm.computeNextState(command,self.currentEstimState)
+        inferredState  = self.regression.computeOutput(self.stackInput(inferredState,self.commandStore))
         '''
         qdot,q = getDotQAndQFromStateVector(state)
         speed = self.arm.cartesianspeed(state)
         for i in range(2,4):
             inferredState[i] = inferredState[i]*(1+ np.random.normal(0,0.01*speed))
         '''
-        #for i in range(4):
-            #self.currentEstimState[i] = (newEstimState[i] + 0.2 * inferredState[i])/1.2
-        self.currentEstimState = inferredState
+        #self.currentEstimState = inferredState
+        self.currentEstimState = (newEstimState + 0.2 * inferredState)/1.2
         return self.currentEstimState
     
     
-    def stackInput(self, command, state):
-        cpt=0
+    def stackInput(self, state, command):
+        cpt=state.shape[0]
+        self.regressionInput[:cpt]=state
         for ligne in command :
             self.regressionInput[cpt:cpt+ligne.shape[0]]=ligne
             cpt+=ligne.shape[0]
-        self.regressionInput[cpt:]=state
+
         return self.regressionInput
     
     def debugStore(self):

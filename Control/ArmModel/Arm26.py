@@ -67,6 +67,9 @@ class Arm26(Arm):
 
         #ddotq = np.dot(Minv,Gamma - C - b)
         #print ("ddotq",ddotq)
+
+
+        
         
         #To avoid inverting M:
         ddotq = np.linalg.solve(M, Gamma - C - b)
