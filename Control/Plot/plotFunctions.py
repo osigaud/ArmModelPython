@@ -807,7 +807,7 @@ def plotDDPGCostProgress(rs):
         x,w = [],[]
         for j in range(len(data)):
             x.append(j)
-            w.append(data[j][0])
+            w.append(data[j])
         ax.plot(x, w, c = 'b')
 
 
@@ -828,7 +828,7 @@ def plotDDPGTimeProgress(rs):
         x,w = [],[]
         for j in range(len(data)):
             x.append(j)
-            w.append(data[j][0])
+            w.append(data[j])
         ax.plot(x, w, c = 'b')
 
         ax.set_title(str("DDPG Time Target " + str(rs.sizeOfTarget[i])))
