@@ -23,7 +23,7 @@ class ReadXmlFile(object):
         self.dataParse(tree[0])
         self.regressionParse(tree[1])
         self.costFunctionParse(tree[2])
-        self.CMAESParse(tree[3])
+        self.optimisationParse(tree[3])
         self.targetParse(tree[4])
         self.trajectoryParse(tree[5])
         self.kalmanParse(tree[6])
@@ -72,12 +72,25 @@ class ReadXmlFile(object):
         self.rhoCF  =float(cf[1].text)
         self.upsCF  =float(cf[2].text)
         
+    def optimisationParse(self, optiElem):
+        self.optimisation=optiElem[0].tag
+        if(self.optimisation=="CMAES"):
+            self.CMAESParse(optiElem[0])
+        elif(self.optimisation == "DDPG"):
+            self.DDPGParse(optiElem[0])
+        else :
+            raise TypeError()
+        
     def CMAESParse(self, cmaesElement):
         self.sigmaCmaes             =float(cmaesElement[0].text)
         self.maxIterCmaes           =int  (cmaesElement[1].text)
         self.popsizeCmaes           =int  (cmaesElement[2].text)
         self.numberOfRepeatEachTraj =int  (cmaesElement[3].text)
         self.CMAESpath=path.abspath(path.expanduser(cmaesElement[4].text))+"/"
+        
+    def DDPGParse(self, ddpgElement):
+        self.maxIterDDPG         =int  (ddpgElement[0].text)
+        self.DDPGpath=path.abspath(path.expanduser(ddpgElement[1].text))+"/"
         
     def targetParse(self, targetElement):
         self.sizeOfTarget = []

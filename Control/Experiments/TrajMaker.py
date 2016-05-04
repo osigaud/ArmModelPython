@@ -22,6 +22,7 @@ from StateEstimatorRegression import StateEstimatorRegression
 
 from StateEstimatorHyb import StateEstimatorHyb
 from StateEstimatorNoFeedBack import StateEstimatorNoFeedBack
+from Cost import Cost
 
 
 
@@ -43,7 +44,7 @@ class TrajMaker:
         self.arm.setDT(rs.dt)
 
         self.controller = initController(rs,thetaFile)
-
+        self.trajCost= Cost(rs)
         #put theta to a one dimension numpy array, ie row vector form
         #theta = matrixToVector(theta)
  
@@ -66,70 +67,7 @@ class TrajMaker:
     def setTheta(self, theta):
         self.controller.setTheta(theta)
 
-    def computeManipulabilityCost(self):
-        '''
-        Computes the manipulability cost on one step of the trajectory
-		
-        Input:	-cost: cost at time t, float
-				
-        Output:		-cost: cost at time t+1, float
-        '''
-        dotq, q = self.arm.getDotQAndQFromStateVector(self.arm.getState())
-        manip = self.arm.directionalManipulability(q,self.cartTarget)
-        return 1-manip
 
-    def computeStateTransitionCost(self, U):
-        '''
-		Computes the cost on one step of the trajectory
-		
-		Input:	-cost: cost at time t, float
-				-U: muscular activation vector, numpy array (6,1)
-				-t: time, float
-				
-		Output:		-cost: cost at time t+1, float
-		'''
-        #compute the square of the norm of the muscular activation vector
-        norme = np.linalg.norm(U)
-        mvtCost = norme*norme
-        #compute the cost following the law of the model
-        #return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
-        return -self.rs.upsCF*mvtCost
-    
-    def computePerpendCost(self): 
-        '''
-        compute the Perpendicular cost for one trajectory
-        
-        Ouput :        -cost, the perpendicular cost
-        ''' 
-        dotq, q = self.arm.getDotQAndQFromStateVector(self.arm.getState())
-        J = self.arm.jacobian(q)
-        xi = np.dot(J,dotq)
-        norm=np.linalg.norm(xi)
-        if(norm!=0):
-            xi = xi/norm
-        return 500-1000*xi[0]*xi[0]
-
-    def computeFinalReward(self, t, coordHand):
-        cost = self.computePerpendCost()
-        '''
-		Computes the cost on final step if the target is reached
-		
-		Input:		-t: time, float
-					-coordHand: coordinate of the end effector, numpy array
-					
-		Output:		-cost: final cost , float
-		'''
-        #check if the Ordinate of the target is reached and give the reward if yes
-        if coordHand[1] >= self.rs.YTarget:
-            #print "main X:", coordHand[0]
-            #check if target is reached
-            if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2:
-                cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF
-            else:
-                cost += -500-500000*(coordHand[0]*coordHand[0])
-        else:
-            cost += -4000
-        return cost
 
         
     def runTrajectory(self, x, y, foldername):
@@ -191,7 +129,7 @@ class TrajMaker:
             self.arm.setState(realNextState)
 
             #computation of the cost
-            cost += self.computeStateTransitionCost(Unoisy)
+            cost += self.trajCost.computeStateTransitionCost(Unoisy)
 
             '''
             print "U =", U
@@ -234,7 +172,7 @@ class TrajMaker:
             i += 1
             t += self.rs.dt
 
-        cost += self.computeFinalReward(t,coordHand)
+        cost += self.trajCost.computeFinalReward(self.arm,t,coordHand,self.sizeOfTarget)
 
         if self.saveTraj == True:
             filename = findDataFilename(foldername+"Log/","traj"+str(x)+"-"+str(y),".log")
@@ -316,7 +254,7 @@ class TrajMaker:
             self.arm.setState(realNextState)
 
             #computation of the cost
-            cost += self.computeStateTransitionCost(realU)
+            cost += self.trajCost.computeStateTransitionCost(realU)
 
             #get dotq and q from the state vector
             _, q = self.arm.getDotQAndQFromStateVector(realNextState)
@@ -331,7 +269,7 @@ class TrajMaker:
             t += self.rs.dt
 
         trajActivity.append(np.zeros((4)))
-        cost += self.computeFinalReward(t,coordHand)
+        cost += self.computeFinalReward(self.arm,t,coordHand,self.sizeOfTarget)
         return np.array(trajState), np.array(trajActivity), cost, t
     
     
@@ -402,7 +340,7 @@ class TrajMaker:
             self.arm.setState(realNextState)
 
             #computation of the cost
-            cost += self.computeStateTransitionCost(realU)
+            cost += self.trajCost.computeStateTransitionCost(realU)
             #get dotq and q from the state vector
             _, q = self.arm.getDotQAndQFromStateVector(tmpState)
             coordHand = self.arm.mgdEndEffector(q)
@@ -415,11 +353,17 @@ class TrajMaker:
             t += self.rs.dt
 
 
-        cost += self.computeFinalReward(t,coordHand)
+        cost += self.computeFinalReward(self.arm,t,coordHand)
         lastX = -1000 #used to ignore dispersion when the target line is not crossed
         if coordHand[1] >= self.rs.YTarget:
             lastX = coordHand[0]
         return cost, t, lastX
+    
+    
+
+    
+
+    
     
 
     

@@ -19,7 +19,6 @@ from GlobalVariables import pathDataFolder
 from TrajMaker import TrajMaker
 from Utils.FileWritting import checkIfFolderExists, findDataFilename, writeArray
 from multiprocess.pool import Pool
-from multiprocess import cpu_count
 from functools import partial
 #------------------------------------------------------------------------------
 

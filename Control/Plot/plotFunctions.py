@@ -789,6 +789,53 @@ def plotCMAESTimeProgress(rs):
 
     plt.savefig("ImageBank/timeProgress.png")
     plt.show(block = True)
+    
+    
+    
+def plotDDPGProgress(rs):
+    plotDDPGCostProgress(rs)
+    plotDDPGTimeProgress(rs)
+
+def plotDDPGCostProgress(rs):
+    plt.figure(1, figsize=(16,9))
+
+    for i in range(len(rs.sizeOfTarget)):
+        ax = plt.subplot2grid((2,2), (i/2,i%2))
+        name = rs.DDPGpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgCost.log"
+        data = np.loadtxt(name)
+
+        x,w = [],[]
+        for j in range(len(data)):
+            x.append(j)
+            w.append(data[j][0])
+        ax.plot(x, w, c = 'b')
+
+
+        ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
+
+    plt.savefig("ImageBank/"+rs.thetaFile+"DDPGcostProgress.png")
+    plt.show(block = True)
+
+def plotDDPGTimeProgress(rs):
+    plt.figure(1, figsize=(16,9))
+
+    for i in range(len(rs.sizeOfTarget)):
+        ax = plt.subplot2grid((2,2), (i/2,i%2))
+
+        name = rs.DDPGpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgTime.log"
+        data = np.loadtxt(name)
+
+        x,w = [],[]
+        for j in range(len(data)):
+            x.append(j)
+            w.append(data[j][0])
+        ax.plot(x, w, c = 'b')
+
+        ax.set_title(str("DDPG Time Target " + str(rs.sizeOfTarget[i])))
+
+    plt.savefig("ImageBank/DDPGTimeProgress.png")
+    plt.show(block = True)
+    
 
 def plotExperimentSetup(rs):
     plt.figure(1, figsize=(16,9))
