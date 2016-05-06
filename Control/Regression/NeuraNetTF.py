@@ -147,6 +147,6 @@ class NeuralNetTF(regression):
         return tf.Variable(initial,name="biais"+str(self.nbB))
            
     def computeOutput(self, inputData):
-        result = self.y.eval(session=self.sess, feed_dict={self.x: [inputData]})
+        result = self.sess.run(self.y, feed_dict={self.x: [inputData]})
         return result[0]
     

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from Main.Main import generateFromRBFN
+from Main.MainCMAES import generateFromRBFN
 from Utils.Chrono import Chrono
 
 def run():

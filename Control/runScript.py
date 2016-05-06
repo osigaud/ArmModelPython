@@ -11,7 +11,7 @@ Description: main script to run what we want in the project
 import numpy as np
 import random as rd
 
-from Main.Main import generateFromRegression, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.MainCMAES import generateFromRegression, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Regression.RunRegression import run, UnitTestController, UnitTestArmModel
 from Regression.Regression import UnitTest

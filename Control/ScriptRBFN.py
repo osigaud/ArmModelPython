@@ -1,6 +1,6 @@
 
 
-from Main.Main import generateFromRegression
+from Main.MainCMAES import generateFromRegression
 from Regression.RunRegression import run
 from Plot.plotFunctions import plotXYPositions
 from Main.Test import *

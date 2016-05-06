@@ -1,5 +1,5 @@
 
-from Main.Main import generateFromRegression
+from Main.MainCMAES import generateFromRegression
 
 
 
