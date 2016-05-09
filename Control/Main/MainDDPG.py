@@ -33,8 +33,8 @@ def generateFromDDPG(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.sizeOfTarget:
         c = Chrono()
         actor=simple_actor_network(rs.inputDim, rs.outputDim, l1_size = 10, l2_size = 10, learning_rate = rs.learningRate)
-        env = DDPGEnv(rs, el, rs.thetafile, actor = actor,saveDir=saveDir)
-        thetaName = rs.DDPGpath + str(el) + "/" + thetaFile
+        env = DDPGEnv(rs, el, rs.thetaFile, actor = actor,saveDir=saveDir)
+        thetaName = rs.DDPGpath + str(el) + "/" + thetaFile + ".theta"
         saveName = rs.DDPGpath + str(el) + "/" + saveDir + "/"
         parameters=np.loadtxt(thetaName)
         actor.load_parameters(parameters)

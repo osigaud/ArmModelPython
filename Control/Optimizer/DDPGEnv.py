@@ -199,7 +199,7 @@ class DDPGEnv(Env):
         self.arm.setState(state)
         self.estimState = state
         
-        
+    #TODO: put save in this instead of reset   
     def isFinished(self):
         if(not (self.coordHand[1] < self.rs.YTarget and self.i < self.rs.maxSteps)):
             costfoldername = self.foldername+"Cost/"
@@ -235,7 +235,7 @@ class DDPGEnv(Env):
         self.stepStore=[]
         self.vectarget=[0.0, 0.0, self.rs.XTarget, self.rs.YTarget]
         cost=0
-        while(not self.isFinished(self)):
+        while(not self.isFinished()):
             action=self.actor.action(self.estimState)
             _,cost = self.actAndStore(action)
             cost+= cost
