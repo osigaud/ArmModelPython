@@ -18,11 +18,10 @@ def getNoisyCommand(U, knoiseU):
     Output:		-Unoise: the muscular activation vector U with motor noise
     '''
     #add the motor noise
-    UnoiseTmp = []
-    for i in range(len(U)):
-        UnoiseTmp.append(U[i]*(1+ np.random.normal(0,knoiseU)))
+
+    UnoiseTmp=U*(1+ np.random.normal(0,knoiseU,U.shape))
     #put U in column vector form
-    return np.array(UnoiseTmp)
+    return UnoiseTmp
         
 def muscleFilter(UnoiseTmp):
     '''
