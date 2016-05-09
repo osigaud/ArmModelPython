@@ -51,6 +51,7 @@ class DDPGEnv(Env):
         self.saveName = rs.DDPGpath + str(sizeOfTarget) + "/" + saveDir + "/"
         self.foldername = rs.DDPGpath + str(sizeOfTarget) + "/"
         self.nbReset=0
+        self.cost=0
         self.reset()
 
         
@@ -174,6 +175,9 @@ class DDPGEnv(Env):
         return [self.arm.getState()]
     
     def reset(self, noise=True):
+        if(self.cost>0):
+            saveName = self.rs.DDPGpath + str(self.sizeOfTarget) + "/"
+            writeArray(self.actor.linear_parameters(),saveName, "Best", ".theta")
         print("Episode : "+str(self.nbReset))
         self.nbReset+=1
         i = rd.randint(0,len(self.posIni)-1)
@@ -194,6 +198,7 @@ class DDPGEnv(Env):
         self.stateEstimator.initStore(state)
         self.arm.setState(state)
         self.estimState = state
+        
         
     def isFinished(self):
         if(not (self.coordHand[1] < self.rs.YTarget and self.i < self.rs.maxSteps)):
