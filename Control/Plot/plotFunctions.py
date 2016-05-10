@@ -131,7 +131,7 @@ def makeVelocityData(rs,arm,name,media):
                 media.plot(index, speed, c ='red')
 
 def plotVelocityProfile(what, rs, foldername = "None"):
-    arm = ArmType[rs.Arm]()
+    arm = ArmType[rs.arm]()
     plt.figure(1, figsize=(16,9))
 
     if what == "OPTI":
@@ -839,7 +839,7 @@ def plotDDPGTimeProgress(rs):
 
 def plotExperimentSetup(rs):
     plt.figure(1, figsize=(16,9))
-    arm = ArmType[rs.Arm]()
+    arm = ArmType[rs.arm]()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
@@ -879,7 +879,7 @@ def plotExperimentSetup(rs):
 
 def plotManipulability(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = ArmType[rs.Arm]()
+    arm = ArmType[rs.arm]()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]
@@ -920,7 +920,7 @@ def plotManipulability(rs):
 
 def plotManipulability2(rs):
     fig = plt.figure(1, figsize=(16,9))
-    arm = ArmType[rs.Arm]()
+    arm = ArmType[rs.arm]()
     q1 = np.linspace(-0.6, 2.6, 100, True)
     q2 = np.linspace(-0.2, 3, 100, True)
     target = [rs.XTarget, rs.YTarget]
