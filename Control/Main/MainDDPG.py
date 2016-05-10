@@ -34,8 +34,8 @@ def generateFromDDPG(repeat, rs, thetaFile, saveDir = 'Data'):
         c = Chrono()
         actor=simple_actor_network(rs.inputDim, rs.outputDim, l1_size = 10, l2_size = 10, learning_rate = rs.learningRate)
         env = DDPGEnv(rs, el, rs.thetaFile, actor = actor,saveDir=saveDir)
-        thetaName = rs.DDPGpath + str(el) + "/" + thetaFile + ".theta"
-        saveName = rs.DDPGpath + str(el) + "/" + saveDir + "/"
+        thetaName = rs.OPTIpath + str(el) + "/" + thetaFile + ".theta"
+        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
         parameters=np.loadtxt(thetaName)
         actor.load_parameters(parameters)
         cost, time = env.saveAllTraj(repeat)
@@ -48,8 +48,8 @@ def generateFromDDPG(repeat, rs, thetaFile, saveDir = 'Data'):
     
 def generateRichDataFromDDPG(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.sizeOfTarget:
-        thetaName = rs.DDPGpath + str(el) + "/" + thetaFile
-        saveName = rs.DDPGpath + str(el) + "/" + saveDir + "/"
+        thetaName = rs.OPTIpath + str(el) + "/" + thetaFile
+        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
     print("DDPG:End of generation")
     

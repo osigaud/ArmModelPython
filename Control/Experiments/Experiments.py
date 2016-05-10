@@ -23,7 +23,7 @@ from functools import partial
 #------------------------------------------------------------------------------
 
 class Experiments:
-    def __init__(self, rs, sizeOfTarget, saveTraj, foldername, thetafile, popSize, period, estim="Inv"):
+    def __init__(self, rs, sizeOfTarget, saveTraj, foldername, thetafile, popSize, period, estim="Hyb"):
         '''
     	Initializes parameters used to run functions below
     

@@ -29,8 +29,8 @@ plt.rc("figure", facecolor="white")
 #--------------------------- trajectory animations ---------------------------------------------------------------------------------------------
 
 def trajectoriesAnimation(what, rs,foldername = "None", targetSize = "0.05"):
-    if what == "CMAES":
-        name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
+    if what == "OPTI":
+        name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
     else:
@@ -134,10 +134,10 @@ def plotVelocityProfile(what, rs, foldername = "None"):
     arm = ArmType[rs.Arm]()
     plt.figure(1, figsize=(16,9))
 
-    if what == "CMAES":
+    if what == "OPTI":
         for i in range(4):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             makeVelocityData(rs,arm,name,ax)
             ax.set_xlabel("time (s)")
             ax.set_ylabel("Instantaneous velocity (m/s)")
@@ -239,10 +239,10 @@ def plotTrajsInRepo():
 def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim=False):
     #plt.ion()
     plt.figure(1, figsize=(16,9))
-    if what == "CMAES" and targetSize == "All":
+    if (what == "OPTI")  and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             ax.plot([rs.XTarget-rs.sizeOfTarget[i]/2, rs.XTarget+rs.sizeOfTarget[i]/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
             plotPos(name, ax, plotEstim)
 
@@ -252,8 +252,8 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
             ax.set_title("XY Positions for target " + str(rs.sizeOfTarget[i]))
 
     else:
-        if what == "CMAES":
-            name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
+        if (what == "OPTI"):
+            name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
@@ -272,10 +272,10 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
 def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
 
-    if what == "CMAES" and targetSize == "All":
+    if what == "OPTI" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             plotEstimError(rs,name, ax)
 
             #makeInitPlot(rs)
@@ -284,8 +284,8 @@ def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
             ax.set_title("Estimation error for target " + str(rs.sizeOfTarget[i]))
 
     else:
-        if what == "CMAES":
-            name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
+        if what == "OPTI":
+            name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
@@ -304,10 +304,10 @@ def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
 def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
 
-    if what == "CMAES" and targetSize == "All":
+    if what == "OPTI" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             plotEstimErrorOfSpeed(name, ax)
 
             #makeInitPlot(rs)
@@ -316,8 +316,8 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
             ax.set_title("Estimation error function of velocity for target " + str(rs.sizeOfTarget[i]))
 
     else:
-        if what == "CMAES":
-            name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
+        if what == "OPTI":
+            name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
@@ -335,10 +335,10 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
 
 def plotArticularPositions(what, rs,foldername = "None"):
  
-    if what == "CMAES":
+    if what == "OPTI":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             state = getStateData(name)
             for _,v in state.items():
                 Q1, Q2 = [], []
@@ -382,8 +382,8 @@ def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
               -what: get from Brent, rbfn or from cmaes controllers
 
     '''
-    if what == "CMAES":
-        name = rs.CMAESpath + targetSize + "/" + foldername + "/Log/"
+    if what == "OPTI":
+        name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
     else:
@@ -436,10 +436,10 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
     '''
     fig = plt.figure(1, figsize=(16,9))
 
-    if what == "CMAES" and targetSize == "All":
+    if what == "OPTI" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
             costs = getCostData(name)
 
             x0 = []
@@ -466,7 +466,7 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
             ax.set_title(str("Cost map for target " + str(rs.sizeOfTarget[i])))
 
     else:
-        if what == "CMAES":
+        if what == "OPTI":
             name = rs.CMAESpath + targetSize + "/" + foldername + "/Cost/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
@@ -511,7 +511,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
     '''
     fig = plt.figure(1, figsize=(16,9))
 
-    if what == "CMAES" and targetSize == "All":
+    if what == "OPTI" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
@@ -541,7 +541,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
             t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
 
     else:
-        if what == "CMAES":
+        if what == "OPTI":
             name = rs.CMAESpath + targetSize + "/" + foldername + "/TrajTime/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
@@ -699,9 +699,9 @@ def plotHitDispersion(foldername,sizeT, rs):
 def plotScattergram(what,foldername,rs):
     data = {}
 
-    if what=="CMAES":
+    if what=="OPTI":
         for i in range(len(rs.sizeOfTarget)):
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/finalX/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/finalX/"
             tmp = getLastXData(name)
             tabx = []
             for el in tmp.values():

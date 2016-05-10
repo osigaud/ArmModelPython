@@ -76,24 +76,24 @@ def chooseFunction(choix, rs):
         generateFromDDPG(nbret, rs, nameTheta, name)
     elif choix == 3:
         nameF = raw_input('Folder where the results are saved: ')
-        plotVelocityProfile("DDPG",rs,nameF)
+        plotVelocityProfile("OPTI",rs,nameF)
     elif choix == 4:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
-            plotXYPositions("DDPG",rs, nameF,"All",False)
+            plotXYPositions("OPTI",rs, nameF,"All",False)
         else:
-            plotArticularPositions("DDPG",rs, nameF)
+            plotArticularPositions("OPTI",rs, nameF)
     elif choix == 5:
         nameF = raw_input('Folder where the results are saved: ')
         tSize = raw_input('Target Size: ')
-        plotMuscularActivations("DDPG",rs,nameF,tSize)
+        plotMuscularActivations("OPTI",rs,nameF,tSize)
     elif choix == 6:
         nameF = raw_input('Folder where the results are saved: ')
         #tSize = raw_input('Target Size: ')
-        #plotCostColorMap("DDPG",nameF,tSize)
-        plotCostColorMap("DDPG",rs, nameF)
+        #plotCostColorMap("OPTI",nameF,tSize)
+        plotCostColorMap("OPTI",rs, nameF)
     elif choix == 7:
         nameF = raw_input('Folder where the results are saved: ')
         plotTimeDistanceTarget(nameF, rs)
@@ -105,7 +105,7 @@ def chooseFunction(choix, rs):
         plotFittsLaw(nameF, rs)
     elif choix == 10:
         nameF = raw_input('Folder where the results are saved: ')
-        plotTimeColorMap("DDPG",rs, nameF)
+        plotTimeColorMap("OPTI",rs, nameF)
     elif choix == 11:
         rorc = input("enter 0 if Brent, 1 if Regression or 2 if DDPG results: ")
         rorc = int(rorc)
@@ -117,7 +117,7 @@ def chooseFunction(choix, rs):
         elif rorc == 2:
             nameF = raw_input('Folder where the results are saved: ')
             tSize = raw_input('Target Size: ')
-            trajectoriesAnimation("DDPG",rs, nameF, tSize)
+            trajectoriesAnimation("OPTI",rs, nameF, tSize)
     elif choix == 12:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if RBFN or 2 if DDPG results: ")
@@ -126,7 +126,7 @@ def chooseFunction(choix, rs):
         if rorc == 1:
             plotScattergram("RBFN",nameF, rs)
         elif rorc == 2:
-            plotScattergram("DDPG",nameF, rs)
+            plotScattergram("OPTI",nameF, rs)
     elif choix == 13:
         tSize = raw_input('Target Size: ')
         c = Chrono()
@@ -153,10 +153,10 @@ def chooseFunction(choix, rs):
         plotTrajsInRepo()
     elif choix == 18:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimError("DDPG",rs,nameF,"All")
+        plotXYEstimError("OPTI",rs,nameF,"All")
     elif choix == 19:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimErrorOfSpeed("DDPG",rs,nameF,"All")
+        plotXYEstimErrorOfSpeed("OPTI",rs,nameF,"All")
     elif choix == 20:
         plotExperimentSetup(rs)
     elif choix == 21:

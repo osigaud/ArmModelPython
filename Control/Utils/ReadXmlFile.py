@@ -86,11 +86,11 @@ class ReadXmlFile(object):
         self.maxIterCmaes           =int  (cmaesElement[1].text)
         self.popsizeCmaes           =int  (cmaesElement[2].text)
         self.numberOfRepeatEachTraj =int  (cmaesElement[3].text)
-        self.CMAESpath=path.abspath(path.expanduser(cmaesElement[4].text))+"/"
+        self.OPTIpath=path.abspath(path.expanduser(cmaesElement[4].text))+"/"
         
     def DDPGParse(self, ddpgElement):
         self.maxIterDDPG         =int  (ddpgElement[0].text)
-        self.DDPGpath=path.abspath(path.expanduser(ddpgElement[1].text))+"/"
+        self.OPTIpath=path.abspath(path.expanduser(ddpgElement[1].text))+"/"
         
     def targetParse(self, targetElement):
         self.sizeOfTarget = []

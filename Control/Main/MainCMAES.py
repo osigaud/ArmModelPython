@@ -20,7 +20,7 @@ from Experiments.Experiments import Experiments
 from Utils.FileWritting import checkIfFolderExists
 
 def copyRegressiontoCMAES(rs, name, size):
-    cmaname =  rs.CMAESpath + str(size) + "/"
+    cmaname =  rs.OPTIpath + str(size) + "/"
     checkIfFolderExists(cmaname)
     savenametheta = rs.path + name + ".theta"
     copyfile(savenametheta, cmaname + name + ".theta")
@@ -51,16 +51,16 @@ def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, s
 def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.sizeOfTarget:
         c = Chrono()
-        thetaName = rs.CMAESpath + str(el) + "/" + thetaFile
-        saveName = rs.CMAESpath + str(el) + "/" + saveDir + "/"
+        thetaName = rs.OPTIpath + str(el) + "/" + thetaFile
+        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
         GenerateDataFromTheta(rs,el,saveName,thetaName,repeat,True)
         c.stop()
     print("CMAES:End of generation")
 
 def generateRichDataFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.sizeOfTarget:
-        thetaName = rs.CMAESpath + str(el) + "/" + thetaFile
-        saveName = rs.CMAESpath + str(el) + "/" + saveDir + "/"
+        thetaName = rs.OPTIpath + str(el) + "/" + thetaFile
+        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
     print("CMAES:End of generation")
 
@@ -85,7 +85,7 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
             -save, for saving result, bool
     '''
     print("Starting the CMAES Optimization for target " + str(sizeOfTarget) + " !")
-    foldername = rs.CMAESpath + str(sizeOfTarget) + "/"
+    foldername = rs.OPTIpath + str(sizeOfTarget) + "/"
     if save:
         thetaname = foldername + rs.thetaFile
         copyRegressiontoCMAES(rs, rs.thetaFile, sizeOfTarget)

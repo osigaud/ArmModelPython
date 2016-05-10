@@ -48,8 +48,8 @@ class DDPGEnv(Env):
         self.sizeOfTarget = sizeOfTarget
         self.thetafile = thetafile
         self.actor=actor
-        self.saveName = rs.DDPGpath + str(sizeOfTarget) + "/" + saveDir + "/"
-        self.foldername = rs.DDPGpath + str(sizeOfTarget) + "/"
+        self.saveName = rs.OPTIpath + str(sizeOfTarget) + "/" + saveDir + "/"
+        self.foldername = rs.OPTIpath + str(sizeOfTarget) + "/"
         self.nbReset=0
         self.cost=0
         self.reset()
@@ -114,7 +114,6 @@ class DDPGEnv(Env):
         return [realU], [costAct]
     
     def actAndStore(self, action):
-        action=action[0]
         if self.rs.det:
             realU = muscleFilter(action)
             #computation of the arm state
@@ -151,17 +150,18 @@ class DDPGEnv(Env):
         _, q = self.arm.getDotQAndQFromStateVector(tmpState)
         coordElbow, self.coordHand = self.arm.mgdFull(q)
         
-        self.stepStore.append(self.vectarget)
-        self.stepStore.append(self.estimState)
-        self.stepStore.append(tmpState)
-        self.stepStore.append(realU)
-        self.stepStore.append(action)
-        self.stepStore.append(estimNextState)
-        self.stepStore.append(realNextState)
-        self.stepStore.append([coordElbow[0], coordElbow[1]])
-        self.stepStore.append([self.coordHand[0], self.coordHand[1]])
+        stepStore=[]
+        stepStore.append(self.vectarget)
+        stepStore.append(self.estimState)
+        stepStore.append(tmpState)
+        stepStore.append(realU)
+        stepStore.append(action)
+        stepStore.append(estimNextState)
+        stepStore.append(realNextState)
+        stepStore.append([coordElbow[0], coordElbow[1]])
+        stepStore.append([self.coordHand[0], self.coordHand[1]])
         #print ("before",stepStore)
-        tmpstore = np.array(self.stepStore).flatten()
+        tmpstore = np.array(stepStore).flatten()
         row = [item for sub in tmpstore for item in sub]
         #print ("store",row)
         self.dataStore.append(row)
@@ -176,7 +176,7 @@ class DDPGEnv(Env):
     
     def reset(self, noise=True):
         if(self.cost>0):
-            saveName = self.rs.DDPGpath + str(self.sizeOfTarget) + "/"
+            saveName = self.rs.OPTIpath + str(self.sizeOfTarget) + "/"
             writeArray(self.actor.linear_parameters(),saveName, "Best", ".theta")
         print("Episode : "+str(self.nbReset))
         self.nbReset+=1
@@ -232,17 +232,16 @@ class DDPGEnv(Env):
         self.estimState = state
         
         self.dataStore=[]
-        self.stepStore=[]
         self.vectarget=[0.0, 0.0, self.rs.XTarget, self.rs.YTarget]
-        cost=0
+        totalCost=0
         while(not self.isFinished()):
             action=self.actor.action(self.estimState)
             _,cost = self.actAndStore(action)
-            cost+= cost
-        cost += self.trajCost.computeFinalReward(self.arm,self.t,self.coordHand,self.sizeOfTarget)
+            totalCost+= cost[0]
+        totalCost += self.trajCost.computeFinalReward(self.arm,self.t,self.coordHand,self.sizeOfTarget)
         filename = findDataFilename(self.saveName+"Log/","traj"+str(x)+"-"+str(y),".log")
         np.savetxt(filename,self.dataStore)
-        return cost, self.t
+        return totalCost, self.t
         
     def saveAllTraj(self, repeat):
         globMeanCost=0.
