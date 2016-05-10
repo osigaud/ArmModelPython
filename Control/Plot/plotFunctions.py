@@ -801,7 +801,7 @@ def plotDDPGCostProgress(rs):
 
     for i in range(len(rs.sizeOfTarget)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
-        name = rs.DDPGpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgCost.log"
+        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgCost.log"
         data = np.loadtxt(name)
 
         x,w = [],[]
@@ -822,7 +822,7 @@ def plotDDPGTimeProgress(rs):
     for i in range(len(rs.sizeOfTarget)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
 
-        name = rs.DDPGpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgTime.log"
+        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgTime.log"
         data = np.loadtxt(name)
 
         x,w = [],[]
