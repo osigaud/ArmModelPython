@@ -15,7 +15,9 @@ import numpy as np
 
 
 
-class Cost():
+class CostDDPG():
+    reduce=3000.
+    
     def __init__(self, rs):
         self.rs=rs
 
@@ -47,7 +49,7 @@ class Cost():
         mvtCost = norme*norme
         #compute the cost following the law of the model
         #return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
-        return -self.rs.upsCF*mvtCost
+        return -self.rs.upsCF*mvtCost/reduce
     
     def computePerpendCost(self, arm): 
         '''
@@ -61,7 +63,7 @@ class Cost():
         norm=np.linalg.norm(xi)
         if(norm!=0):
             xi = xi/norm
-        return 500-1000*xi[0]*xi[0]
+        return (500-1000*xi[0]*xi[0])/reduce
 
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):
         cost = self.computePerpendCost(arm)
@@ -79,9 +81,7 @@ class Cost():
             #print "main X:", coordHand[0]
             #check if target is reached
             if coordHand[0] >= -sizeOfTarget/2 and coordHand[0] <= sizeOfTarget/2:
-                cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF
+                cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF/reduce
             else:
-                cost += -500-500000*(coordHand[0]*coordHand[0])
-        else:
-            cost += -10000+10000*(coordHand[1]*coordHand[1])
+                cost += (-500-500000*(coordHand[0]*coordHand[0]))/reduce
         return cost

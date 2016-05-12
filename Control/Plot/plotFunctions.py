@@ -467,7 +467,7 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
 
     else:
         if what == "OPTI":
-            name = rs.CMAESpath + targetSize + "/" + foldername + "/Cost/"
+            name = rs.OPTIpath + targetSize + "/" + foldername + "/Cost/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
@@ -514,7 +514,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
     if what == "OPTI" and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
             times = getTrajTimeData(name)
 
             x0 = []
@@ -542,7 +542,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
 
     else:
         if what == "OPTI":
-            name = rs.CMAESpath + targetSize + "/" + foldername + "/TrajTime/"
+            name = rs.OPTIpath + targetSize + "/" + foldername + "/TrajTime/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
         else:
@@ -582,7 +582,7 @@ def plotTimeDistanceTarget(foldername,rs):
     dicoTime = {}
  
     for i in range(len(rs.sizeOfTarget)):
-        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
+        name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
 
         trajTimes = getTrajTimeData(name)
 
@@ -612,7 +612,7 @@ def plotPerfSizeDist(foldername, rs):
     dicoCost = {}
  
     for i in range(len(rs.sizeOfTarget)):
-        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
+        name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
 
         costs = getCostData(name)
 
@@ -641,7 +641,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
 
     timeDistWidth = []
     for i in range(len(rs.sizeOfTarget)):
-        name =  rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
+        name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
 
         trajTimes = getTrajTimeData(name)
 
@@ -678,7 +678,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
 # ---------------- hit dispersion ---------------------------------------
 
 def plotHitDispersion(foldername,sizeT, rs):
-    name =  rs.CMAESpath + sizeT + "/" + foldername + "/finalX/"
+    name =  rs.OPTIpath + sizeT + "/" + foldername + "/finalX/"
     data = getLastXData(name)
 
     tabx, taby = [], []
@@ -748,7 +748,7 @@ def plotCMAESCostProgress(rs):
 
     for i in range(len(rs.sizeOfTarget)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
-        name = rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesCost.log"
+        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesCost.log"
         data = np.loadtxt(name)
 
         x,w,m,b = [],[],[],[]
@@ -772,7 +772,7 @@ def plotCMAESTimeProgress(rs):
     for i in range(len(rs.sizeOfTarget)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
 
-        name = rs.CMAESpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesTime.log"
+        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesTime.log"
         data = np.loadtxt(name)
 
         x,w,m,b = [],[],[],[]

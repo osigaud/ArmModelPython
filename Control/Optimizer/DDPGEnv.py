@@ -20,7 +20,7 @@ from Experiments.StateEstimatorNoFeedBack import StateEstimatorNoFeedBack
 from GlobalVariables import pathDataFolder
 import random as rd
 import numpy as np
-from Experiments.Cost import Cost
+from Experiments.CostDDPG import CostDDPG
 
 class DDPGEnv(Env):
     
@@ -31,7 +31,7 @@ class DDPGEnv(Env):
         self.posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
         self.arm=ArmType[arm]()
         self.arm.setDT(rs.dt)
-        self.trajCost=Cost(rs)
+        self.trajCost=CostDDPG(rs)
         if(len(self.posIni.shape)==1):
             self.posIni=self.posIni.reshape((1,self.posIni.shape[0]))
         if estim=="Inv" :
@@ -180,10 +180,19 @@ class DDPGEnv(Env):
             writeArray(self.actor.linear_parameters(),saveName, "Best", ".theta")
         print("Episode : "+str(self.nbReset))
         self.nbReset+=1
+        
+        #Discrete begining
+        """
         i = rd.randint(0,len(self.posIni)-1)
         #i=0
         #computes the articular position q1, q2 from the initial coordinates (x, y)
         q1, q2 = self.arm.mgi(self.posIni[i][0], self.posIni[i][1])
+        """
+        i = (rd.random()*6*np.pi - 9*np.pi)/12 
+        j= rd.random()*0.3+0.1
+        #i=0
+        #computes the articular position q1, q2 from the initial coordinates (x, y)
+        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i), self.rs.YTarget+ j*np.sin(i))
         #creates the state vector [dotq1, dotq2, q1, q2]
         q = createVector(q1,q2)
         state = np.array([0., 0., q1, q2])
