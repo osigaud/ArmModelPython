@@ -34,6 +34,7 @@
   <optimisation>
   	<DDPG>
     	<maxIteration>5000</maxIteration>
+    	<numberRepetition>5</numberRepetition>
     	<resultPath>~/stage/ArmModelPython/Data/DDPG/</resultPath>
   	</DDPG>
   </optimisation>

@@ -90,7 +90,8 @@ class ReadXmlFile(object):
         
     def DDPGParse(self, ddpgElement):
         self.maxIterDDPG         =int  (ddpgElement[0].text)
-        self.OPTIpath=path.abspath(path.expanduser(ddpgElement[1].text))+"/"
+        self.numberOfRepeatEachTraj =int  (ddpgElement[1].text)
+        self.OPTIpath=path.abspath(path.expanduser(ddpgElement[2].text))+"/"
         
     def targetParse(self, targetElement):
         self.sizeOfTarget = []
