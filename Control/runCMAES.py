@@ -80,24 +80,24 @@ def chooseFunction(choix, rs):
         generateFromCMAES(nbret, rs, nameTheta, name)
     elif choix == 3:
         nameF = raw_input('Folder where the results are saved: ')
-        plotVelocityProfile("CMAES",rs,nameF)
+        plotVelocityProfile("OPTI",rs,nameF)
     elif choix == 4:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if XY or 2 if Joint results: ")
         rorc = int(rorc)
         if rorc == 1:
-            plotXYPositions("CMAES",rs, nameF,"All",False)
+            plotXYPositions("OPTI",rs, nameF,"All",False)
         else:
-            plotArticularPositions("CMAES",rs, nameF)
+            plotArticularPositions("OPTI",rs, nameF)
     elif choix == 5:
         nameF = raw_input('Folder where the results are saved: ')
         tSize = raw_input('Target Size: ')
-        plotMuscularActivations("CMAES",rs,nameF,tSize)
+        plotMuscularActivations("OPTI",rs,nameF,tSize)
     elif choix == 6:
         nameF = raw_input('Folder where the results are saved: ')
         #tSize = raw_input('Target Size: ')
-        #plotCostColorMap("CMAES",nameF,tSize)
-        plotCostColorMap("CMAES",rs, nameF)
+        #plotCostColorMap("OPTI",nameF,tSize)
+        plotCostColorMap("OPTI",rs, nameF)
     elif choix == 7:
         nameF = raw_input('Folder where the results are saved: ')
         plotTimeDistanceTarget(nameF, rs)
@@ -109,7 +109,7 @@ def chooseFunction(choix, rs):
         plotFittsLaw(nameF, rs)
     elif choix == 10:
         nameF = raw_input('Folder where the results are saved: ')
-        plotTimeColorMap("CMAES",rs, nameF)
+        plotTimeColorMap("OPTI",rs, nameF)
     elif choix == 11:
         rorc = input("enter 0 if Brent, 1 if Regression or 2 if CMAES results: ")
         rorc = int(rorc)
@@ -121,7 +121,7 @@ def chooseFunction(choix, rs):
         elif rorc == 2:
             nameF = raw_input('Folder where the results are saved: ')
             tSize = raw_input('Target Size: ')
-            trajectoriesAnimation("CMAES",rs, nameF, tSize)
+            trajectoriesAnimation("OPTI",rs, nameF, tSize)
     elif choix == 12:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = input("enter 1 if RBFN or 2 if CMAES results: ")
@@ -130,7 +130,7 @@ def chooseFunction(choix, rs):
         if rorc == 1:
             plotScattergram("RBFN",nameF, rs)
         elif rorc == 2:
-            plotScattergram("CMAES",nameF, rs)
+            plotScattergram("OPTI",nameF, rs)
     elif choix == 13:
         rorc = input("enter 1 if from RBFN, anything if from previous CMAES: ")
         save = False
@@ -162,10 +162,10 @@ def chooseFunction(choix, rs):
         plotTrajsInRepo()
     elif choix == 18:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimError("CMAES",rs,nameF,"All")
+        plotXYEstimError("OPTI",rs,nameF,"All")
     elif choix == 19:
         nameF = raw_input('Folder where the results are saved: ')
-        plotXYEstimErrorOfSpeed("CMAES",rs,nameF,"All")
+        plotXYEstimErrorOfSpeed("OPTI",rs,nameF,"All")
     elif choix == 20:
         plotExperimentSetup(rs)
     elif choix == 21:

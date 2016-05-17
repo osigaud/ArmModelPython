@@ -32,7 +32,7 @@ def copyRegressiontoCMAES(rs, name, size):
 def generateFromDDPG(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.sizeOfTarget:
         c = Chrono()
-        actor=simple_actor_network(rs.inputDim, rs.outputDim, l1_size = 10, l2_size = 10, learning_rate = rs.learningRate)
+        actor=simple_actor_network(rs.inputDim, rs.outputDim, l1_size = 200, l2_size = 200, learning_rate = rs.learningRate)
         env = DDPGEnv(rs, el, rs.thetaFile, actor = actor,saveDir=saveDir)
         thetaName = rs.OPTIpath + str(el) + "/" + thetaFile + ".theta"
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"

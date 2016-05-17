@@ -21,6 +21,8 @@ from GlobalVariables import pathDataFolder
 import random as rd
 import numpy as np
 from Experiments.CostDDPG import CostDDPG
+from multiprocess.pool import Pool
+from functools import partial
 
 class DDPGEnv(Env):
     
@@ -53,6 +55,8 @@ class DDPGEnv(Env):
         self.nbReset=0
         self.cost=0
         self.max=0
+        self.progressTab=[0.1,0.25,0.5,0.75,1.]
+        self.progress=0
         self.reset()
 
         
@@ -186,11 +190,13 @@ class DDPGEnv(Env):
         #computes the articular position q1, q2 from the initial coordinates (x, y)
         q1, q2 = self.arm.mgi(self.posIni[i][0], self.posIni[i][1])
         """
+        if(self.cost>0.4 and self.progress !=3):
+            self.progress+=1
         i = (rd.random()*6*np.pi - 9*np.pi)/12 
         j= rd.random()*0.3+0.1
         #i=0
         #computes the articular position q1, q2 from the initial coordinates (x, y)
-        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i), self.rs.YTarget+ j*np.sin(i))
+        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i)*self.progressTab[self.progress], self.rs.YTarget+ j*np.sin(i))
         #creates the state vector [dotq1, dotq2, q1, q2]
         q = createVector(q1,q2)
         state = np.array([0., 0., q1, q2])
@@ -233,7 +239,7 @@ class DDPGEnv(Env):
         totalCost=0
         while(not self.isFinished()):
             action=self.actor.action(self.estimState)
-            _,cost = self.act(action)
+            _,cost = self.act([action])
             totalCost+= cost[0]
         totalCost += self.trajCost.computeFinalReward(self.arm,self.t,self.coordHand,self.sizeOfTarget)
         return totalCost, self.t
@@ -268,6 +274,15 @@ class DDPGEnv(Env):
         np.savetxt(filename,self.dataStore)
         return totalCost, self.t
     
+    def nTraj(self, (x, y), repeat):
+        print("Traj: "+str(x)+"-"+str(y))
+        costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+        for i in range(repeat):
+            costAll[i], trajTimeAll[i]  = self.OneTraj(x, y) 
+        meanCost = np.mean(costAll)
+        meanTrajTime = np.mean(trajTimeAll)
+        return meanCost, meanTrajTime
+    
     def allTraj(self, repeat):
         globMeanCost=0.
         globTimeCost=0.
@@ -295,12 +310,26 @@ class DDPGEnv(Env):
             globTimeCost+=meanTrajTime
         size=len(self.posIni)
         return globMeanCost/size, globTimeCost/size
+ 
+ 
+    def runMultiProcessTrajectories(self, repeat):
+        pool=Pool(processes=len(self.posIni))
+        result = pool.map(partial(self.nTraj, repeat=repeat) , [(x, y) for x, y in self.posIni])
+        pool.close()
+        pool.join()
+        meanCost, meanTraj=0, 0
+        for Cost, traj in result:
+            meanCost+=Cost
+            meanTraj+=traj
+        size = len(result)
+        return meanCost/size, meanTraj/size
+    
             
     def draw(self):
         pass
     
     def printEpisode(self):
-        cost, time = self.allTraj(self.rs.numberOfRepeatEachTraj)
+        cost, time = self.runMultiProcessTrajectories(self.rs.numberOfRepeatEachTraj)
         costfoldername = self.foldername+"Cost/"
         checkIfFolderExists(costfoldername)
         costFile = open(costfoldername+"ddpgCost.log","a")
