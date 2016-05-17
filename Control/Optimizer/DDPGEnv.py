@@ -288,7 +288,7 @@ class DDPGEnv(Env):
         costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
         for x,y in self.posIni:
             for i in range(repeat):
-                costAll[i], trajTimeAll[i]=self.saveOneTraj(x,y)
+                costAll[i], trajTimeAll[i]=self.OneTraj(x,y)
             meanCost = np.mean(costAll)
             meanTrajTime = np.mean(trajTimeAll)
             globMeanCost+=meanCost
