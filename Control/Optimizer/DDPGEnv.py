@@ -275,7 +275,6 @@ class DDPGEnv(Env):
         return totalCost, self.t
     
     def nTraj(self, (x, y), repeat):
-        print("Traj: "+str(x)+"-"+str(y))
         costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
         for i in range(repeat):
             costAll[i], trajTimeAll[i]  = self.OneTraj(x, y) 
@@ -329,7 +328,8 @@ class DDPGEnv(Env):
         pass
     
     def printEpisode(self):
-        cost, time = self.runMultiProcessTrajectories(self.rs.numberOfRepeatEachTraj)
+        #cost, time = self.runMultiProcessTrajectories(self.rs.numberOfRepeatEachTraj)
+        cost, time = self.allTraj(self.rs.numberOfRepeatEachTraj)
         costfoldername = self.foldername+"Cost/"
         checkIfFolderExists(costfoldername)
         costFile = open(costfoldername+"ddpgCost.log","a")
