@@ -269,7 +269,7 @@ class TrajMaker:
             t += self.rs.dt
 
         trajActivity.append(np.zeros((4)))
-        cost += self.computeFinalReward(self.arm,t,coordHand,self.sizeOfTarget)
+        cost += self.trajCost.computeFinalReward(self.arm,t,coordHand,self.sizeOfTarget)
         return np.array(trajState), np.array(trajActivity), cost, t
     
     
@@ -353,7 +353,7 @@ class TrajMaker:
             t += self.rs.dt
 
 
-        cost += self.computeFinalReward(self.arm,t,coordHand)
+        cost += self.trajCost.computeFinalReward(self.arm,t,coordHand, self.sizeOfTarget)
         lastX = -1000 #used to ignore dispersion when the target line is not crossed
         if coordHand[1] >= self.rs.YTarget:
             lastX = coordHand[0]
