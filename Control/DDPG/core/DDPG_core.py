@@ -58,7 +58,7 @@ class DDPG(object):
         
         self.grad_inv = grad_inverter(action_bounds)
         
-        self.train_loop_size = 1
+        self.train_loop_size = 10
         self.totStepTime = 0
         self.totTrainTime = 0
         self.batchMix = 0
@@ -120,8 +120,7 @@ class DDPG(object):
         state = list(self.env.state())
         action = self.react(state)
         (action, reward) = self.env.act(action)
-        if train:
-            self.store_transition(state, action, reward, self.env.state())
+        self.store_transition(state, action, reward, self.env.state())
         self.t += 1
         return reward
     
@@ -144,6 +143,9 @@ class DDPG(object):
             self.episode(T, train)
             if i % self.env.print_interval == 0:
                 self.stepsTime += self.totStepTime + self.totTrainTime
+                if(train==False):
+                    for i in range(self.train_loop_size):
+                        self.train_Minibatch()
                 self.env.printEpisode()
                 self.env.draw()
                 #print "step time : ", self.totStepTime/(self.totStepTime+self.totTrainTime) , "train time : ", self.totTrainTime/(self.totStepTime+self.totTrainTime)

@@ -190,13 +190,12 @@ class DDPGEnv(Env):
         #computes the articular position q1, q2 from the initial coordinates (x, y)
         q1, q2 = self.arm.mgi(self.posIni[i][0], self.posIni[i][1])
         """
-        if(self.cost>0.4 and self.progress !=3):
-            self.progress+=1
-        i = (rd.random()*6*np.pi - 9*np.pi)/12 
-        j= rd.random()*0.3+0.1
+
+        i = ((rd.random()*6*np.pi - 3*np.pi)*self.progressTab[self.progress]-6*np.pi)/12
+        j= (rd.random()*0.3-0.15)*self.progressTab[self.progress]+0.25
         #i=0
         #computes the articular position q1, q2 from the initial coordinates (x, y)
-        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i)*self.progressTab[self.progress], self.rs.YTarget+ j*np.sin(i))
+        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i), self.rs.YTarget+ j*np.sin(i))
         #creates the state vector [dotq1, dotq2, q1, q2]
         q = createVector(q1,q2)
         state = np.array([0., 0., q1, q2])
@@ -330,6 +329,8 @@ class DDPGEnv(Env):
     def printEpisode(self):
         #cost, time = self.runMultiProcessTrajectories(self.rs.numberOfRepeatEachTraj)
         cost, time = self.allTraj(self.rs.numberOfRepeatEachTraj)
+        if(self.cost>0.4 and self.progress !=3):
+            self.progress+=1
         costfoldername = self.foldername+"Cost/"
         checkIfFolderExists(costfoldername)
         costFile = open(costfoldername+"ddpgCost.log","a")
