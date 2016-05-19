@@ -56,8 +56,8 @@ def generateRichDataFromDDPG(repeat, rs, thetaFile, saveDir = 'Data'):
 
     
 def launchDDPGForSpecificTargetSize(sizeOfTarget, rs):
-    actor=simple_actor_network(rs.inputDim, rs.outputDim, l1_size = 10, l2_size = 10, learning_rate = rs.learningRate, train=False)
+    actor=simple_actor_network(rs.inputDim, rs.outputDim, l1_size = 10, l2_size = 10, learning_rate = rs.learningRate)
     env = DDPGEnv(rs, sizeOfTarget, rs.thetaFile, actor=actor)
     ddpg = DDPG(env, actor = actor)
-    ddpg.M_episodes(rs.maxIterDDPG)
+    ddpg.M_episodes(rs.maxIterDDPG, train=False)
     
