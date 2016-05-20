@@ -6,21 +6,25 @@
   	<noise>yes</noise>
   </data>
   <regression>
-    <NeuralNet>
+    <NeuralNet type="simple_actor_network">
       <inputLayer>
 		<type>linear</type>
       </inputLayer>
       <hiddenLayers>
         <hiddenLayer>
         	<type>tanh</type>
-        	<size>10</size>
+        	<size>200</size>
+        </hiddenLayer>
+        <hiddenLayer>
+        	<type>tanh</type>
+        	<size>200</size>
         </hiddenLayer>
       </hiddenLayers>
       <outputLayer>
 		<type>linear</type>
       </outputLayer>
       <bias>yes</bias>
-      <learningrate>0.01</learningrate>
+      <learningrate>0.001</learningrate>
       <momentum>0</momentum>
     </NeuralNet>
     <thetaFile>NN1th</thetaFile>
@@ -33,8 +37,8 @@
   </costFunction>
   <optimisation>
   	<DDPG>
-    	<maxIteration>5000</maxIteration>
-    	<numberRepetition>5</numberRepetition>
+    	<maxIteration>100000</maxIteration>
+    	<numberRepetition>1</numberRepetition>
     	<resultPath>~/stage/ArmModelPython/Data/DDPG/</resultPath>
   	</DDPG>
   </optimisation>

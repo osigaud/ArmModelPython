@@ -51,14 +51,14 @@ class DDPG(object):
         else:
             self.critic = critic 
         self.buffer = deque([])
-        self.buffer_size = 100000
+        self.buffer_size = 10000000
         self.buffer_minimum = 100
         self.minibatch_size = 64
         self.t = 0
         
         self.grad_inv = grad_inverter(action_bounds)
         
-        self.train_loop_size = 10
+        self.train_loop_size = 50
         self.totStepTime = 0
         self.totTrainTime = 0
         self.batchMix = 0
@@ -76,7 +76,7 @@ class DDPG(object):
     def store_transition(self, s_t, a_t, r_t, s_t_nxt):
         for i in range(len(s_t)):
             if(len(self.buffer)>=self.buffer_size):
-                self.buffer[random.randint(self.buffer_size/5, self.buffer_size-1)] = [list(s_t[i]), list(a_t[i]), r_t[i], list(s_t_nxt[i])]
+                self.buffer[random.randint(self.buffer_size/10, self.buffer_size-1)] = [list(s_t[i]), list(a_t[i]), r_t[i], list(s_t_nxt[i])]
             else:
                 self.buffer.append([list(s_t[i]), list(a_t[i]), r_t[i], list(s_t_nxt[i])])
         
