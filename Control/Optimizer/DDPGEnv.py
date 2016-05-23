@@ -181,7 +181,7 @@ class DDPGEnv(Env):
         return [self.arm.getState()]
     
     def reset(self, noise=True):
-        print("Episode : "+str(self.nbReset))
+        print("Episode : "+str(self.nbReset)+ ", Progression :"+str(self.progress))
         self.nbReset+=1
         
         #Discrete begining

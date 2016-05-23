@@ -3,7 +3,7 @@
   <data>
   	<inputSize>4</inputSize>
   	<outputSize>6</outputSize>
-  	<noise>yes</noise>
+  	<noise>no</noise>
   </data>
   <regression>
     <NeuralNet type="simple_actor_network">
@@ -59,7 +59,7 @@
     <maxStep>300</maxStep>
     <timeStep>0.002</timeStep>
   </trajectory>
-  <kalmanFilter>10</kalmanFilter>
+  <kalmanFilter>1</kalmanFilter>
   <plot>
     <period>10</period>
   </plot>
