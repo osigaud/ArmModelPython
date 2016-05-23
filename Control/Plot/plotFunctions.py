@@ -802,14 +802,18 @@ def plotDDPGCostProgress(rs):
     for i in range(len(rs.sizeOfTarget)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
         name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgCost.log"
+        nameProgress = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgProg.log"
         data = np.loadtxt(name)
+        progress = np.loadtxt(nameProgress)
 
         x,w = [],[]
         for j in range(len(data)):
             x.append(j)
             w.append(data[j])
         ax.plot(x, w, c = 'b')
-
+        
+        for j in progress.shape[0]:
+            ax.plot(progress[j],np.random.uniform(-0.8,1.2,100),'r')
 
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 

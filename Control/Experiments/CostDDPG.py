@@ -34,7 +34,7 @@ class CostDDPG():
         manip = arm.directionalManipulability(q,self.cartTarget)
         return 1-manip
 
-    def computeStateTransitionCost(self, U):
+    def computeStateTransitionCost(self, U, coordHand):
         '''
         Computes the cost on one step of the trajectory
         
@@ -47,9 +47,10 @@ class CostDDPG():
         #compute the square of the norm of the muscular activation vector
         norme = np.linalg.norm(U)
         mvtCost = norme*norme
+        dst=np.sqrt((coordHand[0]-self.rs.XTarget)**2+(coordHand[1]-self.rs.YTarget)**2)
         #compute the cost following the law of the model
         #return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
-        return -self.rs.upsCF*mvtCost/self.reduce
+        return -self.rs.upsCF*mvtCost/self.reduce-dst/1000.
     
     def computePerpendCost(self, arm): 
         '''
@@ -66,7 +67,7 @@ class CostDDPG():
         return (500-1000*xi[0]*xi[0])/self.reduce
 
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):
-        cost = self.computePerpendCost(arm)
+        cost=0
         '''
         Computes the cost on final step if the target is reached
         
@@ -78,10 +79,11 @@ class CostDDPG():
         #print coordHand[0]
         #check if the Ordinate of the target is reached and give the reward if yes
         if coordHand[1] >= self.rs.YTarget:
+            cost = self.computePerpendCost(arm)
             #print "main X:", coordHand[0]
             #check if target is reached
             if coordHand[0] >= -sizeOfTarget/2 and coordHand[0] <= sizeOfTarget/2:
                 cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF/self.reduce
-            else:
-                cost += (500-50000*(coordHand[0]*coordHand[0]))/self.reduce
+            #else:
+            #    cost += (500-50000*(coordHand[0]*coordHand[0]))/self.reduce
         return cost
