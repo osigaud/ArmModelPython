@@ -21,12 +21,13 @@ from GlobalVariables import pathDataFolder
 import random as rd
 import numpy as np
 from Experiments.CostDDPG import CostDDPG
+from Experiments.Cost import Cost
 from multiprocess.pool import Pool
 from functools import partial
 
 class DDPGEnv(Env):
     
-    print_interval = 10
+    print_interval = 20
     
     def __init__(self, rs, sizeOfTarget, thetafile, arm="Arm26", estim="Inv", actor=None, saveDir="Best"):
         self.rs=rs
@@ -56,7 +57,7 @@ class DDPGEnv(Env):
         self.cost=0
         self.max=0
         self.progressTab=[0.1,0.25,0.5,0.75,1.]
-        self.progress=0
+        self.progress=1
         self.reset()
 
         
@@ -72,7 +73,12 @@ class DDPGEnv(Env):
         return [[1]*self.rs.outputDim, [0]*self.rs.outputDim]
         
     def act(self, action):
-        action=action[0]
+        action=np.array(action[0])
+        action = action + np.random.normal(0.,0.2,action.shape)
+        return self.__act__(action)
+        
+    
+    def __act__(self, action):
         if self.rs.det:
             realU = muscleFilter(action)
             #computation of the arm state
@@ -104,19 +110,22 @@ class DDPGEnv(Env):
         self.arm.setState(realNextState)
 
         #computation of the cost
-        costAct = self.trajCost.computeStateTransitionCost(realU)
+
         #get dotq and q from the state vector
         _, q = self.arm.getDotQAndQFromStateVector(tmpState)
         self.coordHand = self.arm.mgdEndEffector(q)
+        costAct = self.trajCost.computeStateTransitionCost(realU, self.coordHand)
         #print ("dotq :",dotq)
         #computation of the coordinates to check if the target is reach or not
         self.i+=1
         self.t += self.rs.dt
         self.estimState = estimNextState
-        if(not (self.coordHand[1] < self.rs.YTarget and self.i < self.rs.maxSteps)):
+        if(self.coordHand[1] >= self.rs.YTarget or self.i >= self.rs.maxSteps):
             costAct += self.trajCost.computeFinalReward(self.arm,self.t, self.coordHand, self.sizeOfTarget)
         self.cost+=costAct
         return [realU], [costAct]
+    
+    
     
     def actAndStore(self, action):
         if self.rs.det:
@@ -150,10 +159,11 @@ class DDPGEnv(Env):
         self.arm.setState(realNextState)
 
         #computation of the cost
-        cost = self.trajCost.computeStateTransitionCost(realU)
+
         #get dotq and q from the state vector
         _, q = self.arm.getDotQAndQFromStateVector(tmpState)
         coordElbow, self.coordHand = self.arm.mgdFull(q)
+        cost = self.trajCost.computeStateTransitionCost(realU, self.coordHand)
         
         stepStore=[]
         stepStore.append(self.vectarget)
@@ -180,9 +190,9 @@ class DDPGEnv(Env):
         return [self.arm.getState()]
     
     def reset(self, noise=True):
-        print("Episode : "+str(self.nbReset))
-        self.nbReset+=1
-        
+        #print("Episode : "+str(self.nbReset)+ ", Progression :"+str(self.progress))
+        #self.nbReset+=1
+        #print(self.cost)
         #Discrete begining
         """
         i = rd.randint(0,len(self.posIni)-1)
@@ -190,13 +200,29 @@ class DDPGEnv(Env):
         #computes the articular position q1, q2 from the initial coordinates (x, y)
         q1, q2 = self.arm.mgi(self.posIni[i][0], self.posIni[i][1])
         """
-        if(self.cost>0.4 and self.progress !=3):
-            self.progress+=1
-        i = (rd.random()*6*np.pi - 9*np.pi)/12 
-        j= rd.random()*0.3+0.1
+        #Progress
+        """
+        i = ((rd.random()*6*np.pi - 3*np.pi)*self.progressTab[self.progress]-6*np.pi)/12
+        j= (rd.random()*0.3-0.15)*self.progressTab[self.progress]+0.25
         #i=0
         #computes the articular position q1, q2 from the initial coordinates (x, y)
-        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i)*self.progressTab[self.progress], self.rs.YTarget+ j*np.sin(i))
+        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i), self.rs.YTarget+ j*np.sin(i))
+        """
+        #Un au hassard parmi dans la zone (continu), progress selon y
+
+        i = (rd.random()*6*np.pi - 9*np.pi)/12.
+        j=rd.randint(1,self.progress)/10.
+
+        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i), self.rs.YTarget+ j*np.sin(i))
+
+        """
+        i =  - 6*np.pi/12
+        j=rd.randint(1,4)/10.
+        #j=0.1
+
+        q1, q2 = self.arm.mgi(self.rs.XTarget+ j*np.cos(i), self.rs.YTarget+ j*np.sin(i))
+        """
+
         #creates the state vector [dotq1, dotq2, q1, q2]
         q = createVector(q1,q2)
         state = np.array([0., 0., q1, q2])
@@ -213,7 +239,7 @@ class DDPGEnv(Env):
         self.estimState = state
     #TODO: put save in this instead of reset   
     def isFinished(self):
-        if(not (self.coordHand[1] < self.rs.YTarget and self.i < self.rs.maxSteps)):
+        if(self.coordHand[1] >= self.rs.YTarget or self.i >= self.rs.maxSteps):
             return True
         return False
     
@@ -239,7 +265,7 @@ class DDPGEnv(Env):
         totalCost=0
         while(not self.isFinished()):
             action=self.actor.action(self.estimState)
-            _,cost = self.act([action])
+            _,cost = self.__act__(action)
             totalCost+= cost[0]
         totalCost += self.trajCost.computeFinalReward(self.arm,self.t,self.coordHand,self.sizeOfTarget)
         return totalCost, self.t
@@ -295,6 +321,37 @@ class DDPGEnv(Env):
             globTimeCost+=meanTrajTime
         size=len(self.posIni)
         return globMeanCost/size, globTimeCost/size
+    
+    def progressArcTraj(self, repeat):
+        globMeanCost=0.
+        globTimeCost=0.
+        costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+        for j in range(self.progress):
+            for i in range(7):
+                x,y = self.rs.XTarget+ (0.1+j*0.1)*np.cos(-i*np.pi/12-np.pi/4), self.rs.YTarget+ (0.1+j*0.1)*np.sin(-i*np.pi/12-np.pi/4)
+                for cpt in range(repeat):
+                    costAll[cpt], trajTimeAll[cpt]=self.OneTraj(x,y)
+                meanCost = np.mean(costAll)
+                meanTrajTime = np.mean(trajTimeAll)
+                globMeanCost+=meanCost
+                globTimeCost+=meanTrajTime
+        size=self.progress*7
+        return globMeanCost/size, globTimeCost/size
+    
+    def ligneTraj(self, repeat):
+        globMeanCost=0.
+        globTimeCost=0.
+        costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+        for j in range(4):
+            x,y = self.rs.XTarget+ (0.1+j*0.1)*np.cos(-np.pi/2), self.rs.YTarget+ (0.1+j*0.1)*np.sin(-np.pi/2)
+            for cpt in range(repeat):
+                costAll[cpt], trajTimeAll[cpt]=self.OneTraj(x,y)
+            meanCost = np.mean(costAll)
+            meanTrajTime = np.mean(trajTimeAll)
+            globMeanCost+=meanCost
+            globTimeCost+=meanTrajTime
+        size=4
+        return globMeanCost/size, globTimeCost/size
       
     def saveAllTraj(self, repeat):
         globMeanCost=0.
@@ -329,15 +386,25 @@ class DDPGEnv(Env):
     
     def printEpisode(self):
         #cost, time = self.runMultiProcessTrajectories(self.rs.numberOfRepeatEachTraj)
-        cost, time = self.allTraj(self.rs.numberOfRepeatEachTraj)
+        #cost, time = self.allTraj(self.rs.numberOfRepeatEachTraj)
+        print("Progression :"+str(self.progress))
+        cost, time = self.progressArcTraj(self.rs.numberOfRepeatEachTraj)
+        #cost, time = self.ligneTraj(self.rs.numberOfRepeatEachTraj)
+        #cost, time = self.OneTraj(self.rs.XTarget+ 0.1*np.cos(-np.pi/2), self.rs.YTarget+ 0.1*np.sin(-np.pi/2))
+        
         costfoldername = self.foldername+"Cost/"
         checkIfFolderExists(costfoldername)
         costFile = open(costfoldername+"ddpgCost.log","a")
         timeFile = open(costfoldername+"ddpgTime.log","a")
+        progFile=open(costfoldername+"ddpgProg.log","a")
         costFile.write(str(cost)+"\n")
         timeFile.write(str(time)+"\n")
         costFile.close()
         timeFile.close()
+        if(cost>0.8 and self.progress <4):
+            self.progress+=1
+            progFile.write(str(self.nbReset))
+        progFile.close()
         if(cost>self.max):
             self.max = cost
             saveName = self.rs.OPTIpath + str(self.sizeOfTarget) + "/"
