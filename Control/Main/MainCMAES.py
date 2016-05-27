@@ -165,7 +165,7 @@ def term():
 #--------------------------- multiprocessing -------------------------------------------------------
 
 #TODO: not sure that works
-def launchCMAESForALLTargetForAllPoint(rs, sizeTarget, save):
+def launchCMAESForAllPoint(rs, sizeTarget, save):
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
