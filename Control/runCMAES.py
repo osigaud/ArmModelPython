@@ -9,13 +9,11 @@ Description: script to run cmaes
 '''
 
 
-from Main.MainCMAES import generateFromRegression
 
-from Regression.RunRegression import run
 
-from Main.MainCMAES import generateFromRegression, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.MainCMAES import generateFromCMAESNController, launchCMAESForSpecificTargetSizeAndSpeceficBeginning, launchCMAESForALLTargetForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
-from Plot.plotFunctions import plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
+from Plot.plotFunctions import plotCMAESOnePointProgress, plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 
 
 from Utils.Chrono import Chrono
@@ -49,7 +47,10 @@ def printMainMenu():
     print('        21 plot Directional Manipulability')
     print('        22 plot Manipulability')
     print('        23 plot Estimation')
-    
+    print('        24 train one CMAES for one point')
+    print('        25 plot CMAES One point cost progress')
+    print('        26 generate results from CMAES One point cost progress')
+    print('        27 plot XY and articular positions for one target')  
     
 def runChoice():
     checkL = True
@@ -174,6 +175,37 @@ def chooseFunction(choix, rs):
         plotManipulability2(rs)
     elif choix == 23:
         plotEstimator(rs, 0.04, 0., 0.25)
+    elif choix == 24:
+        rorc = input("enter 1 if General CMAES, anything if from previous CMAES point: ")
+        save = False
+        rorc = int(rorc)
+        if rorc == 1:
+            save = True
+        tSize = raw_input('Target Size: ')
+        c = Chrono()
+        launchCMAESForALLTargetForAllPoint(rs,float(tSize),save)
+        #launchCMAESForSpecificTargetSizeAndSpeceficBeginning(float(tSize), rs, save, 0, 0.2)
+        c.stop()
+    elif choix == 25:
+        size=raw_input('Target Size: ')
+        rep=""
+        while True:
+            print("    Enter the number of the point you want sea, q for quit")
+            point=raw_input('Point: ')
+            if(point=="q"): 
+                break
+            plotCMAESOnePointProgress(rs,size, point)
+    elif choix == 26:
+        #TODO: Choose the kinematic model
+        nameTheta = raw_input('Name of the controller file: ')
+        name = raw_input('Folder where you want to save the results: ')
+        nbret = input("Number of repeat for each trajectory (int): ")
+        nbret = int(nbret)
+        generateFromCMAESNController(nbret, rs, nameTheta, name)
+    elif choix == 27:
+        nameF = raw_input('Folder where the results are saved: ')
+        rorc = raw_input("Target Size: ")
+        plotXYPositions("OPTI",rs, nameF,rorc,False)
     else :
         return 0
     return 1

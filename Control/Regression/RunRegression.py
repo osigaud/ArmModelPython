@@ -25,7 +25,7 @@ from NeuraNetTF import NeuralNetTF
 
 regressionDict = {"NeuralNet" : NeuralNet, "NeuralNetTF" : NeuralNetTF, "RBFN" : rbfn}
 
-def initController(rs,fileName):
+def initController(rs,fileName=None):
     '''
 	Initializes the controller allowing to compute the output from the input and the vector of parameters theta
 	
@@ -35,7 +35,8 @@ def initController(rs,fileName):
 	'''
     #Initializes the function approximator
     fa = regressionDict[rs.regression](rs)
-    fa.load(fileName)
+    if(fileName!=None):
+        fa.load(fileName)
     return fa
 
 

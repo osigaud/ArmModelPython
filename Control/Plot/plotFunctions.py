@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib import animation
 from matplotlib.mlab import griddata
+import time
+ 
 
 
 from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData
@@ -252,6 +254,7 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
             ax.set_title("XY Positions for target " + str(rs.sizeOfTarget[i]))
 
     else:
+        plt.plot([rs.XTarget-float(targetSize)/2, rs.XTarget+float(targetSize)/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
         if (what == "OPTI"):
             name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
         elif what == "Brent":
@@ -266,7 +269,7 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
         plt.xlabel("X (m)")
         plt.ylabel("Y (m)")
         plt.title("XY Positions for " + what)
-    plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile+'.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile+time.strftime('%d\%m-%H:%M:%S',time.localtime())+ '.png', bbox_inches='tight')
     plt.show(block = True)
 
 def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
@@ -791,6 +794,51 @@ def plotCMAESTimeProgress(rs):
     plt.show(block = True)
     
     
+def plotCMAESOnePointProgress(rs, ts, point):
+    plotCMAESOnePointCostProgress(rs, ts, point)
+    plotCMAESOnePointTimeProgress(rs, ts, point)
+
+def plotCMAESOnePointCostProgress(rs, ts, point):
+    plt.figure(1, figsize=(16,9))
+
+
+    name = rs.OPTIpath + str(ts)+"/"+str(point)+ "/Cost/cmaesCost.log"
+    data = np.loadtxt(name)
+
+    x,w,m,b = [],[],[],[]
+    for j in range(len(data)):
+        x.append(j)
+        w.append(data[j][0])
+        m.append(data[j][1])
+        b.append(data[j][2])
+    plt.plot(x, w, c = 'b')
+    plt.plot(x, m, c = 'g')
+    plt.plot(x, b, c = 'r')
+
+
+
+    plt.show(block = True)
+
+def plotCMAESOnePointTimeProgress(rs, ts, point):
+    plt.figure(1, figsize=(16,9))
+
+    name = rs.OPTIpath + str(ts)+"/"+str(point) + "/Cost/cmaesTime.log"
+    data = np.loadtxt(name)
+
+    x,w,m,b = [],[],[],[]
+    for j in range(len(data)):
+        x.append(j)
+        w.append(data[j][0])
+        m.append(data[j][1])
+        b.append(data[j][2])
+    plt.plot(x, w, c = 'b')
+    plt.plot(x, m, c = 'g')
+    plt.plot(x, b, c = 'r')
+
+    
+    plt.show(block = True)
+    
+    
     
 def plotDDPGProgress(rs):
     plotDDPGCostProgress(rs)
@@ -804,17 +852,17 @@ def plotDDPGCostProgress(rs):
         name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgCost.log"
         nameProgress = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgProg.log"
         data = np.loadtxt(name)
-        progress = np.loadtxt(nameProgress)
+        #progress = np.loadtxt(nameProgress)
 
         x,w = [],[]
         for j in range(len(data)):
             x.append(j)
             w.append(data[j])
         ax.plot(x, w, c = 'b')
-        
+        """
         for j in progress.shape[0]:
             ax.plot(progress[j],np.random.uniform(-0.8,1.2,100),'r')
-
+        """
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 
     plt.savefig("ImageBank/"+rs.thetaFile+"DDPGcostProgress.png")
@@ -839,6 +887,7 @@ def plotDDPGTimeProgress(rs):
 
     plt.savefig("ImageBank/DDPGTimeProgress.png")
     plt.show(block = True)
+
     
 
 def plotExperimentSetup(rs):

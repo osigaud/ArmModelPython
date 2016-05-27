@@ -29,7 +29,7 @@ from Cost import Cost
 
 class TrajMaker:
     
-    def __init__(self, rs, sizeOfTarget, saveTraj, thetaFile, estim="Inv"):
+    def __init__(self, rs, sizeOfTarget, saveTraj, thetaFile=None, estim="Inv"):
         '''
     	Initializes the parameters used to run the functions below
     
@@ -42,7 +42,6 @@ class TrajMaker:
     	'''
         self.arm = ArmType[rs.arm]()
         self.arm.setDT(rs.dt)
-
         self.controller = initController(rs,thetaFile)
         self.trajCost= Cost(rs)
         #put theta to a one dimension numpy array, ie row vector form

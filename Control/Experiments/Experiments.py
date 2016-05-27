@@ -23,7 +23,7 @@ from functools import partial
 #------------------------------------------------------------------------------
 
 class Experiments:
-    def __init__(self, rs, sizeOfTarget, saveTraj, foldername, thetafile, popSize, period, estim="Hyb"):
+    def __init__(self, rs, sizeOfTarget, saveTraj, foldername, thetafile, popSize, period, estim="Inv"):
         '''
     	Initializes parameters used to run functions below
     
@@ -105,6 +105,24 @@ class Experiments:
         globTimeCost=0.
         for xy in self.posIni:
             costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+            for i in range(repeat):
+                costAll[i], trajTimeAll[i]  = self.runOneTrajectory(xy[0], xy[1]) 
+            meanCost = np.mean(costAll)
+            meanTrajTime = np.mean(trajTimeAll)
+            self.costStore.append([xy[0], xy[1], meanCost])
+            self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
+            globMeanCost+=meanCost
+            globTimeCost+=meanTrajTime
+        #self.printLastCoordInfo()
+        return globMeanCost/len(self.posIni), globTimeCost/len(self.posIni)
+    
+    def runTrajectoriesForResultsGenerationNController(self, repeat, thetaName):
+        globMeanCost=0.
+        globTimeCost=0.
+        for enum,xy in enumerate(self.posIni):
+            costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+            controllerFileName = thetaName.replace("*",str(enum))
+            self.tm.controller.load(controllerFileName)
             for i in range(repeat):
                 costAll[i], trajTimeAll[i]  = self.runOneTrajectory(xy[0], xy[1]) 
             meanCost = np.mean(costAll)
@@ -209,6 +227,79 @@ class Experiments:
         #print "theta avant appel :", theta
         #compute all the trajectories x times each, x = numberOfRepeat
         meanCost, meanTime = self.runMultiProcessTrajectories(self.numberOfRepeat)
+        #cma.plot()
+        #opt = cma.CMAOptions()
+        #print "CMAES options :", opt
+        #c.stop()
+
+        #print("Indiv #: ", self.call, "\n Cost: ", meanCost)
+        
+        if (self.call==0):
+            self.localBestCost = meanCost
+            self.localWorstCost = meanCost
+            self.localBestTime = meanTime
+            self.localWorstTime = meanTime
+            self.periodMeanCost = 0.0
+            self.periodMeanTime = 0.0
+        else:    
+            if meanCost>self.localBestCost:
+                self.localBestCost = meanCost
+            elif meanCost<self.localWorstCost:
+                self.localWorstCost = meanCost
+                
+            if meanTime>self.localBestTime:
+                self.localBestTime = meanTime
+            elif meanTime<self.localWorstTime:
+                self.localWorstTime = meanTime
+
+        if meanCost>self.bestCost:
+            self.bestCost = meanCost
+            if meanCost>0:
+                extension = ".save" + str(meanCost)
+                filename = findDataFilename(self.foldername+"Theta/", "theta", extension)
+                np.savetxt(filename, self.theta)
+                filename2 = self.foldername + "Best.theta"
+                np.savetxt(filename2, self.theta)
+        
+        self.periodMeanCost += meanCost
+        self.periodMeanTime += meanTime
+
+        self.call += 1
+        self.call = self.call%self.period
+
+        if (self.call==0):
+            self.periodMeanCost = self.periodMeanCost/self.period
+            self.periodMeanTime = self.periodMeanTime/self.period
+            self.CMAESCostStore.append((self.localWorstCost,self.periodMeanCost,self.localBestCost))
+            self.CMAESTimeStore.append((self.localWorstTime,self.periodMeanTime,self.localBestTime))
+            costfoldername = self.foldername+"Cost/"
+            checkIfFolderExists(costfoldername)
+            cost = open(costfoldername+"cmaesCost.log","a")
+            time = open(costfoldername+"cmaesTime.log","a")
+            cost.write(str(self.localWorstCost)+" "+str(self.periodMeanCost)+" "+str(self.localBestCost)+"\n")
+            time.write(str(self.localWorstTime)+" "+str(self.periodMeanTime)+" "+str(self.localBestTime)+"\n")
+            cost.close()
+            time.close()
+            #np.savetxt(costfoldername+"cmaesCost.log",self.CMAESCostStore) #Note: inefficient, should rather add to the file
+            #np.savetxt(costfoldername+"cmaesTime.log",self.CMAESTimeStore) #Note: inefficient, should rather add to the file
+
+        return 10.0*(self.rs.rhoCF-meanCost)/self.rs.rhoCF
+    
+
+    def runTrajectoriesCMAESOnePoint(self, x, y, theta):
+        '''
+        Generates all the trajectories of the experimental setup and return the mean cost. This function is used by cmaes to optimize the controller.
+    
+        Input:        -theta: vector of parameters, one dimension normalized numpy array
+    
+        Ouput:        -meanAll: the mean of the cost of all trajectories generated, float
+        '''
+        
+        #c = Chrono()
+        self.initTheta(theta)
+        #print "theta avant appel :", theta
+        #compute all the trajectories x times each, x = numberOfRepeat
+        meanCost, meanTime = self.runNtrajectory((x,y),self.numberOfRepeat)
         #cma.plot()
         #opt = cma.CMAOptions()
         #print "CMAES options :", opt

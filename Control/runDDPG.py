@@ -9,11 +9,9 @@ Description: script to run ddpg
 '''
 
 
-from Main.MainCMAES import generateFromRegression
 
-from Regression.RunRegression import run
 
-from Main.MainCMAES import generateFromRegression,  generateRichDataFromRegression
+from Main.MainCMAES import  generateRichDataFromRegression
 from Main.MainDDPG import generateFromDDPG, generateRichDataFromDDPG, launchDDPGForSpecificTargetSize
 
 from Plot.plotFunctions import plotDDPGProgress, plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotTrajsInRepo, plotManipulability, plotManipulability2

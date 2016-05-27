@@ -144,7 +144,7 @@ class DDPG(object):
             if i % self.env.print_interval == 0:
                 self.stepsTime += self.totStepTime + self.totTrainTime
                 if(train==False):
-                    for i in range(self.train_loop_size):
+                    for i in range(len(self.buffer)/self.minibatch_size*10):
                         self.train_Minibatch()
                 self.env.printEpisode()
                 self.env.draw()

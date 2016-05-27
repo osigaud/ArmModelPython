@@ -84,6 +84,6 @@ class CostDDPG():
             #check if target is reached
             if coordHand[0] >= -sizeOfTarget/2 and coordHand[0] <= sizeOfTarget/2:
                 cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF/self.reduce
-            #else:
-            #    cost += (500-50000*(coordHand[0]*coordHand[0]))/self.reduce
+            else:
+                cost += (-500-30000*(coordHand[0]*coordHand[0]))/self.reduce
         return cost

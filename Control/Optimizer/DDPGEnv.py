@@ -403,6 +403,7 @@ class DDPGEnv(Env):
         timeFile.close()
         if(cost>0.8 and self.progress <4):
             self.progress+=1
+            self.max=0
             progFile.write(str(self.nbReset))
         progFile.close()
         if(cost>self.max):
