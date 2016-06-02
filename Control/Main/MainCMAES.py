@@ -70,7 +70,7 @@ def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     print("CMAES:End of generation")
     
 def generateFromCMAESNController(repeat, rs, thetaFile, saveDir = 'Data'):
-    for el in [0.04]:
+    for el in rs.sizeOfTarget:
         c = Chrono()
         thetaName = rs.OPTIpath + str(el)+"/*/"+thetaFile
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
@@ -164,7 +164,7 @@ def term():
 
 #--------------------------- multiprocessing -------------------------------------------------------
 
-#TODO: not sure that works
+
 def launchCMAESForAllPoint(rs, sizeTarget, save):
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor

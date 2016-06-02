@@ -49,7 +49,7 @@ def printMainMenu():
     print('        23 plot Estimation')
     print('        24 train one CMAES for one point')
     print('        25 plot CMAES One point cost progress')
-    print('        26 generate results from CMAES One point cost progress')
+    print('        26 generate results from CMAES One point')
     print('        27 plot XY and articular positions for one target')  
     
 def runChoice():
@@ -183,7 +183,7 @@ def chooseFunction(choix, rs):
             save = True
         tSize = raw_input('Target Size: ')
         c = Chrono()
-        launchCMAESForALLTargetForAllPoint(rs,float(tSize),save)
+        launchCMAESForAllPoint(rs,float(tSize),save)
         #launchCMAESForSpecificTargetSizeAndSpeceficBeginning(float(tSize), rs, save, 0, 0.2)
         c.stop()
     elif choix == 25:

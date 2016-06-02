@@ -18,6 +18,9 @@ from Utils.FileWritting import checkIfFolderExists
 from shutil import copyfile
 import numpy as np
 import os
+from multiprocess.pool import ThreadPool
+from functools import partial
+from GlobalVariables import pathDataFolder
 #TODO: change CMAESpath name
 
 
@@ -54,7 +57,16 @@ def generateRichDataFromDDPG(repeat, rs, thetaFile, saveDir = 'Data'):
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
     print("DDPG:End of generation")
-    
+
+# TODO: that
+def generateFromDDPGNController(repeat, rs, thetaFile, saveDir = 'Data'):
+    for el in rs.sizeOfTarget:
+        c = Chrono()
+        thetaName = rs.OPTIpath + str(el)+"/*/"+thetaFile
+        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
+        #GenerateDataFromThetaNController(rs,el, saveName,thetaName,repeat,True)
+        c.stop()
+    print("DDPG:End of generation")   
 
     
 def launchDDPGForSpecificTargetSize(sizeOfTarget, rs):
@@ -62,4 +74,38 @@ def launchDDPGForSpecificTargetSize(sizeOfTarget, rs):
     env = DDPGEnv(rs, sizeOfTarget, rs.thetaFile, actor=actor)
     ddpg = DDPG(env, actor = actor)
     ddpg.M_episodes(rs.maxIterDDPG, train=False)
+    
+    
+def launchDDPGForSpecificTargetSizeAndSpeceficBeginning(sizeOfTarget, rs, point):
+    '''
+    Run cmaes for a specific target sizeCMAES
+
+    Input:    -sizeOfTarget, size of the target, float
+            -setuFile, file of setup, string
+            -save, for saving result, bool
+    '''
+    pos=point[0]
+    x=point[1][0]
+    y=point[1][1]
+    print("Starting the DDPGor target " + str(sizeOfTarget) + " for point "+ str(pos)+" !")
+    foldername = rs.OPTIpath + str(sizeOfTarget)+"/"+str(pos)+"/"
+    
+
+
+
+    actor=simple_actor_network(rs.inputDim, rs.outputDim, l1_size = rs.hiddenLayers[0][1], l2_size = rs.hiddenLayers[1][1], learning_rate = rs.learningRate)
+    env = DDPGEnv(rs, sizeOfTarget, "Best.theta", actor=actor, saveDir=foldername)
+    env.setOnePointController(x,y)
+    ddpg = DDPG(env, actor = actor)
+    ddpg.M_episodes(rs.maxIterDDPG, train=False)
+
+    print("End of optimization for target " + str(sizeOfTarget) +  " for point "+ str(pos)+" !")
+    
+def launchDDPGForAllPoint(rs, sizeTarget):
+    p = ThreadPool(processes=15)
+    #run cmaes on each targets size on separate processor
+    posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+    p.map(partial(launchDDPGForSpecificTargetSizeAndSpeceficBeginning, sizeTarget, rs), enumerate(posIni))
+    p.close()
+    p.join()
     
