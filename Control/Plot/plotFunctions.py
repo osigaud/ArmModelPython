@@ -887,6 +887,46 @@ def plotDDPGTimeProgress(rs):
 
     plt.savefig("ImageBank/DDPGTimeProgress.png")
     plt.show(block = True)
+    
+    
+
+def plotDDPGOnePointProgress(rs, ts, point):
+    plotDDPGOnePointCostProgress(rs, ts, point)
+    plotDDPGOnePointTimeProgress(rs, ts, point)
+
+def plotDDPGOnePointCostProgress(rs, ts, point):
+    plt.figure(1, figsize=(16,9))
+
+
+    name = rs.OPTIpath + str(ts)+"/"+str(point)+ "/Cost/ddpgCost.log"
+    data = np.loadtxt(name)
+
+    x,w,m,b = [],[],[],[]
+    for j in range(len(data)):
+        x.append(j)
+        w.append(data[j])
+    plt.plot(x, w, c = 'b')
+
+
+
+
+    plt.show(block = True)
+
+def plotDDPGOnePointTimeProgress(rs, ts, point):
+    plt.figure(1, figsize=(16,9))
+
+    name = rs.OPTIpath + str(ts)+"/"+str(point) + "/Cost/ddpgTime.log"
+    data = np.loadtxt(name)
+
+    x,w,m,b = [],[],[],[]
+    for j in range(len(data)):
+        x.append(j)
+        w.append(data[j])
+
+    plt.plot(x, w, c = 'b')
+
+    
+    plt.show(block = True)
 
     
 
