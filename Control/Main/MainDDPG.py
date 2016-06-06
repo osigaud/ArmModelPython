@@ -21,6 +21,7 @@ import os
 from multiprocess.pool import ThreadPool
 from functools import partial
 from GlobalVariables import pathDataFolder
+import tensorflow as tf
 #TODO: change CMAESpath name
 
 
@@ -102,10 +103,21 @@ def launchDDPGForSpecificTargetSizeAndSpeceficBeginning(sizeOfTarget, rs, point)
     print("End of optimization for target " + str(sizeOfTarget) +  " for point "+ str(pos)+" !")
     
 def launchDDPGForAllPoint(rs, sizeTarget):
+    """
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
     p.map(partial(launchDDPGForSpecificTargetSizeAndSpeceficBeginning, sizeTarget, rs), enumerate(posIni))
     p.close()
     p.join()
+    """
+    coord=tf.train.Coordinator()
+    posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+    # Create  threads t
+    threads = [tf.train.threading.Thread(target=launchDDPGForSpecificTargetSizeAndSpeceficBeginning, args=(sizeTarget, rs, point)) for point in enumerate(posIni)]
+
+    # Start the threads and wait for all of them to stop.
+    for t in threads: t.start()
+    coord.join(threads)
+
     

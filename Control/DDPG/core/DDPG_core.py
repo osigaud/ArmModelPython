@@ -51,7 +51,7 @@ class DDPG(object):
         else:
             self.critic = critic 
         self.buffer = deque([])
-        self.buffer_size = 10000000
+        self.buffer_size = 1000000
         self.buffer_minimum = 100
         self.minibatch_size = 64
         self.t = 0

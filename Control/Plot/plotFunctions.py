@@ -16,7 +16,7 @@ from matplotlib import cm
 from matplotlib import animation
 from matplotlib.mlab import griddata
 import time
- 
+from Utils.FileWritting import checkIfFolderExists 
 
 
 from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData
@@ -144,18 +144,22 @@ def plotVelocityProfile(what, rs, foldername = "None"):
             ax.set_xlabel("time (s)")
             ax.set_ylabel("Instantaneous velocity (m/s)")
             ax.set_title(str("Velocity profiles for target " + str(rs.sizeOfTarget[i])))
+        imageFolder = rs.OPTIpath + "/ImageBank/"
     else:
         if what == "Brent":
             name = BrentTrajectoriesFolder
+            imageFolder="ImageBank/"
         else:
             name = rs.path + foldername + "/Log/"
+            imageFolder=rs.path +"/ImageBank/"
 
         makeVelocityData(rs,arm,name,plt)
         plt.xlabel("time (s)")
         plt.ylabel("Instantaneous velocity (m/s)")
         plt.title("Velocity profiles for " + what)
-
-    plt.savefig("ImageBank/"+what+'_velocity_profiles'+foldername+'.png', bbox_inches='tight')
+    
+    checkIfFolderExists(imageFolder)
+    plt.savefig(imageFolder+'_velocity_profiles'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 
@@ -252,16 +256,18 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
             ax.set_title("XY Positions for target " + str(rs.sizeOfTarget[i]))
-
+        imageFolder = rs.OPTIpath + "/ImageBank/"
     else:
         plt.plot([rs.XTarget-float(targetSize)/2, rs.XTarget+float(targetSize)/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
         if (what == "OPTI"):
             name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
+            imageFolder =rs.OPTIpath + targetSize + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
+            imageFolder ="ImageBank/"
         else:
             name = rs.path + foldername + "/Log/"
-            print(name)
+            imageFolder =rs.path + "/ImageBank/"
 
         plotPos(name, plt, plotEstim)
         #makeInitPlot(rs)
@@ -269,7 +275,9 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
         plt.xlabel("X (m)")
         plt.ylabel("Y (m)")
         plt.title("XY Positions for " + what)
-    plt.savefig("ImageBank/"+what+'_trajectories'+rs.thetaFile+time.strftime('%d\%m-%H:%M:%S',time.localtime())+ '.png', bbox_inches='tight')
+        
+    checkIfFolderExists(imageFolder)
+    plt.savefig(imageFolder+'_trajectories'+rs.thetaFile+time.strftime('%d\%m-%H:%M:%S',time.localtime())+ '.png', bbox_inches='tight')
     plt.show(block = True)
 
 def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
@@ -285,14 +293,18 @@ def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
             ax.set_xlabel("Time (s)")
             ax.set_ylabel("Estimation error (m)")
             ax.set_title("Estimation error for target " + str(rs.sizeOfTarget[i]))
+        imageFolder = rs.OPTIpath + "/ImageBank/"
 
     else:
         if what == "OPTI":
             name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
+            imageFolder =rs.OPTIpath + targetSize + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
+            imageFolder ="ImageBank/"
         else:
             name = rs.path + foldername + "/Log/"
+            imageFolder =rs.path + "/ImageBank/"
 
         plotEstimError(rs,name, plt)
         #makeInitPlot(rs)
@@ -301,6 +313,7 @@ def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
         plt.ylabel("Estimation error (m)")
         plt.title("Estimation error Positions for " + what)
 
+    checkIfFolderExists(imageFolder)
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
@@ -317,14 +330,17 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
             ax.set_xlabel("Velocity (m/s)")
             ax.set_ylabel("Estimation error (m)")
             ax.set_title("Estimation error function of velocity for target " + str(rs.sizeOfTarget[i]))
-
+        imageFolder = rs.OPTIpath + "/ImageBank/"
     else:
         if what == "OPTI":
             name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
+            imageFolder = rs.OPTIpath + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
+            imageFolder = "ImageBank/"
         else:
             name = rs.path + foldername + "/Log/"
+            imageFolder = rs.path + "/ImageBank/"
 
         plotEstimErrorOfSpeed(name, plt)
         #makeInitPlot(rs)
@@ -333,6 +349,7 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
         plt.ylabel("Estimation error (m)")
         plt.title("Estimation error function of velocity for " + what)
 
+    checkIfFolderExists(imageFolder)
     plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
@@ -352,11 +369,14 @@ def plotArticularPositions(what, rs,foldername = "None"):
             ax.set_xlabel("Q1 (rad)")
             ax.set_ylabel("Q2 (rad)")
             ax.set_title("Articular positions for " + str(rs.sizeOfTarget[i]))
+        imageFolder = rs.OPTIpath + "/ImageBank/"
     else :
         if what == "Brent":
             name = BrentTrajectoriesFolder
+            imageFolder = "ImageBank/"
         else:
             name = rs.path + foldername + "/Log/"
+            imageFolder = rs.path + "/ImageBank/"
     
         state = getStateData(name)
     
@@ -372,6 +392,7 @@ def plotArticularPositions(what, rs,foldername = "None"):
         plt.ylabel("Q2 (rad)")
         plt.title("Articular positions for " + what)
         
+    checkIfFolderExists(imageFolder)   
     plt.savefig("ImageBank/"+what+'_articular'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
@@ -387,13 +408,17 @@ def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
     '''
     if what == "OPTI":
         name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
+        imageFolder = rs.OPTIpath + "/ImageBank/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
+        imageFolder = "ImageBank/"
     else:
         name = rs.path + foldername + "/Log/"
+        imageFolder = rs.path + "/ImageBank/"
 
     U = getNoiselessCommandData(name)
-
+    checkIfFolderExists(imageFolder)  
+    
     for key, el1 in U.items():
         t = []
         u1, u2, u3, u4, u5, u6 = [], [], [], [], [], []
@@ -467,14 +492,18 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
             ax.set_title(str("Cost map for target " + str(rs.sizeOfTarget[i])))
+        imageFolder = rs.OPTIpath + "/ImageBank/"
 
     else:
         if what == "OPTI":
             name = rs.OPTIpath + targetSize + "/" + foldername + "/Cost/"
+            imageFolder = rs.OPTIpath + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
+            imageFolder = "ImageBank/"
         else:
             name = rs.path + foldername + "/Cost/"
+            imageFolder = rs.path + "/ImageBank/"
 
         costs = getCostData(name)
    
@@ -501,6 +530,7 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.ylabel("Y (m)")
         plt.title("Cost map for " + what)
 
+    checkIfFolderExists(imageFolder)  
     plt.savefig("ImageBank/"+what+'_costmap'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
@@ -542,14 +572,19 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
             ax.set_title(str("Time map for target " + str(rs.sizeOfTarget[i])))
             fig.colorbar(t1, shrink=0.5, aspect=5)
             t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
+            
+        imageFolder = rs.OPTIpath + "/ImageBank/"
 
     else:
         if what == "OPTI":
             name = rs.OPTIpath + targetSize + "/" + foldername + "/TrajTime/"
+            imageFolder = rs.OPTIpath + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
+            imageFolder = "ImageBank/"
         else:
             name = rs.path + foldername + "/TrajTime/"
+            imageFolder = rs.path + "/ImageBank/"
 
         times = getTrajTimeData(name)
    
@@ -575,6 +610,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.xlabel("X (m)")
         plt.ylabel("Y (m)")
 
+    checkIfFolderExists(imageFolder)  
     plt.savefig("ImageBank/"+what+'_timemap'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
@@ -675,7 +711,9 @@ def plotFittsLaw(foldername, rs, rbfn = False):
     plt.title("a = " + str(slope) + " b = " + str(intercept) + " r^2 = " + str(r_value**2))
     plt.xlabel("log(D/W)/log(2)")
     plt.ylabel("Movement time (s)")
-    plt.savefig("ImageBank/fitts"+foldername+".png", bbox_inches='tight')
+    imageFolder = rs.OPTIpath + "/ImageBank/"
+    checkIfFolderExists(imageFolder)  
+    plt.savefig(imageFolder+"fitts"+foldername+".png", bbox_inches='tight')
     plt.show(block = True)
  
 # ---------------- hit dispersion ---------------------------------------
@@ -696,7 +734,9 @@ def plotHitDispersion(foldername,sizeT, rs):
     plt.scatter(tabx, taby, c = 'b')
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
-    plt.savefig("ImageBank/hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
+    imageFolder = rs.OPTIpath + "/ImageBank/"
+    checkIfFolderExists(imageFolder)  
+    plt.savefig(imageFolder+"hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
     plt.show(block = True)
 
 def plotScattergram(what,foldername,rs):
@@ -721,23 +761,26 @@ def plotScattergram(what,foldername,rs):
             ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
             ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
             ax.set_title(str("Hit Dispersion for Target " + str(rs.sizeOfTarget[i])))
+        imageFolder = rs.OPTIpath + "/ImageBank/"
 
     elif what=="RBFN":
-            name =  rs.path + foldername + "/finalX/"
-            tmp = getLastXData(name)
-            tabx = []
-            for el in tmp.values():
-                for j in range(len(el)):
-                    tabx.append(el[j])
-            plt.hist(tabx, 20)
-            for i in range(len(rs.sizeOfTarget)):
-                plt.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]]/2, [0, 20], c = 'r', linewidth = 3)
-                plt.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]]/2, [0, 20], c = 'r', linewidth = 3)
-            plt.xlabel("X (m)")
-            plt.ylabel("Y (m)")
-            plt.title("Hit Dispersion for "+rs.regression)
-    
-    plt.savefig("ImageBank/"+what+"_hitdisp"+foldername+".png", bbox_inches='tight')
+        name =  rs.path + foldername + "/finalX/"
+        tmp = getLastXData(name)
+        tabx = []
+        for el in tmp.values():
+            for j in range(len(el)):
+                tabx.append(el[j])
+        plt.hist(tabx, 20)
+        for i in range(len(rs.sizeOfTarget)):
+            plt.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]]/2, [0, 20], c = 'r', linewidth = 3)
+            plt.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]]/2, [0, 20], c = 'r', linewidth = 3)
+        plt.xlabel("X (m)")
+        plt.ylabel("Y (m)")
+        plt.title("Hit Dispersion for "+rs.regression)
+        imageFolder = rs.path + "/ImageBank/"
+        
+    checkIfFolderExists(imageFolder)  
+    plt.savefig(imageFolder+what+"_hitdisp"+foldername+".png", bbox_inches='tight')
     plt.show(block = True)
         
 # ---------------- end of hit dispersion ---------------------------------------
@@ -766,7 +809,9 @@ def plotCMAESCostProgress(rs):
 
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 
-    plt.savefig("ImageBank/"+rs.thetaFile+"costProgress.png")
+    imageFolder = rs.OPTIpath + "/ImageBank/"
+    checkIfFolderExists(imageFolder) 
+    plt.savefig(imageFolder+rs.thetaFile+"costProgress.png")
     plt.show(block = True)
 
 def plotCMAESTimeProgress(rs):
@@ -790,7 +835,9 @@ def plotCMAESTimeProgress(rs):
 
         ax.set_title(str("Time Target " + str(rs.sizeOfTarget[i])))
 
-    plt.savefig("ImageBank/timeProgress.png")
+    imageFolder = rs.OPTIpath + "/ImageBank/"
+    checkIfFolderExists(imageFolder) 
+    plt.savefig(imageFolder+"timeProgress.png")
     plt.show(block = True)
     
     
@@ -865,7 +912,9 @@ def plotDDPGCostProgress(rs):
         """
         ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
 
-    plt.savefig("ImageBank/"+rs.thetaFile+"DDPGcostProgress.png")
+    imageFolder = rs.OPTIpath + "/ImageBank/"
+    checkIfFolderExists(imageFolder) 
+    plt.savefig(imageFolder+rs.thetaFile+"DDPGcostProgress.png")
     plt.show(block = True)
 
 def plotDDPGTimeProgress(rs):
@@ -884,8 +933,10 @@ def plotDDPGTimeProgress(rs):
         ax.plot(x, w, c = 'b')
 
         ax.set_title(str("DDPG Time Target " + str(rs.sizeOfTarget[i])))
-
-    plt.savefig("ImageBank/DDPGTimeProgress.png")
+    
+    imageFolder = rs.OPTIpath + "/ImageBank/"
+    checkIfFolderExists(imageFolder) 
+    plt.savefig(imageFolder+"DDPGTimeProgress.png")
     plt.show(block = True)
     
     
