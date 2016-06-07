@@ -50,6 +50,15 @@ def GenerateDataFromThetaNController(rs, sizeOfTarget, foldername, thetaFile, re
     print("foldername : ", foldername)
     if (save):
         exp.saveCost()
+        
+def GenerateDataFromThetaOnePoint(rs, sizeOfTarget, foldername, thetaFile, repeat, point):
+    os.system("rm "+foldername+"/Log/*.log 2>/dev/null")
+    exp = Experiments(rs, sizeOfTarget, True, foldername,thetaFile,rs.popsizeCmaes,rs.period)
+    cost, time = exp.runTrajectoriesForResultsGenerationOnePoint(repeat,point)
+    print("Average cost: ", cost)
+    print("Average time: ", time)
+    print("foldername : ", foldername)
+
 
 def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
     os.system("rm "+foldername+"Log/*.log")
@@ -76,6 +85,14 @@ def generateFromCMAESNController(repeat, rs, thetaFile, saveDir = 'Data'):
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
         GenerateDataFromThetaNController(rs,el, saveName,thetaName,repeat,True)
         c.stop()
+    print("CMAES:End of generation")
+    
+def generateFromCMAESonePoint(repeat, rs, thetaFile, saveDir = 'Data', size=0.04, point=0):
+    c = Chrono()
+    thetaName = rs.OPTIpath + str(size)+"/"+str(point)+"/"+thetaFile
+    saveName = rs.OPTIpath + str(size) + "/" + saveDir + "/"
+    GenerateDataFromThetaOnePoint(rs,size, saveName,thetaName,repeat, point)
+    c.stop()
     print("CMAES:End of generation")
 
 def generateRichDataFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
@@ -141,6 +158,8 @@ def launchCMAESForSpecificTargetSizeAndSpeceficBeginning(sizeOfTarget, rs, save,
     if save:
         checkIfFolderExists(foldername)
         copyfile(rs.OPTIpath + str(sizeOfTarget)+"/" + "Best.theta",foldername + "Best.theta")
+    elif save==None:
+        thetaname=None
 
 
 
