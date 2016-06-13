@@ -134,6 +134,14 @@ class Experiments:
         #self.printLastCoordInfo()
         return globMeanCost/len(self.posIni), globTimeCost/len(self.posIni)
     
+    def runTrajectoriesForResultsGenerationOnePoint(self, repeat, point):
+        xy = self.posIni[point]
+        costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+        for i in range(repeat):
+            costAll[i], trajTimeAll[i]  = self.runOneTrajectory(xy[0], xy[1]) 
+        meanCost = np.mean(costAll)
+        meanTrajTime = np.mean(trajTimeAll)
+        return meanCost, meanTrajTime 
     
     def runTrajectoriesForResultsGenerationOpti(self, repeat):
         globMeanCost=0.

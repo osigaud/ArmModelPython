@@ -734,7 +734,7 @@ def plotHitDispersion(foldername,sizeT, rs):
     plt.scatter(tabx, taby, c = 'b')
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
-    imageFolder = rs.OPTIpath + "/ImageBank/"
+    imageFolder = rs.OPTIpath + sizeT +"/ImageBank/"
     checkIfFolderExists(imageFolder)  
     plt.savefig(imageFolder+"hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
     plt.show(block = True)
@@ -751,15 +751,15 @@ def plotScattergram(what,foldername,rs):
                 for j in range(len(el)):
                     tabx.append(el[j])
 
-                    data[rs.sizeOfTarget[i]] = tabx
+            data[rs.sizeOfTarget[i]] = tabx
 
         plt.figure(1, figsize=(16,9))
 
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            ax.hist(data[rs.sizeOfTarget[i]], 20)
-            ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
-            ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
+            ax.hist(data[rs.sizeOfTarget[i]], 100)
+            ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]/2], [0, 100], c = 'r', linewidth = 3)
+            ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]/2], [0, 100], c = 'r', linewidth = 3)
             ax.set_title(str("Hit Dispersion for Target " + str(rs.sizeOfTarget[i])))
         imageFolder = rs.OPTIpath + "/ImageBank/"
 

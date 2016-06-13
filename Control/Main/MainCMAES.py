@@ -140,7 +140,8 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
 def launchCMAESForSpecificTargetSizeAndSpeceficPoint(sizeOfTarget, rs, save, point):
-    '''
+    '''filename2 = self.foldername + "Best.theta"
+                np.savetxt(filename2, self.theta)
     Run cmaes for a specific target size
 
     Input:    -sizeOfTarget, size of the target, float

@@ -174,7 +174,7 @@ class TrajMaker:
         cost += self.trajCost.computeFinalReward(self.arm,t,coordHand,self.sizeOfTarget)
 
         if self.saveTraj == True:
-            filename = findDataFilename(foldername+"Log/","traj"+str(x)+"-"+str(y),".log")
+            filename = findDataFilename(foldername+"Log/","traj"+str(x)+"-"+str(y)+".",".log")
             np.savetxt(filename,dataStore)
             '''
             if coordHand[0] >= -self.sizeOfTarget/2 and coordHand[0] <= self.sizeOfTarget/2 and coordHand[1] >= self.rs.YTarget and i<230:
