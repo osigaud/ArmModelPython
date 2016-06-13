@@ -199,7 +199,7 @@ def chooseFunction(choix, rs):
         elif rorc==2:
             save=None
         tSize = raw_input('Target Size: ')
-        point=raw_input('Point: ')
+        point=int(raw_input('Point: '))
         posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
         launchCMAESForSpecificTargetSizeAndSpeceficPoint(float(tSize), rs, save, [point,posIni[point]])
     elif choix == 26:
