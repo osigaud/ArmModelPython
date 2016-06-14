@@ -114,10 +114,15 @@ class NeuralNet(regression):
                 
                 bias_to_out = FullConnection(bias, outLayer)
                 self.net.addConnection(bias_to_out)
+                
+
+        
         #initilisation of weight
         self.net.sortModules()
-            
         self.shape=self.net.params.shape
+        self.net._setParameters(np.random.normal(0.0,0.1,self.shape))
+            
+        
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
         #print(self.net)
             

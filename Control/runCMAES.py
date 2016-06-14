@@ -11,11 +11,11 @@ Description: script to run cmaes
 
 
 
-from Main.MainCMAES import generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.MainCMAES import launchCMAESForSpecificTargetSizeAndSpeceficPoint, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Plot.plotFunctions import plotCMAESOnePointProgress, plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
-
-
+from GlobalVariables import pathDataFolder
+import numpy as np
 from Utils.Chrono import Chrono
 from Utils.ReadXmlFile import ReadXmlFile
 
@@ -48,9 +48,11 @@ def printMainMenu():
     print('        22 plot Manipulability')
     print('        23 plot Estimation')
     print('        24 train CMAES one point')
-    print('        25 plot CMAES One point cost progress')
-    print('        26 generate results from CMAES One point')
-    print('        27 plot XY and articular positions for one target')  
+    print('        25 train CMAES one point for one target')
+    print('        26 plot CMAES One point cost progress')
+    print('        27 generate results from CMAES One point')
+    print('        28 plot XY and articular positions for one target')  
+    print('        29 plot XY for one target')
     
 def runChoice():
     checkL = True
@@ -189,6 +191,18 @@ def chooseFunction(choix, rs):
         #launchCMAESForSpecificTargetSizeAndSpeceficBeginning(float(tSize), rs, save, 0, 0.2)
         c.stop()
     elif choix == 25:
+        rorc = input("enter 1 if General CMAES, 2 if from scratch, anything if from previous CMAES point: ")
+        save = False
+        rorc = int(rorc)
+        if rorc == 1:
+            save = True
+        elif rorc==2:
+            save=None
+        tSize = raw_input('Target Size: ')
+        point=int(raw_input('Point: '))
+        posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+        launchCMAESForSpecificTargetSizeAndSpeceficPoint(float(tSize), rs, save, [point,posIni[point]])
+    elif choix == 26:
         size=raw_input('Target Size: ')
         while True:
             print("    Enter the number of the point you want sea, q for quit")
@@ -196,18 +210,18 @@ def chooseFunction(choix, rs):
             if(point=="q"): 
                 break
             plotCMAESOnePointProgress(rs,size, point)
-    elif choix == 26:
+    elif choix == 27:
         #TODO: Choose the kinematic model
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")
         nbret = int(nbret)
         generateFromCMAESNController(nbret, rs, nameTheta, name)
-    elif choix == 27:
+    elif choix == 28:
         nameF = raw_input('Folder where the results are saved: ')
         rorc = raw_input("Target Size: ")
         plotXYPositions("OPTI",rs, nameF,rorc,False)
-    elif choix == 28:
+    elif choix == 29:
         nameTheta = raw_input('Name of the controller file: ')
         name = raw_input('Folder where you want to save the results: ')
         nbret = input("Number of repeat for each trajectory (int): ")

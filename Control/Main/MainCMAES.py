@@ -139,8 +139,9 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
     cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
-def launchCMAESForSpecificTargetSizeAndSpeceficBeginning(sizeOfTarget, rs, save, point):
-    '''
+def launchCMAESForSpecificTargetSizeAndSpeceficPoint(sizeOfTarget, rs, save, point):
+    '''filename2 = self.foldername + "Best.theta"
+                np.savetxt(filename2, self.theta)
     Run cmaes for a specific target size
 
     Input:    -sizeOfTarget, size of the target, float
@@ -188,7 +189,7 @@ def launchCMAESForAllPoint(rs, sizeTarget, save):
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficBeginning, sizeTarget, rs, save), enumerate(posIni))
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPoint, sizeTarget, rs, save), enumerate(posIni))
     p.close()
     p.join()
     

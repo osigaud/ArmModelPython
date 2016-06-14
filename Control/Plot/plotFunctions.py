@@ -443,7 +443,7 @@ def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
             plt.xlabel("time")
             plt.ylabel("U")
             plt.title("Muscular Activations for " + what)
-            plt.savefig("ImageBank/"+what+"_muscu" + key +foldername + ".png", bbox_inches='tight')
+            plt.savefig(imageFolder+what+"_muscu" + key +foldername + ".png", bbox_inches='tight')
 
             print key
             val = raw_input('1 to see data, anything otherwise: ')
@@ -531,7 +531,7 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.title("Cost map for " + what)
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig("ImageBank/"+what+'_costmap'+foldername+'.png', bbox_inches='tight')
+    plt.savefig(imageFolder+what+'_costmap'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #-------------------------- time maps ----------------------------------------------
@@ -611,7 +611,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.ylabel("Y (m)")
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig("ImageBank/"+what+'_timemap'+foldername+'.png', bbox_inches='tight')
+    plt.savefig(imageFolder+what+'_timemap'+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -642,7 +642,7 @@ def plotTimeDistanceTarget(foldername,rs):
     for key in sorted(dicoTime.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoTime[key].keys())], [np.mean(dicoTime[key][i]) for i in sorted(dicoTime[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig("ImageBank/timedist"+foldername+'.png', bbox_inches='tight')
+    plt.savefig(rs.OPTIpath+"/ImageBank/timedist"+foldername+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -671,7 +671,7 @@ def plotPerfSizeDist(foldername, rs):
     for key in sorted(dicoCost.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoCost[key].keys())], [np.mean(dicoCost[key][i]) for i in sorted(dicoCost[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig("ImageBank/perfdist"+foldername+".png", bbox_inches='tight')
+    plt.savefig(rs.OPTIpath+"/ImageBank/perfdist"+foldername+".png", bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -734,7 +734,7 @@ def plotHitDispersion(foldername,sizeT, rs):
     plt.scatter(tabx, taby, c = 'b')
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
-    imageFolder = rs.OPTIpath + "/ImageBank/"
+    imageFolder = rs.OPTIpath + sizeT +"/ImageBank/"
     checkIfFolderExists(imageFolder)  
     plt.savefig(imageFolder+"hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
     plt.show(block = True)
@@ -751,15 +751,15 @@ def plotScattergram(what,foldername,rs):
                 for j in range(len(el)):
                     tabx.append(el[j])
 
-                    data[rs.sizeOfTarget[i]] = tabx
+            data[rs.sizeOfTarget[i]] = tabx
 
         plt.figure(1, figsize=(16,9))
 
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            ax.hist(data[rs.sizeOfTarget[i]], 20)
-            ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
-            ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]/2], [0, 500], c = 'r', linewidth = 3)
+            ax.hist(data[rs.sizeOfTarget[i]], 100)
+            ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]/2], [0, 100], c = 'r', linewidth = 3)
+            ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]/2], [0, 100], c = 'r', linewidth = 3)
             ax.set_title(str("Hit Dispersion for Target " + str(rs.sizeOfTarget[i])))
         imageFolder = rs.OPTIpath + "/ImageBank/"
 
