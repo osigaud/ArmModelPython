@@ -11,7 +11,7 @@ Description: script to run cmaes
 
 
 
-from Main.MainCMAES import launchCMAESForSpecificTargetSizeAndSpeceficPoint, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.MainCMAES import launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Plot.plotFunctions import plotCMAESOnePointProgress, plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 from GlobalVariables import pathDataFolder
@@ -51,8 +51,8 @@ def printMainMenu():
     print('        25 train CMAES one point for one target')
     print('        26 plot CMAES One point cost progress')
     print('        27 generate results from CMAES One point')
-    print('        28 plot XY and articular positions for one target')  
-    print('        29 plot XY for one target')
+    print('        28 plot XY  for one target')  
+    print('        29 generate results for one target')
     
 def runChoice():
     checkL = True
@@ -188,7 +188,6 @@ def chooseFunction(choix, rs):
         tSize = raw_input('Target Size: ')
         c = Chrono()
         launchCMAESForAllPoint(rs,float(tSize),save)
-        #launchCMAESForSpecificTargetSizeAndSpeceficBeginning(float(tSize), rs, save, 0, 0.2)
         c.stop()
     elif choix == 25:
         rorc = input("enter 1 if General CMAES, 2 if from scratch, anything if from previous CMAES point: ")
@@ -201,7 +200,7 @@ def chooseFunction(choix, rs):
         tSize = raw_input('Target Size: ')
         point=int(raw_input('Point: '))
         posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-        launchCMAESForSpecificTargetSizeAndSpeceficPoint(float(tSize), rs, save, [point,posIni[point]])
+        launchCMAESForSpecificTargetSizeAndSpeceficPointMulti(float(tSize), rs, save, [point,posIni[point]])
     elif choix == 26:
         size=raw_input('Target Size: ')
         while True:

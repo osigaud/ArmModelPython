@@ -184,7 +184,7 @@ class Experiments:
         result = pool.map(partial(self.runNtrajectory, repeat=repeat) , [(x, y) for x, y in self.posIni])
         pool.close()
         pool.join()
-        meanCost, meanTraj=0, 0
+        meanCost, meanTraj=0., 0.
         for Cost, traj in result:
             meanCost+=Cost
             meanTraj+=traj
@@ -202,6 +202,22 @@ class Experiments:
         self.costStore.append([x, y, meanCost])
         self.trajTimeStore.append([x, y, meanTrajTime])
         return meanCost, meanTrajTime
+    
+    def mapableTrajecrtoryFunction(self,x,y,useless):
+        return self.runOneTrajectory(x, y)
+    
+    def runNtrajectoryMulti(self, (x, y), repeat):
+        pool=Pool(processes=4)
+        result = pool.map(partial(self.mapableTrajecrtoryFunction,x,y) , range(repeat))
+        pool.close()
+        pool.join()
+        meanCost, meanTraj=0., 0.
+        for Cost, traj in result:
+            meanCost+=Cost
+            meanTraj+=traj
+        size = len(result)
+        return meanCost/size, meanTraj/size
+
     
     def runOneTrajectoryOpti(self, x, y):
         #self.tm.saveTraj = True
@@ -221,80 +237,8 @@ class Experiments:
             self.lastCoord.append(lastX)
         return cost, trajTime
     
-    def runTrajectoriesCMAES(self, theta):
-        '''
-    	Generates all the trajectories of the experimental setup and return the mean cost. This function is used by cmaes to optimize the controller.
     
-    	Input:		-theta: vector of parameters, one dimension normalized numpy array
-    
-    	Ouput:		-meanAll: the mean of the cost of all trajectories generated, float
-    	'''
-        
-        #c = Chrono()
-        self.initTheta(theta)
-        #print "theta avant appel :", theta
-        #compute all the trajectories x times each, x = numberOfRepeat
-        meanCost, meanTime = self.runMultiProcessTrajectories(self.numberOfRepeat)
-        #cma.plot()
-        #opt = cma.CMAOptions()
-        #print "CMAES options :", opt
-        #c.stop()
-
-        #print("Indiv #: ", self.call, "\n Cost: ", meanCost)
-        
-        if (self.call==0):
-            self.localBestCost = meanCost
-            self.localWorstCost = meanCost
-            self.localBestTime = meanTime
-            self.localWorstTime = meanTime
-            self.periodMeanCost = 0.0
-            self.periodMeanTime = 0.0
-        else:    
-            if meanCost>self.localBestCost:
-                self.localBestCost = meanCost
-            elif meanCost<self.localWorstCost:
-                self.localWorstCost = meanCost
-                
-            if meanTime>self.localBestTime:
-                self.localBestTime = meanTime
-            elif meanTime<self.localWorstTime:
-                self.localWorstTime = meanTime
-
-        if meanCost>self.bestCost:
-            self.bestCost = meanCost
-            if meanCost>0:
-                extension = ".save" + str(meanCost)
-                filename = findDataFilename(self.foldername+"Theta/", "theta", extension)
-                np.savetxt(filename, self.theta)
-                filename2 = self.foldername + "Best.theta"
-                np.savetxt(filename2, self.theta)
-        
-        self.periodMeanCost += meanCost
-        self.periodMeanTime += meanTime
-
-        self.call += 1
-        self.call = self.call%self.period
-
-        if (self.call==0):
-            self.periodMeanCost = self.periodMeanCost/self.period
-            self.periodMeanTime = self.periodMeanTime/self.period
-            self.CMAESCostStore.append((self.localWorstCost,self.periodMeanCost,self.localBestCost))
-            self.CMAESTimeStore.append((self.localWorstTime,self.periodMeanTime,self.localBestTime))
-            costfoldername = self.foldername+"Cost/"
-            checkIfFolderExists(costfoldername)
-            cost = open(costfoldername+"cmaesCost.log","a")
-            time = open(costfoldername+"cmaesTime.log","a")
-            cost.write(str(self.localWorstCost)+" "+str(self.periodMeanCost)+" "+str(self.localBestCost)+"\n")
-            time.write(str(self.localWorstTime)+" "+str(self.periodMeanTime)+" "+str(self.localBestTime)+"\n")
-            cost.close()
-            time.close()
-            #np.savetxt(costfoldername+"cmaesCost.log",self.CMAESCostStore) #Note: inefficient, should rather add to the file
-            #np.savetxt(costfoldername+"cmaesTime.log",self.CMAESTimeStore) #Note: inefficient, should rather add to the file
-
-        return 10.0*(self.rs.rhoCF-meanCost)/self.rs.rhoCF
-    
-
-    def runTrajectoriesCMAESOnePoint(self, x, y, theta):
+    def runTrajectories(self,theta, fonction):
         '''
         Generates all the trajectories of the experimental setup and return the mean cost. This function is used by cmaes to optimize the controller.
     
@@ -307,7 +251,7 @@ class Experiments:
         self.initTheta(theta)
         #print "theta avant appel :", theta
         #compute all the trajectories x times each, x = numberOfRepeat
-        meanCost, meanTime = self.runNtrajectory((x,y),self.numberOfRepeat)
+        meanCost, meanTime = fonction(self.numberOfRepeat)
         #cma.plot()
         #opt = cma.CMAOptions()
         #print "CMAES options :", opt
@@ -366,3 +310,26 @@ class Experiments:
 
         return 10.0*(self.rs.rhoCF-meanCost)/self.rs.rhoCF
     
+    def runTrajectoriesCMAES(self, theta):
+        '''
+    	Generates all the trajectories of the experimental setup and return the mean cost. This function is used by cmaes to optimize the controller.
+    
+    	Input:		-theta: vector of parameters, one dimension normalized numpy array
+    
+    	Ouput:		-meanAll: the mean of the cost of all trajectories generated, float
+    	'''
+        return self.runTrajectories(theta, self.runMultiProcessTrajectories)
+    
+
+    def runTrajectoriesCMAESOnePoint(self, x, y, theta):
+        '''
+        Generates all the trajectories of the experimental setup and return the mean cost. This function is used by cmaes to optimize the controller.
+    
+        Input:        -theta: vector of parameters, one dimension normalized numpy array
+    
+        Ouput:        -meanAll: the mean of the cost of all trajectories generated, float
+        '''
+        return self.runTrajectories(theta, partial(self.runNtrajectory,(x,y)))
+
+    def runTrajectoriesCMAESOnePointMulti(self, x, y, theta):
+        return self.runTrajectories(theta, partial(self.runNtrajectoryMulti,(x,y)))

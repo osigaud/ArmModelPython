@@ -531,7 +531,7 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.title("Cost map for " + what)
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+'_costmap'+foldername+'.png', bbox_inches='tight')
+    plt.savefig(imageFolder+what+'_costmap'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.png', bbox_inches='tight')
     plt.show(block = True)
 
 #-------------------------- time maps ----------------------------------------------
