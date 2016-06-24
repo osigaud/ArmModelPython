@@ -22,7 +22,7 @@ from StateEstimatorRegression import StateEstimatorRegression
 
 from StateEstimatorHyb import StateEstimatorHyb
 from StateEstimatorNoFeedBack import StateEstimatorNoFeedBack
-from Cost import Cost
+from Cost.CostCMAES import CostCMAES
 
 
 
@@ -43,7 +43,8 @@ class TrajMaker:
         self.arm = ArmType[rs.arm]()
         self.arm.setDT(rs.dt)
         self.controller = initController(rs,thetaFile)
-        self.trajCost= Cost(rs)
+        self.trajCost= CostCMAES(rs)
+        self.costU12=0
         #put theta to a one dimension numpy array, ie row vector form
         #theta = matrixToVector(theta)
  
@@ -66,7 +67,8 @@ class TrajMaker:
     def setTheta(self, theta):
         self.controller.setTheta(theta)
 
-
+    def setNoise(self, noise):
+        self.arm.setNoise(noise)
 
         
     def runTrajectory(self, x, y, foldername):
@@ -78,6 +80,7 @@ class TrajMaker:
     
     	Output:		-cost: the cost of the trajectory, float
     	'''
+        self.costU12=0
         #computes the articular position q1, q2 from the initial coordinates (x, y)
         q1, q2 = self.arm.mgi(x, y)
         #creates the state vector [dotq1, dotq2, q1, q2]
@@ -129,6 +132,7 @@ class TrajMaker:
 
             #computation of the cost
             cost += self.trajCost.computeStateTransitionCost(Unoisy)
+            self.costU12+=self.trajCost.computeStateTransitionCostU12(Unoisy)
 
             '''
             print "U =", U

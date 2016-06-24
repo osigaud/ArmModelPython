@@ -3,7 +3,7 @@
 '''
 Author: Thomas Beucher
 
-Module: plotFunctions
+Module: plotFunction
 
 Description: some plotting functions
 '''
@@ -16,7 +16,7 @@ from matplotlib import cm
 from matplotlib import animation
 from matplotlib.mlab import griddata
 import time
-from Utils.FileWritting import checkIfFolderExists 
+from Utils.FileWritting import checkIfFolderExists, findDataFilename
 
 
 from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData
@@ -159,7 +159,7 @@ def plotVelocityProfile(what, rs, foldername = "None"):
         plt.title("Velocity profiles for " + what)
     
     checkIfFolderExists(imageFolder)
-    plt.savefig(imageFolder+'_velocity_profiles'+foldername+'.png', bbox_inches='tight')
+    plt.savefig(imageFolder+'_velocity_profiles'+foldername+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 
@@ -238,8 +238,8 @@ def plotTrajsInRepo():
     plt.ylabel("Y (m)")
     plt.title("XY Positions")
 
-    plt.savefig("ImageBank/TrajRepo.png", bbox_inches='tight')
-    #plt.savefig("ImageBank/"+what+'_trajectories.png')
+    plt.savefig("ImageBank/TrajRepo.svg", bbox_inches='tight')
+    #plt.savefig("ImageBank/"+what+'_trajectories.svg')
     plt.show(block = True)
 
 def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim=False):
@@ -277,7 +277,7 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
         plt.title("XY Positions for " + what)
         
     checkIfFolderExists(imageFolder)
-    plt.savefig(imageFolder+'_trajectories'+rs.thetaFile+time.strftime('%d\%m-%H:%M:%S',time.localtime())+ '.png', bbox_inches='tight')
+    plt.savefig(imageFolder+'_trajectories'+rs.thetaFile+time.strftime('%d\%m-%H:%M:%S',time.localtime())+ '.svg', bbox_inches='tight')
     plt.show(block = True)
 
 def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
@@ -314,7 +314,7 @@ def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
         plt.title("Estimation error Positions for " + what)
 
     checkIfFolderExists(imageFolder)
-    plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
@@ -350,7 +350,7 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
         plt.title("Estimation error function of velocity for " + what)
 
     checkIfFolderExists(imageFolder)
-    plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_estimError'+foldername+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 def plotArticularPositions(what, rs,foldername = "None"):
@@ -393,7 +393,7 @@ def plotArticularPositions(what, rs,foldername = "None"):
         plt.title("Articular positions for " + what)
         
     checkIfFolderExists(imageFolder)   
-    plt.savefig("ImageBank/"+what+'_articular'+foldername+'.png', bbox_inches='tight')
+    plt.savefig("ImageBank/"+what+'_articular'+foldername+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #------------------ muscular activations --------------------------------
@@ -443,7 +443,7 @@ def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
             plt.xlabel("time")
             plt.ylabel("U")
             plt.title("Muscular Activations for " + what)
-            plt.savefig(imageFolder+what+"_muscu" + key +foldername + ".png", bbox_inches='tight')
+            plt.savefig(imageFolder+what+"_muscu" + key +foldername + ".svg", bbox_inches='tight')
 
             print key
             val = raw_input('1 to see data, anything otherwise: ')
@@ -531,7 +531,86 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.title("Cost map for " + what)
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+'_costmap'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.png', bbox_inches='tight')
+    plt.savefig(imageFolder+what+'_costmap'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.svg', bbox_inches='tight')
+    plt.show(block = True)
+    
+    
+def plotCostColorMapFor12(what, rs, foldername = "None", targetSize = "All"):
+    '''
+    Cette fonction permet d'afficher le profil de cout des muscles 1 et 2 des trajectoires
+    
+    Entrees:  -what: choix des donnees a afficher
+    '''
+    fig = plt.figure(1, figsize=(16,9))
+
+    if what == "OPTI" and targetSize == "All":
+        for i in range(len(rs.sizeOfTarget)):
+            ax = plt.subplot2grid((2,2), (i/2,i%2))
+            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/CostU12/"
+            costs = getCostData(name)
+
+            x0 = []
+            y0 = []
+            cost = []
+
+            for _, v in costs.items():
+                for j in range(len(v)):
+                    x0.append(v[j][0])
+                    y0.append(v[j][1])
+                    cost.append(v[j][2])
+
+            xi = np.linspace(-0.4,0.4,100)
+            yi = np.linspace(0.12,0.58,100)
+            zi = griddata(x0, y0, cost, xi, yi)
+
+            t1 = ax.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
+            ax.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
+            ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+            fig.colorbar(t1, shrink=0.5, aspect=5)
+            t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
+            ax.set_xlabel("X (m)")
+            ax.set_ylabel("Y (m)")
+            ax.set_title(str("Cost map U 1 and 2 for target " + str(rs.sizeOfTarget[i])))
+        imageFolder = rs.OPTIpath + "/ImageBank/"
+
+    else:
+        if what == "OPTI":
+            name = rs.OPTIpath + targetSize + "/" + foldername + "/CostU12/"
+            imageFolder = rs.OPTIpath + "/ImageBank/"
+        elif what == "Brent":
+            name = BrentTrajectoriesFolder
+            imageFolder = "ImageBank/"
+        else:
+            name = rs.path + foldername + "/CostU12/"
+            imageFolder = rs.path + "/ImageBank/"
+
+        costs = getCostData(name)
+   
+        x0 = []
+        y0 = []
+        cost = []
+
+        for _, v in costs.items():
+            for j in range(len(v)):
+                x0.append(v[j][0])
+                y0.append(v[j][1])
+                cost.append(v[j][2])
+
+        xi = np.linspace(-0.4,0.4,100)
+        yi = np.linspace(0.12,0.58,100)
+        zi = griddata(x0, y0, cost, xi, yi)
+    
+        t1 = plt.scatter(x0, y0, c=cost, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
+        plt.scatter(rs.XTarget, rs.YTarget, c ='g', marker='v', s=200)
+        plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
+        fig.colorbar(t1, shrink=0.5, aspect=5)
+        t1 = plt.scatter(x0, y0, c='b', marker=u'o', s=20)
+        plt.xlabel("X (m)")
+        plt.ylabel("Y (m)")
+        plt.title("Cost map U 1 and 2 for " + what)
+
+    checkIfFolderExists(imageFolder)  
+    plt.savefig(imageFolder+what+'_costmap'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-------------------------- time maps ----------------------------------------------
@@ -611,7 +690,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.ylabel("Y (m)")
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+'_timemap'+foldername+'.png', bbox_inches='tight')
+    plt.savefig(imageFolder+what+'_timemap'+foldername+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -642,7 +721,7 @@ def plotTimeDistanceTarget(foldername,rs):
     for key in sorted(dicoTime.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoTime[key].keys())], [np.mean(dicoTime[key][i]) for i in sorted(dicoTime[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig(rs.OPTIpath+"/ImageBank/timedist"+foldername+'.png', bbox_inches='tight')
+    plt.savefig(rs.OPTIpath+"/ImageBank/timedist"+foldername+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -671,7 +750,7 @@ def plotPerfSizeDist(foldername, rs):
     for key in sorted(dicoCost.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoCost[key].keys())], [np.mean(dicoCost[key][i]) for i in sorted(dicoCost[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig(rs.OPTIpath+"/ImageBank/perfdist"+foldername+".png", bbox_inches='tight')
+    plt.savefig(rs.OPTIpath+"/ImageBank/perfdist"+foldername+".svg", bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -713,7 +792,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
     plt.ylabel("Movement time (s)")
     imageFolder = rs.OPTIpath + "/ImageBank/"
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+"fitts"+foldername+".png", bbox_inches='tight')
+    plt.savefig(imageFolder+"fitts"+foldername+".svg", bbox_inches='tight')
     plt.show(block = True)
  
 # ---------------- hit dispersion ---------------------------------------
@@ -736,7 +815,7 @@ def plotHitDispersion(foldername,sizeT, rs):
     plt.ylabel("Y (m)")
     imageFolder = rs.OPTIpath + sizeT +"/ImageBank/"
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+"hit" + str(sizeT) +foldername + ".png", bbox_inches='tight')
+    plt.savefig(imageFolder+"hit" + str(sizeT) +foldername + ".svg", bbox_inches='tight')
     plt.show(block = True)
 
 def plotScattergram(what,foldername,rs):
@@ -780,7 +859,7 @@ def plotScattergram(what,foldername,rs):
         imageFolder = rs.path + "/ImageBank/"
         
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+"_hitdisp"+foldername+".png", bbox_inches='tight')
+    plt.savefig(imageFolder+what+"_hitdisp"+foldername+".svg", bbox_inches='tight')
     plt.show(block = True)
         
 # ---------------- end of hit dispersion ---------------------------------------
@@ -811,7 +890,7 @@ def plotCMAESCostProgress(rs):
 
     imageFolder = rs.OPTIpath + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
-    plt.savefig(imageFolder+rs.thetaFile+"costProgress.png")
+    plt.savefig(imageFolder+rs.thetaFile+"costProgress.svg")
     plt.show(block = True)
 
 def plotCMAESTimeProgress(rs):
@@ -837,7 +916,7 @@ def plotCMAESTimeProgress(rs):
 
     imageFolder = rs.OPTIpath + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
-    plt.savefig(imageFolder+"timeProgress.png")
+    plt.savefig(imageFolder+"timeProgress.svg")
     plt.show(block = True)
     
     
@@ -914,7 +993,7 @@ def plotDDPGCostProgress(rs):
 
     imageFolder = rs.OPTIpath + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
-    plt.savefig(imageFolder+rs.thetaFile+"DDPGcostProgress.png")
+    plt.savefig(imageFolder+rs.thetaFile+"DDPGcostProgress.svg")
     plt.show(block = True)
 
 def plotDDPGTimeProgress(rs):
@@ -936,7 +1015,7 @@ def plotDDPGTimeProgress(rs):
     
     imageFolder = rs.OPTIpath + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
-    plt.savefig(imageFolder+"DDPGTimeProgress.png")
+    plt.savefig(imageFolder+"DDPGTimeProgress.svg")
     plt.show(block = True)
     
     
@@ -1016,7 +1095,7 @@ def plotExperimentSetup(rs):
     plt.scatter(0, 0.6175, c = "r", marker=u'*', s = 200)
     plt.plot(xb, yb, c = 'r')
     plt.plot([-0.3,0.3], [0.6175, 0.6175], c = 'g')
-    plt.savefig("ImageBank/setup.png", bbox_inches='tight')
+    plt.savefig("ImageBank/setup.svg", bbox_inches='tight')
     plt.show(block = True)
 
 #TODO: both functions below can be much improved
@@ -1058,7 +1137,7 @@ def plotManipulability(rs):
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
     plt.title(str("Manipulability map"))
-    plt.savefig("ImageBank/manipulability.png", bbox_inches='tight')
+    plt.savefig("ImageBank/manipulability.svg", bbox_inches='tight')
     plt.show(block = True)
 
 
@@ -1099,12 +1178,36 @@ def plotManipulability2(rs):
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
     plt.title(str("Manipulability map"))
-    plt.savefig("ImageBank/manipulability2.png", bbox_inches='tight')
+    plt.savefig("ImageBank/manipulability2.svg", bbox_inches='tight')
     plt.show(block = True)
 
 
-def plotEstimator(setupFile, sizeOfTarget, x, y):
-    thetaName = setupFile.CMAESpath + str(sizeOfTarget) + "/" + "Best"
+
+
+
+
+def plotEstimatorGeneral(setupFile, sizeOfTarget,x, y):
+    """
+        blue wihtout noise
+        red wiht noise
+        green wihtout estimation
+    
+    """
+    thetaName = setupFile.OPTIpath + str(sizeOfTarget) + "/" + "Best"
+    plotEstimator(setupFile, sizeOfTarget, thetaName,x, y)
+    
+def plotEstimatorPoint(setupFile, sizeOfTarget,point):
+    """
+        blue wihtout noise
+        red wiht noise
+        green wihtout estimation
+    
+    """
+    posIni = np.loadtxt(pathDataFolder + setupFile.experimentFilePosIni)
+    thetaName = setupFile.OPTIpath + str(sizeOfTarget) + "/"+str(point)+"/" + "Best"
+    plotEstimator(setupFile, sizeOfTarget, thetaName,posIni[point][0], posIni[point][1])
+    
+def plotEstimator(setupFile, sizeOfTarget, thetaName,x, y):
     arm = ArmType["Arm26"]()
     
     setupFile.det = True
@@ -1137,7 +1240,14 @@ def plotEstimator(setupFile, sizeOfTarget, x, y):
     hand=np.array(hand)
     plt.plot(hand[:,0],hand[:,1], color="green")
     
+    plt.xlabel("X (m)")
+    plt.ylabel("Y (m)")
+    imageFolder = setupFile.OPTIpath + "/ImageBank/"
+    name=findDataFilename(imageFolder, "Estimation", ".svg")
+    plt.savefig(name, bbox_inches='tight')
     plt.show(block = True)
+    
+    
     
     
     

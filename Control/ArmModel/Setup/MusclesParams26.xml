@@ -8,5 +8,5 @@
 		<double-jointFlexor name="fmax5" type="int">159</double-jointFlexor>
 		<double-jointExtensor name="fmax6" type="int">318</double-jointExtensor>
 	</MaximumForce>
-	<Knoise type="int">0.5</Knoise>
+	<Knoise type="int">0.25</Knoise>
 </Muscle>

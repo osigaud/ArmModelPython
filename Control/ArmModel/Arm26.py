@@ -23,9 +23,7 @@ from ArmModel.Arm import *
 
 class Arm26(Arm):
     def __init__(self):
-        self.__dotq0 = np.array([0.,0.])
-        self.armP = ArmParameters(2,6)
-        self.musclesP = MusclesParameters(2,6)
+        Arm.__init__(self, ArmParameters(2,6),MusclesParameters(2,6),  np.array([0.,0.]))
         self.k = np.array([self.armP.I[0] + self.armP.I[1] + self.armP.m[1]*(self.armP.l[1]**2), self.armP.m[1]*self.armP.l[0]*self.armP.s[1], self.armP.I[1]])
 
     def computeNextState(self, U, state):

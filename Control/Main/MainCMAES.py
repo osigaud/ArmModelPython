@@ -41,9 +41,10 @@ def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save)
     if (save):
         exp.saveCost()
         
-def GenerateDataFromThetaNController(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
+def GenerateDataFromThetaNController(rs, sizeOfTarget, foldername, thetaFile, repeat, save,noise=None):
     os.system("rm "+foldername+"/Log/*.log 2>/dev/null")
     exp = Experiments(rs, sizeOfTarget, save, foldername,None,rs.popsizeCmaes,rs.period)
+    if(noise!=None): exp.setNoise(noise)
     cost, time = exp.runTrajectoriesForResultsGenerationNController(repeat,thetaFile)
     print("Average cost: ", cost)
     print("Average time: ", time)
@@ -78,12 +79,12 @@ def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
         c.stop()
     print("CMAES:End of generation")
     
-def generateFromCMAESNController(repeat, rs, thetaFile, saveDir = 'Data'):
+def generateFromCMAESNController(repeat, rs, thetaFile, saveDir = 'Data', noise=None):
     for el in rs.sizeOfTarget:
         c = Chrono()
         thetaName = rs.OPTIpath + str(el)+"/*/"+thetaFile
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
-        GenerateDataFromThetaNController(rs,el, saveName,thetaName,repeat,True)
+        GenerateDataFromThetaNController(rs,el, saveName,thetaName,repeat,True,noise)
         c.stop()
     print("CMAES:End of generation")
     
@@ -139,14 +140,14 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
     cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
-def launchCMAESForSpecificTargetSizeAndSpeceficPoint(sizeOfTarget, rs, save, point):
-    '''filename2 = self.foldername + "Best.theta"
-                np.savetxt(filename2, self.theta)
+def launchCMAESForSpecificTargetSizeAndSpeceficPoint(sizeOfTarget, rs, save, point, noise=None):
+    '''
     Run cmaes for a specific target size
 
     Input:    -sizeOfTarget, size of the target, float
             -setuFile, file of setup, string
             -save, for saving result, bool
+            noise: noise on muscle, if None, defalt noise from muscle setup, float
     '''
     pos=point[0]
     x=point[1][0]
@@ -167,6 +168,8 @@ def launchCMAESForSpecificTargetSizeAndSpeceficPoint(sizeOfTarget, rs, save, poi
 
     #Initializes all the class used to generate trajectory
     exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
+    if(noise!=None):
+        exp.setNoise(noise)
     theta = exp.tm.controller.getTheta()
     thetaCMA = theta.flatten()
 
@@ -221,11 +224,20 @@ def launchCMAESForSpecificTargetSizeAndSpeceficPointMulti(sizeOfTarget, rs, save
     print("End of optimization for target " + str(sizeOfTarget) +  " for point "+ str(pos)+" !")
 
 
-def launchCMAESForAllPoint(rs, sizeTarget, save):
+def launchCMAESForAllPoint(rs, sizeTarget, save, noise=None):
+    """
+        Launch in parallel (on differents processor) the cmaes optimization for each point
+        input:
+                    rs: setup file
+                    sizeTarget: size of the target
+                    save: for save expérience log
+                    noise: noise on muscle, if None, defalt noise from muscle setup
+    
+    """
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPoint, sizeTarget, rs, save), enumerate(posIni))
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPoint, sizeTarget, rs, save, noise), enumerate(posIni))
     p.close()
     p.join()
     

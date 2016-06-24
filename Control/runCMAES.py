@@ -13,7 +13,7 @@ Description: script to run cmaes
 
 from Main.MainCMAES import launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
-from Plot.plotFunctions import plotCMAESOnePointProgress, plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
+from Plot.plotFunctions import plotCostColorMapFor12, plotCMAESOnePointProgress, plotEstimatorPoint, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 from GlobalVariables import pathDataFolder
 import numpy as np
 from Utils.Chrono import Chrono
@@ -53,6 +53,7 @@ def printMainMenu():
     print('        27 generate results from CMAES One point')
     print('        28 plot XY  for one target')  
     print('        29 generate results for one target')
+    print('        30 plot cost Map of muscles 1 and 2')
     
 def runChoice():
     checkL = True
@@ -176,7 +177,7 @@ def chooseFunction(choix, rs):
     elif choix == 22:
         plotManipulability2(rs)
     elif choix == 23:
-        plotEstimator(rs, 0.04, 0., 0.25)
+        plotEstimatorPoint(rs, 0.04, 12)
     elif choix == 24:
         rorc = input("enter 1 if General CMAES, 2 if from scratch, anything if from previous CMAES point: ")
         save = False
@@ -228,6 +229,11 @@ def chooseFunction(choix, rs):
         size=raw_input('Target Size: ')
         point=raw_input('Point: ')
         generateFromCMAESonePoint(nbret, rs, nameTheta, name, float(size), point)
+    elif choix == 30:
+        nameF = raw_input('Folder where the results are saved: ')
+        #tSize = raw_input('Target Size: ')
+        #plotCostColorMap("OPTI",nameF,tSize)
+        plotCostColorMapFor12("OPTI",rs, nameF) 
     else :
         return 0
     return 1

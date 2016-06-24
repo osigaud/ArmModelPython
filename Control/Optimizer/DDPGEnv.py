@@ -21,7 +21,7 @@ from GlobalVariables import pathDataFolder
 import random as rd
 import numpy as np
 from Experiments.CostDDPG import CostDDPG
-from Experiments.Cost import Cost
+from Experiments import CostCMAES.Cost
 from multiprocess.pool import Pool
 from functools import partial
 
@@ -81,7 +81,7 @@ class DDPGEnv(Env):
         return [[1]*self.rs.outputDim, [0]*self.rs.outputDim]
     
     def saveCost(self):
-        writeArray(self.costStore,self.foldername+"Cost/","traj",".cost")
+        writeArray(self.costStore,self.foldername+"CostCMAES/","traj",".cost")
         writeArray(self.trajTimeStore, self.foldername+"TrajTime/","traj",".time")
         writeArray(self.lastCoord, self.foldername+"finalX/","x",".last")
         
@@ -420,8 +420,8 @@ class DDPGEnv(Env):
         pool.close()
         pool.join()
         meanCost, meanTraj=0, 0
-        for Cost, traj in result:
-            meanCost+=Cost
+        for CostCMAES, traj in result:
+            meanCost+=CostCMAES
             meanTraj+=traj
         size = len(result)
         return meanCost/size, meanTraj/size
@@ -438,7 +438,7 @@ class DDPGEnv(Env):
         #cost, time = self.ligneTraj(self.rs.numberOfRepeatEachTraj)
         #cost, time = self.OneTraj(self.rs.XTarget+ 0.1*np.cos(-np.pi/2), self.rs.YTarget+ 0.1*np.sin(-np.pi/2))
         
-        costfoldername = self.foldername+"Cost/"
+        costfoldername = self.foldername+"CostCMAES/"
         checkIfFolderExists(costfoldername)
         costFile = open(costfoldername+"ddpgCost.log","a")
         timeFile = open(costfoldername+"ddpgTime.log","a")
@@ -455,7 +455,7 @@ class DDPGEnv(Env):
             self.max = cost
             writeArray(self.actor.linear_parameters(),self.foldername, "Best", ".theta")
         #TODO: versatil version
-        #print("Cost : "+str(cost)+" time : "+str(time))
+        #print("CostCMAES : "+str(cost)+" time : "+str(time))
             
     
     def setOnePointController(self,x,y):

@@ -41,6 +41,7 @@ class Experiments:
         if(len(self.posIni.shape)==1):
             self.posIni=self.posIni.reshape((1,self.posIni.shape[0]))
         self.costStore = []
+        self.cost12Store=[]
         self.CMAESCostStore = []
         self.CMAESTimeStore = []
         self.trajTimeStore = []
@@ -73,8 +74,12 @@ class Experiments:
         np.savetxt(filenameX, self.lastCoord)
         '''
         writeArray(self.costStore,self.foldername+"Cost/","traj",".cost")
+        writeArray(self.cost12Store,self.foldername+"CostU12/","traj",".cost")
         writeArray(self.trajTimeStore, self.foldername+"TrajTime/","traj",".time")
         writeArray(self.lastCoord, self.foldername+"finalX/","x",".last")
+        
+    def setNoise(self, noise):
+        self.tm.setnoise(noise)
          
     def runOneTrajectory(self, x, y):
         #self.tm.saveTraj = True
@@ -104,13 +109,16 @@ class Experiments:
         globMeanCost=0.
         globTimeCost=0.
         for xy in self.posIni:
-            costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+            costAll, trajTimeAll, costU12 = np.zeros(repeat), np.zeros(repeat), np.zeros(repeat)
             for i in range(repeat):
-                costAll[i], trajTimeAll[i]  = self.runOneTrajectory(xy[0], xy[1]) 
+                costAll[i], trajTimeAll[i]  = self.runOneTrajectory(xy[0], xy[1])
+                costU12[i] = self.tm.costU12
             meanCost = np.mean(costAll)
             meanTrajTime = np.mean(trajTimeAll)
+            meanCostU12=np.mean(costU12)
             self.costStore.append([xy[0], xy[1], meanCost])
             self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
+            self.cost12Store.append([xy[0], xy[1], meanCostU12])
             globMeanCost+=meanCost
             globTimeCost+=meanTrajTime
         #self.printLastCoordInfo()
@@ -120,15 +128,18 @@ class Experiments:
         globMeanCost=0.
         globTimeCost=0.
         for enum,xy in enumerate(self.posIni):
-            costAll, trajTimeAll = np.zeros(repeat), np.zeros(repeat)
+            costAll, trajTimeAll, costU12 = np.zeros(repeat), np.zeros(repeat), np.zeros(repeat)
             controllerFileName = thetaName.replace("*",str(enum))
             self.tm.controller.load(controllerFileName)
             for i in range(repeat):
                 costAll[i], trajTimeAll[i]  = self.runOneTrajectory(xy[0], xy[1]) 
+                costU12[i] = self.tm.costU12
             meanCost = np.mean(costAll)
             meanTrajTime = np.mean(trajTimeAll)
+            meanCostU12=np.mean(costU12)
             self.costStore.append([xy[0], xy[1], meanCost])
             self.trajTimeStore.append([xy[0], xy[1], meanTrajTime])
+            self.cost12Store.append([xy[0], xy[1], meanCostU12])
             globMeanCost+=meanCost
             globTimeCost+=meanTrajTime
         #self.printLastCoordInfo()

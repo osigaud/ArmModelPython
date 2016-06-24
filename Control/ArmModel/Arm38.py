@@ -13,8 +13,8 @@ Description:
 import numpy as np
 import math
 
-from ArmModel.ArmParameters import ArmParameters
-from ArmModel.MusclesParameters import MusclesParameters
+from ArmModel.ArmParametersXML import ArmParameters
+from ArmModel.MusclesParametersXML import MusclesParameters
 from ArmModel.Arm import Arm
 
 
@@ -23,9 +23,7 @@ from ArmModel.Arm import Arm
 
 class Arm38(Arm):
     def __init__(self):
-        self.__dotq0 = np.array([0.,0.])
-        self.armP = ArmParameters()
-        self.musclesP = MusclesParameters()
+        Arm.__init__(self, ArmParameters(3,8), MusclesParameters(3,8), np.array([0.,0.]))
         self.k1=self.armP.m[2]*(self.armP.l[0]**2)
         self.k2=self.armP.m[1]*self.armP.l[0]*self.armP.s[1]
         self.k3=self.armP.m[1]*(self.armP.l[0]**2)

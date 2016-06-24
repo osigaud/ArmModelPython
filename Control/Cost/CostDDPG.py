@@ -8,31 +8,16 @@ Module: Cost
 Description: Class to calcul reward 
 '''
 import numpy as np
+from Cost import Cost
 
 
 
 
 
 
-
-class CostDDPG():
+class CostDDPG(Cost):
     reduce=3000.
     
-    def __init__(self, rs):
-        self.rs=rs
-
-
-    def computeManipulabilityCost(self, arm):
-        '''
-        Computes the manipulability cost on one step of the trajectory
-        
-        Input:    -cost: cost at time t, float
-                
-        Output:        -cost: cost at time t+1, float
-        '''
-        dotq, q = arm.getDotQAndQFromStateVector(self.arm.getState())
-        manip = arm.directionalManipulability(q,self.cartTarget)
-        return 1-manip
 
     def computeStateTransitionCost(self, U, coordHand):
         '''
@@ -52,19 +37,7 @@ class CostDDPG():
         #return np.exp(-t/self.rs.gammaCF)*(-self.rs.upsCF*mvtCost)
         return -self.rs.upsCF*mvtCost/self.reduce-dst/1000.
     
-    def computePerpendCost(self, arm): 
-        '''
-        compute the Perpendicular cost for one trajectory
-        
-        Ouput :        -cost, the perpendicular cost
-        ''' 
-        dotq, q = arm.getDotQAndQFromStateVector(arm.getState())
-        J = arm.jacobian(q)
-        xi = np.dot(J,dotq)
-        norm=np.linalg.norm(xi)
-        if(norm!=0):
-            xi = xi/norm
-        return (500-1000*xi[0]*xi[0])/self.reduce
+
 
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):
         cost=0

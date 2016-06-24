@@ -17,8 +17,10 @@ import math
 
 
 class Arm(object):
-    def __init__(self):
-        pass
+    def __init__(self,armParameter, musclesparameter, dotq0):
+        self.__dotq0 = dotq0
+        self.armP = armParameter
+        self.musclesP = musclesparameter
     
     def setState(self, state):
         self.state = state
@@ -34,6 +36,9 @@ class Arm(object):
 
     def set_dotq_0(self, value):
         self.__dotq0 = value
+        
+    def setNoise(self, noise):
+        self.muscleP.knoiseU=noise
         
     def jointStop(self,q):
         '''
