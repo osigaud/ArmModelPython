@@ -5,7 +5,7 @@ Author: Corentin Arnaud
 
 Module: NeuralNet
 
-Description: A NeuralNet to be trained as the arm controller
+Description: A NeuralNet written in TensorFlow
 '''
 import numpy as np
 from Regression import regression
@@ -86,33 +86,29 @@ class NeuralNetTF(regression):
         
     def load(self,thetaFile):
         '''
-        load wheight of the neural network from the thetafile
+        load weights of the neural network from the thetafile
         '''
         self.saver.restore(self.sess,thetaFile+".ckpt")
-        #print ("theta LOAD : ", self.net.params)
-
-    
-
+        #print ("loaded theta : ", self.theta)
 
     def setTheta(self, theta):
         crt=0
         for W, b in self.listTheta:
-            line = W.get_shape()[0].value
-            colone=W.get_shape()[1].value
-            W=W.assign(np.reshape(theta[crt:crt+line*colone],(line,colone)))
+            row = W.get_shape()[0].value
+            column=W.get_shape()[1].value
+            W=W.assign(np.reshape(theta[crt:crt+row*column],(row,column)))
             self.sess.run(W)
-            crt+=line*colone
+            crt+=row*column
             b=b.assign(theta[crt:crt+b.get_shape()[0].value])
             self.sess.run(b)
             crt+=b.get_shape()[0].value
 
-
     def getTheta(self):
         crt=0
         for W, b in self.listTheta :
-            for ligne in W.eval(session=self.sess):
-                self.theta[crt:crt+ligne.shape[0]]=ligne
-                crt+=ligne.shape[0]
+            for row in W.eval(session=self.sess):
+                self.theta[crt:crt+row.shape[0]]=row
+                crt+=row.shape[0]
             bEval=b.eval(session=self.sess)
             self.theta[crt:crt+bEval.shape[0]]=bEval
             crt+=bEval.shape[0]
@@ -144,7 +140,7 @@ class NeuralNetTF(regression):
     def bias_variable(self, shape):
         initial = tf.constant(0.1, shape=shape)
         self.nbB+=1
-        return tf.Variable(initial,name="biais"+str(self.nbB))
+        return tf.Variable(initial,name="bias"+str(self.nbB))
            
     def computeOutput(self, inputData):
         result = self.sess.run(self.y, feed_dict={self.x: [inputData]})

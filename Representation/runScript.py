@@ -34,14 +34,14 @@ def runChoice():
     run()
 
 def run():
-    plotInput()
-    n = NeuralNet(2,1)
+    net = NeuralNet(2,1)
+    plotInput(net)
     for i in range(5):
-        print n.getTheta()
-        plotOutputMap(n,i*2)
-        n.train()
-        n.train()
-    plotOutputMap(n,10)
+        print net.getTheta()
+        plotOutputMap(net,i*2)
+        net.train()
+        net.train()
+    plotOutputMap(net,10)
 
 run()
 

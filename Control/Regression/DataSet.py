@@ -5,7 +5,7 @@ Author: Corentin Arnaud
 
 Module: DataSet
 
-Description: A DataSet class for NeuralNetTF
+Description: A DataSet class for NeuralNetTF, a neural network written in TensorFlow
 '''
 
 import random

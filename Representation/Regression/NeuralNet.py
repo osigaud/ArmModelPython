@@ -27,7 +27,7 @@ class NeuralNet():
         '''
         self.inputDimension = inputDim
         self.outputDimension = outputDim
-        self.net = buildNetwork(inputDim, 10, outputDim)
+        self.net = buildNetwork(inputDim, outputDim)
         self.ds = SupervisedDataSet(self.inputDimension, self.outputDimension)
 
         print "dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension)
@@ -64,14 +64,20 @@ class NeuralNet():
                 self.ds.addSample([x, y],output)
 
     def getTrainingData2(self):
-        for i in range(40000):
+        for i in range(2000):
                 output = []
                 x = rd.random()
-                y = x + x*rd.random()
+                y = rd.random()/2.0
                 if x>0.5 and y>0.5:
                     output.append(rd.random()/2+1.5)
                 else:
                     output.append(rd.random()/2)
+                self.ds.addSample([x, y],output)
+        for i in range(1000):
+                output = []
+                x = 0.5+rd.random()/2.0
+                y = 0.5+rd.random()/2.0
+                output.append(rd.random()/2+1.5)
                 self.ds.addSample([x, y],output)
 
     def train(self):

@@ -15,11 +15,11 @@ from scipy import stats
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.mlab import griddata
+   
+plt.rc("figure", facecolor="white")
+fig = plt.figure(1, figsize=(16,9))
 
-def plotInput():
-    plt.rc("figure", facecolor="white")
-
-    fig = plt.figure(1, figsize=(16,9))
+def plotInput(net):
    
     x0 = []
     y0 = []
@@ -49,9 +49,9 @@ def plotInput():
     t1 = plt.scatter(x0, y0, c=output, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
     CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
     fig.colorbar(t1, shrink=0.5, aspect=5)
-#    t1 = plt.scatter(x0, y0, c='b', marker=u'o', s=20)
-    plt.xlabel("head")
-    plt.ylabel("handle")
+
+    plt.xlabel("handle")
+    plt.ylabel("head")
     plt.title("Input map")
 
     plt.savefig("ImageBank/10input.png", bbox_inches='tight')
@@ -63,8 +63,6 @@ def plotOutputMap(net,step):
     
     Entrees:  -what: choix des donnees a afficher
     '''
-    plt.rc("figure", facecolor="white")
-    fig = plt.figure(1, figsize=(16,9))
    
     x0 = []
     y0 = []
@@ -90,9 +88,14 @@ def plotOutputMap(net,step):
     t1 = plt.scatter(x0, y0, c=output, marker=u'o', s=5, cmap=cm.get_cmap('RdYlBu'))
     CS = plt.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
 #    fig.colorbar(t1, shrink=0.5, aspect=5)
-#    t1 = plt.scatter(x0, y0, c='b', marker=u'o', s=20)
-    plt.xlabel("head")
-    plt.ylabel("handle")
+
+    xdata = []
+    ydata = []
+    for inp, targ in net.ds:
+        xdata.append(inp[0])
+        ydata.append(inp[1])
+    t1 = plt.scatter(xdata, ydata, c='b', marker=u'o', s=5)
+
     plt.title("Output map")
 
     plt.savefig("ImageBank/10outputmap"+str(step)+".png", bbox_inches='tight')

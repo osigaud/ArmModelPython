@@ -10,8 +10,6 @@ Description:
 
 import numpy as np
 
-
-
 class regression(object) :
     
     def __init__(self, rs):
@@ -19,12 +17,9 @@ class regression(object) :
         Initializes class parameters
 
         '''
-        self.rs=rs
         self.inputDimension = rs.inputDim
         self.outputDimension = rs.outputDim
         print ("dimensions : " + str(self.inputDimension) + "x" +  str(self.outputDimension))
-
-    
     
     def setTheta(self, theta):
         '''
@@ -38,7 +33,7 @@ class regression(object) :
 
     def load(self,fileName):
         '''
-        load a regression previously train
+        load a previously trained regression
         '''
         raise NotImplementedError("load not implemented")
 
