@@ -16,7 +16,6 @@ from Main.MainDDPG import launchDDPGForSpecificTargetSizeAndSpeceficBeginning, g
 
 from Plot.plotFunctions import plotDDPGOnePointProgress, plotDDPGProgress, plotEstimator, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotTrajsInRepo, plotManipulability, plotManipulability2
 
-
 from Utils.Chrono import Chrono
 from Utils.ReadXmlFile import ReadXmlFile
 

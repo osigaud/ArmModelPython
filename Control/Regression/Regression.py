@@ -6,6 +6,7 @@ Author: Corentin Arnaud
 Module: Regression
 
 Description: 
+Superclass of all the regression models (RBFNs and various neural networks)
 '''
 
 import numpy as np

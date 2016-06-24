@@ -19,6 +19,7 @@ def identity(something):
 layersDict={"sigmoid" : tf.nn.sigmoid, "tanh" : tf.nn.tanh, "softmax" : tf.nn.softmax, "relu" : tf.nn.relu, "linear" : identity}
 
 class NeuralNetTF(regression):
+
     def __init__(self, rs):
         regression.__init__(self,rs)
         self.learningRate=rs.learningRate
@@ -73,6 +74,22 @@ class NeuralNetTF(regression):
         self.sess.run(self.init_op)
         self.sess.as_default()
      
+    def weight_variable(self, shape):
+        '''
+        nbW = 1 corresponds to a set of weights between two layers
+        '''
+        initial = tf.truncated_normal(shape, stddev=0.1)
+        self.nbW+=1
+        return tf.Variable(initial, name="Weight"+str(self.nbW))
+
+    def bias_variable(self, shape):
+        '''
+        nbB = 1 corresponds to a set of biases between two layers
+        '''
+        initial = tf.constant(0.1, shape=shape)
+        self.nbB+=1
+        return tf.Variable(initial,name="bias"+str(self.nbB))
+     
     def getTrainingData(self, inputData, outputData):
         '''
         Verifies the validity of the given input and output data
@@ -114,8 +131,6 @@ class NeuralNetTF(regression):
             crt+=bEval.shape[0]
         return self.theta  
  
-                
-            
     def train(self):
         minError = 1000
         for i in range(100000):
@@ -129,18 +144,6 @@ class NeuralNetTF(regression):
                     self.saver.save(self.sess, self.rs.path+self.rs.thetaFile+".ckpt") 
                     self.saveTheta(self.rs.path+self.rs.thetaFile+".theta")
                     minError = error
-
-                
-     
-    def weight_variable(self, shape):
-        initial = tf.truncated_normal(shape, stddev=0.1)
-        self.nbW+=1
-        return tf.Variable(initial, name="Weight"+str(self.nbW))
-
-    def bias_variable(self, shape):
-        initial = tf.constant(0.1, shape=shape)
-        self.nbB+=1
-        return tf.Variable(initial,name="bias"+str(self.nbB))
            
     def computeOutput(self, inputData):
         result = self.sess.run(self.y, feed_dict={self.x: [inputData]})
