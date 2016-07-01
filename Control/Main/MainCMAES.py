@@ -237,7 +237,7 @@ def launchCMAESForAllPoint(rs, sizeTarget, save, noise=None):
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPoint, sizeTarget, rs, save, noise), enumerate(posIni))
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPoint, sizeTarget, rs, save, noise=noise), enumerate(posIni))
     p.close()
     p.join()
     
