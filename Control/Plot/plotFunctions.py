@@ -610,7 +610,7 @@ def plotCostColorMapFor12(what, rs, foldername = "None", targetSize = "All"):
         plt.title("Cost map U 1 and 2 for " + what)
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+'_costmap'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.svg', bbox_inches='tight')
+    plt.savefig(imageFolder+what+'_costmapU12'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-------------------------- time maps ----------------------------------------------
@@ -835,10 +835,11 @@ def plotScattergram(what,foldername,rs):
         plt.figure(1, figsize=(16,9))
 
         for i in range(len(rs.sizeOfTarget)):
-            ax = plt.subplot2grid((2,2), (i/2,i%2))
+            ax = plt.subplot2grid((4,1), (i,0))
+            ax.set_xlim([-0.03,0.03])
             ax.hist(data[rs.sizeOfTarget[i]], 100)
-            ax.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]/2], [0, 100], c = 'r', linewidth = 3)
-            ax.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]/2], [0, 100], c = 'r', linewidth = 3)
+            ax.axvline(x=rs.sizeOfTarget[i]/2, c = 'r', linewidth = 3)
+            ax.axvline(x=-rs.sizeOfTarget[i]/2, c = 'r', linewidth = 3)
             ax.set_title(str("Hit Dispersion for Target " + str(rs.sizeOfTarget[i])))
         imageFolder = rs.OPTIpath + "/ImageBank/"
 

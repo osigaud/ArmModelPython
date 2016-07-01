@@ -20,6 +20,7 @@ data [34 - 35] = hand position in cartesian space
 import random as rd
 import numpy as np
 import os
+import glob
 
 from ArmModel.ArmType import ArmType
 
@@ -51,6 +52,39 @@ def loadTrajs(folderName, prct, det=False):
             nbTraj+=1
     print(str(nbTraj) + " Trajectory charged")
     return np.array(state), np.array(activity)
+
+def loadExpeTrajs(folderName, prct):
+    '''
+    Get all the data from a subject, sorted by the starting xy coordinates
+    
+    Output :               -state: np-array of trajectory's states
+                           -activity: np-array of trajectory's activity
+    '''
+    listdir = glob.glob(folderName+"/*")
+    coor=[]
+    velocity=[]
+    time=[]
+    nbTraj = 0
+    for trajFile in listdir:
+        if(rd.random() < prct):
+            tmpData = np.loadtxt(trajFile)
+            coorTrajectory    = np.empty((tmpData.shape[0],2))
+            velocityTrajectory = np.empty((tmpData.shape[0],2))
+            timeTrajectory= np.empty((tmpData.shape[0]))
+            for i in range(tmpData.shape[0]):
+                timeTrajectory[i]=tmpData[i][0]
+                coorTrajectory[i] = tmpData[i][1:3]
+                velocityTrajectory[i] = tmpData[i][3:]
+            if(timeTrajectory[-1]>20) : 
+                print trajFile
+            coor.append(coorTrajectory)
+            velocity.append(velocityTrajectory)
+            time.append(timeTrajectory)
+            nbTraj+=1
+    print(str(nbTraj) + " Trajectory charged")
+    return np.array(time), np.array(coor), np.array(velocity)
+
+    
 
 #TODO: Warning only for Arm26
 def loadStateCommandPairsByStartCoords(foldername, prct, det=False):
