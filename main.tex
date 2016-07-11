@@ -1,0 +1,37 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\title{User Guide}
+
+\author{Corentin Arnaud}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Your abstract.
+\end{abstract}
+
+\section{setup File}
+They are three setup file, both in xml. The following subsection will describe them.
+\subsection{Arm setup}
+We use two setup file for describe the arm. One for the structure, the other for the muscles.
+\subsubsection{Structure setup}
+The name of the structure setup file is "ArmParamsDM.xml" where D is the degree of freedom of the arm and M the number of muscles.
+The root of the file is <Arm>, it is compose of <setup>, <DampingTerm>, <MomentMatrix> and <Bounds>
+<setup> is compose of four elements <Length>, <Mass>, <Inertia>, and <DistanceCenterBarycenter>. Each of this elements have two parameters and one child by segment of the arm. The parameters is  unit and type.
+Name of Segment elements doesn't matters but they have to contain  
+
+\subsection{Global setup}
+
+
+
+
+\end{document}
