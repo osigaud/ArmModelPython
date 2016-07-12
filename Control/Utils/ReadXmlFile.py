@@ -73,20 +73,19 @@ class ReadXmlFile(object):
         self.upsCF  =float(cf[2].text)
         
     def optimisationParse(self, optiElem):
-        self.optimisation=optiElem[0].tag
-        if(self.optimisation=="CMAES"):
-            self.CMAESParse(optiElem[0])
-        elif(self.optimisation == "DDPG"):
-            self.DDPGParse(optiElem[0])
+        if(optiElem.get("type")=="CMAES"):
+            self.CMAESParse(optiElem)
+        elif(optiElem.get("type") == "DDPG"):
+            self.DDPGParse(optiElem)
         else :
             raise TypeError()
         
     def CMAESParse(self, cmaesElement):
-        self.sigmaCmaes             =float(cmaesElement[0].text)
-        self.maxIterCmaes           =int  (cmaesElement[1].text)
-        self.popsizeCmaes           =int  (cmaesElement[2].text)
-        self.numberOfRepeatEachTraj =int  (cmaesElement[3].text)
-        self.OPTIpath=path.abspath(path.expanduser(cmaesElement[4].text))+"/"
+        self.maxIterCmaes           =int  (cmaesElement[0].text)
+        self.numberOfRepeatEachTraj =int  (cmaesElement[1].text)
+        self.OPTIpath=path.abspath(path.expanduser(cmaesElement[2].text))+"/"
+        self.sigmaCmaes             =float(cmaesElement[3].text)
+        self.popsizeCmaes           =int  (cmaesElement[4].text)
         
     def DDPGParse(self, ddpgElement):
         self.maxIterDDPG         =int  (ddpgElement[0].text)
