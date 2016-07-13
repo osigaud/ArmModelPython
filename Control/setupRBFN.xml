@@ -19,13 +19,13 @@
     <rho>3000</rho>
     <upsilon>1</upsilon>
   </costFunction>
-  <CMAES>
+  <optimization type="CMAES">
     <sigma>0.01</sigma>
     <maxIteration>50000</maxIteration>
     <popsize>30</popsize>
     <numberRepetition>1</numberRepetition>
     <resultPath>/home/arnaud/stage/ArmModelPython/Data/CMAES/</resultPath>
-  </CMAES>
+  </optimization>
   <target>
     <sizes>
       <size>0.005</size>

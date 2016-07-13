@@ -31,14 +31,12 @@
     <rho>3000</rho>
     <upsilon>1</upsilon>
   </costFunction>
-  <optimisation>
-  <CMAES>
-    <sigma>0.005</sigma>
+  <optimisation type="CMAES">
     <maxIteration>5000</maxIteration>
-    <popsize>30</popsize>
     <numberRepetition>1</numberRepetition>
     <resultPath>~/stage/ArmModelPython/Data/CMAESDet/</resultPath>
-  </CMAES>
+    <sigma>0.005</sigma>
+    <popsize>30</popsize>
   </optimisation>
   <target>
     <sizes>

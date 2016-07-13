@@ -24,7 +24,7 @@
 		<b3>0.025</b3>
 		<b4>0.05</b4>
 	</DampingTerm>
-	<MomentMatrix>
+	<MomentMatrix type="float">
 		<a1>0.04</a1>
 		<a2>-0.04</a2>
 		<a3>0.0</a3>

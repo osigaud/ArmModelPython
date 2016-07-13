@@ -64,6 +64,7 @@ def loadExpeTrajs(folderName, prct):
     coor=[]
     velocity=[]
     time=[]
+    pos=[]
     nbTraj = 0
     for trajFile in listdir:
         if(rd.random() < prct):
@@ -71,18 +72,19 @@ def loadExpeTrajs(folderName, prct):
             coorTrajectory    = np.empty((tmpData.shape[0],2))
             velocityTrajectory = np.empty((tmpData.shape[0],2))
             timeTrajectory= np.empty((tmpData.shape[0]))
+            if(timeTrajectory[-1]>4) : continue
             for i in range(tmpData.shape[0]):
                 timeTrajectory[i]=tmpData[i][0]
                 coorTrajectory[i] = tmpData[i][1:3]
                 velocityTrajectory[i] = tmpData[i][3:]
-            if(timeTrajectory[-1]>20) : 
-                print trajFile
             coor.append(coorTrajectory)
             velocity.append(velocityTrajectory)
             time.append(timeTrajectory)
+            pos.append(int(os.path.basename(trajFile)[0]))                   #TODO: extract filename[0]
+
             nbTraj+=1
     print(str(nbTraj) + " Trajectory charged")
-    return np.array(time), np.array(coor), np.array(velocity)
+    return np.array(time), np.array(coor), np.array(velocity), np.array(pos)
 
     
 

@@ -11,7 +11,7 @@ Description: script to run cmaes
 
 
 
-from Main.MainCMAES import launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.MainCMAES import checkAllPoint, launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Plot.plotFunctions import plotCostColorMapFor12, plotCMAESOnePointProgress, plotEstimatorPoint, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 from GlobalVariables import pathDataFolder
@@ -54,6 +54,7 @@ def printMainMenu():
     print('        28 plot XY  for one target')  
     print('        29 generate results for one target')
     print('        30 plot cost Map of muscles 1 and 2')
+    print('        31 check CMAES progression')
     
 def runChoice():
     checkL = True
@@ -234,6 +235,9 @@ def chooseFunction(choix, rs):
         #tSize = raw_input('Target Size: ')
         #plotCostColorMap("OPTI",nameF,tSize)
         plotCostColorMapFor12("OPTI",rs, nameF) 
+    elif choix == 31:
+        size=raw_input('Target Size: ')
+        checkAllPoint(rs, size)
     else :
         return 0
     return 1

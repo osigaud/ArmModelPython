@@ -33,7 +33,7 @@ class CostCMAES(Cost):
         '''
         cost=0
         
-        cost = self.computePerpendCost(arm)
+        #cost = self.computePerpendCost(arm)
         #print coordHand[0]
         #check if the Ordinate of the target is reached and give the reward if yes
         if coordHand[1] >= self.rs.YTarget:

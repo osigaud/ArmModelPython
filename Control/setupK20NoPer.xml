@@ -19,27 +19,25 @@
       <outputLayer>
 		<type>linear</type>
       </outputLayer>
-      <bias>yes</bias>
-      <learningrate>0.0001</learningrate>
-      <momentum>0</momentum>
+      <bias type="yes/no">yes</bias>
+      <learningrate type="float">0.0001</learningrate>
+      <momentum type="float">0.</momentum>
     </NeuralNet>
     <thetaFile>NN1th</thetaFile>
     <resultPath>~/stage/ArmModelPython/Data/NNth/</resultPath>
   </regression>
   <costFunction>
-    <gamma>0.6</gamma>
-    <rho>3000</rho>
-    <upsilon>1</upsilon>
+    <gamma type="float">0.6</gamma>
+    <rho type="float">3000</rho>
+    <upsilon type="float">1</upsilon>
   </costFunction>
-  <optimisation>
-  <CMAES>
-    <sigma>0.05</sigma>
-    <maxIteration>3000</maxIteration>
-    <popsize>30</popsize>
-    <numberRepetition>40</numberRepetition>
+  <optimization type="CMAES">
+    <maxIteration type="integer">3000</maxIteration>
+    <numberRepetition type="integer">40</numberRepetition>
     <resultPath>~/stage/ArmModelPython/Data/CMAESK20NoPer/</resultPath>
-  </CMAES>
-  </optimisation>
+    <sigma type="float">0.05</sigma>
+    <popsize type="integer">30</popsize>
+  </optimization>
   <target>
     <sizes>
       <size>0.005</size>

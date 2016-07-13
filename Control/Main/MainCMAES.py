@@ -185,6 +185,25 @@ def launchCMAESForAllTargetSizes(rs, save):
 def term():
     return False
 
+def checkAllPoint(rs, sizeTarget):
+    posIni= np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+    print("check CMAES progression for target " + str(sizeTarget) + " : ")
+    print("Point    |    max    |    gap between max and min ")
+    maxR = np.zeros(posIni.shape[0])
+    gap= np.zeros(posIni.shape[0])
+    for i in range(posIni.shape[0]):
+        name = rs.OPTIpath + str(sizeTarget)+"/"+str(i)+ "/Cost/cmaesCost.log"
+        data = np.loadtxt(name)
+        maxR[i]=data[:,-1].max()
+        gap[i]=data[-1][-1]-data[-1][0]
+        print(str(i)+"        "+str(maxR[i])+"        "+str(gap[i]))
+
+    
+
+
+        
+        
+
 #--------------------------- multiprocessing -------------------------------------------------------
 
 

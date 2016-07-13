@@ -16,12 +16,12 @@
 			<ForeArm name="I2">0.16</ForeArm>
 			<Hand name="I3">0.08</Hand>
 		</Inertia>
+		<DistanceCenterBarycenter unit="m" type="float">
+			<Arm name="s1">0.15</Arm>
+			<ForeArm name="s2">0.175</ForeArm>
+			<Hand name="s3">0.1</Hand>
+	    </DistanceCenterBarycenter>
 	</Setup>
-	<DistanceCenterBarycenter unit="m" type="float">
-		<Arm name="s1">0.15</Arm>
-		<ForeArm name="s2">0.175</ForeArm>
-		<Hand name="s3">0.1</Hand>
-	</DistanceCenterBarycenter>
 	<DampingTerm type="float">
 		<b1>0.05</b1>
 		<b2>0.025</b2>
@@ -33,7 +33,7 @@
 		<b8>0.025</b8>
 		<b9>0.05</b9>
 	</DampingTerm>
-	<MomentMatrix>
+	<MomentMatrix type="float">
 		<a1>0.04</a1>
 		<a2>-0.04</a2>
 		<a3>0.0</a3>

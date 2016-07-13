@@ -16,7 +16,7 @@ from Utils.FileReading import loadExpeTrajs
 
 plt.rc("figure", facecolor="white")
 experimentalFolder=path.abspath("../Data/Experimental/")+"/"
-imageFolder=path.abspath("../Data/GoodResult/Experimental/")+"/"
+imageFolder=path.abspath("../Data/GoodResult/experimental/")+"/"
 
 '''
 #---------------------------------------------------------Hit Dispersion -------------------------------------------------------
@@ -203,26 +203,57 @@ plt.savefig(imageFolder+"Fitts.svg", bbox_inches='tight')
 '''
 #--------------------------------------------------Traj---------------------------------------------------------------------------------
 trajplot=plt.figure(9, figsize=(16,9))
-veloplot=plt.figure(10, figsize=(16,9))
+veloplot=plt.figure(11, figsize=(16,9))
+zoomplot=plt.figure(10, figsize=(16,9))
 target=0.005
 who="*"
+if who=="*" : num=0.1
+else : 
+    num=1
+    
+yCoordinate=np.loadtxt(experimentalFolder+"Traj/targetYCoordinate")
 for j in range(4):
-    time, coor, velo=loadExpeTrajs(experimentalFolder+"Traj/"+str(target)+"/"+who+"/",0.1)
+    
+    time, coor, velo, pos=loadExpeTrajs(experimentalFolder+"Traj/"+str(target)+"/"+who+"/",num)
     trajax = trajplot.add_subplot(2,2,j+1)
     veloax = veloplot.add_subplot(2,2,j+1)
+    zoomax = zoomplot.add_subplot(2,2,j+1)
+    scale=target*18/16
+    zoomax.set_xlim([-target,target])
+    if(who=="*"):
+        zoomax.set_ylim([yCoordinate.mean()-3*scale/4,yCoordinate.mean()+scale/4])
+    else :
+        zoomax.set_ylim([yCoordinate[int(who)-1]-3*scale/4,yCoordinate[int(who)-1]+scale/4])
+        trajax.plot([-target/2,target/2],[yCoordinate[int(who)-1],yCoordinate[int(who)-1]],c='black',linewidth = 4)
+        zoomax.plot([-target/2,target/2],[yCoordinate[int(who)-1],yCoordinate[int(who)-1]],c='black',linewidth = 4)
     for i in range(coor.shape[0]):
-        trajax.plot(coor[i][:,0],coor[i][:,1],c="blue")
-        veloax.plot(time[i],np.sqrt(velo[i][:,0]**2+velo[i][:,1]**2))
+        if pos[i] == 1:
+            trajax.plot(coor[i][:,0],coor[i][:,1],c="blue")
+            zoomax.plot(coor[i][:,0],coor[i][:,1],c="blue")
+            veloax.plot(time[i],np.sqrt(velo[i][:,0]**2+velo[i][:,1]**2),c="blue")
+        elif pos[i] ==2:
+            trajax.plot(coor[i][:,0],coor[i][:,1],c="green")
+            zoomax.plot(coor[i][:,0],coor[i][:,1],c="green")
+            veloax.plot(time[i],np.sqrt(velo[i][:,0]**2+velo[i][:,1]**2),c="green")
+        else :
+            trajax.plot(coor[i][:,0],coor[i][:,1],c="red")
+            zoomax.plot(coor[i][:,0],coor[i][:,1],c="red")
+            veloax.plot(time[i],np.sqrt(velo[i][:,0]**2+velo[i][:,1]**2),c="red")
         #veloax.plot(time[i][1:],np.sqrt((coor[i][1:,1]-coor[i][:-1,1])**2+(coor[i][1:,0]-coor[i][:-1,0])**2)/(time[i][1:]-time[i][:-1]))
         #veloax.plot(range(1,coor[i].shape[0]),np.sqrt((coor[i][1:,1]-coor[i][:-1,1])**2+(coor[i][1:,0]-coor[i][:-1,0])**2))
+
     veloax.set_xlabel("time (s)")
     veloax.set_ylabel("Instantaneous velocity (m/s)")
     veloax.set_title(str("Velocity profiles for target " + str(target)))
     trajax.set_xlabel("X (m)")
     trajax.set_ylabel("Y (m)")
     trajax.set_title("XY Positions for target " + str(target))
+    zoomax.set_xlabel("X (m)")
+    zoomax.set_ylabel("Y (m)")
+    zoomax.set_title("XY Positions for target " + str(target))
     target*=2
-
+if who=="*":who=""
 trajplot.savefig(imageFolder+"trajectories"+who+"_Luka.svg", bbox_inches='tight')
-veloplot.savefig(imageFolder+"velo"+who+".svg", bbox_inches='tight')
+zoomplot.savefig(imageFolder+"trajectorieszoom"+who+"_Luka.pdf", bbox_inches='tight')
+#veloplot.savefig(imageFolder+"velo"+who+".svg", bbox_inches='tight')
 plt.show()

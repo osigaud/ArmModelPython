@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib import animation
 from matplotlib.mlab import griddata
+from matplotlib.patches import Rectangle
 import time
 from Utils.FileWritting import checkIfFolderExists, findDataFilename
 
@@ -52,7 +53,7 @@ def trajectoriesAnimation(what, rs,foldername = "None", targetSize = "0.05"):
             xHa.append(elhc[0])
             yHa.append(elhc[1])
     
-    fig = plt.figure()
+    fig = plt.figure(1, figsize=(16,9))
     upperArm, = plt.plot([],[]) 
     foreArm, = plt.plot([],[])
     plt.xlim(-0.7, 0.7)
@@ -82,6 +83,7 @@ def trajectoriesAnimation(what, rs,foldername = "None", targetSize = "0.05"):
 #Functions related to plotting initial positions
 
 def makeInitPlot(rs,filename):
+    plt.figure(1, figsize=(16,9))
     x0 = []
     y0 = []
     #posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
@@ -106,7 +108,7 @@ def plotInitPos(filename, rs):
     '''
     Plots the initial position of trajectories present in the Brent directory
     '''
-    plt.figure()
+    plt.figure(1, figsize=(16,9))
     makeInitPlot(rs,filename)
     
     plt.show(block = True)
@@ -159,13 +161,13 @@ def plotVelocityProfile(what, rs, foldername = "None"):
         plt.title("Velocity profiles for " + what)
     
     checkIfFolderExists(imageFolder)
-    plt.savefig(imageFolder+'_velocity_profiles'+foldername+'.svg', bbox_inches='tight')
+    plt.savefig(imageFolder+'velo.svg', bbox_inches='tight')
     plt.show(block = True)
 
 
 # ------------------------- positions, trajectories ---------------------------------
 # We only draw 100 trajectories
-def plotPos(name, media, plotEstim):
+def plotPos(name, media, plotEstim, rs):
 
     states = getXYHandData(name, 100)
     print(len(states.items()))
@@ -174,7 +176,14 @@ def plotPos(name, media, plotEstim):
         for j in range(len(v)):
             posX.append(v[j][0])
             posY.append(v[j][1])
-        media.plot(posX,posY, c ='b')
+        dist=rs.getDistanceToTarget(posX[0],posY[0])
+        if dist<=0.15:
+            media.plot(posX,posY, c ='b')
+        elif dist<=0.28:
+            media.plot(posX,posY, c ='green')
+        else:
+            media.plot(posX,posY, c ='red')
+        
 
     if plotEstim==True:
         estimStates = getEstimatedXYHandData(name, 100)
@@ -183,7 +192,7 @@ def plotPos(name, media, plotEstim):
             for j in range(len(v)):
                 eX.append(v[j][0])
                 eY.append(v[j][1])
-            media.plot(eX,eY, c ='r')
+            media.plot(eX,eY, c ='black')
 
 def plotRegBrent(trajReg, trajBrent):
     """
@@ -242,16 +251,23 @@ def plotTrajsInRepo():
     #plt.savefig("ImageBank/"+what+'_trajectories.svg')
     plt.show(block = True)
 
-def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim=False):
+def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim=False, zoom=False):
     #plt.ion()
+    plotName="trajectories"
+    if zoom==True:
+        plotName+="zoom"        
     plt.figure(1, figsize=(16,9))
     if (what == "OPTI")  and targetSize == "All":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
+            if zoom==True:
+                ax.set_xlim([-rs.sizeOfTarget[i],rs.sizeOfTarget[i]])
+                scale=rs.sizeOfTarget[i]*18/16
+                ax.set_ylim([rs.YTarget-3*scale/4,rs.YTarget+scale/4])
             name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
             ax.plot([rs.XTarget-rs.sizeOfTarget[i]/2, rs.XTarget+rs.sizeOfTarget[i]/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
-            plotPos(name, ax, plotEstim)
-
+            plotPos(name, ax, plotEstim,rs)
+            
             #makeInitPlot(rs)
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
@@ -269,7 +285,7 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
             name = rs.path + foldername + "/Log/"
             imageFolder =rs.path + "/ImageBank/"
 
-        plotPos(name, plt, plotEstim)
+        plotPos(name, plt, plotEstim, rs)
         #makeInitPlot(rs)
 
         plt.xlabel("X (m)")
@@ -277,7 +293,7 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
         plt.title("XY Positions for " + what)
         
     checkIfFolderExists(imageFolder)
-    plt.savefig(imageFolder+'_trajectories'+rs.thetaFile+time.strftime('%d\%m-%H:%M:%S',time.localtime())+ '.svg', bbox_inches='tight')
+    plt.savefig(imageFolder+plotName+'.pdf', bbox_inches='tight')
     plt.show(block = True)
 
 def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
@@ -354,7 +370,7 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
     plt.show(block = True)
 
 def plotArticularPositions(what, rs,foldername = "None"):
- 
+    plt.figure(1, figsize=(16,9))          
     if what == "OPTI":
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
@@ -380,7 +396,7 @@ def plotArticularPositions(what, rs,foldername = "None"):
     
         state = getStateData(name)
     
-        plt.figure(1, figsize=(16,9))
+
         for _,v in state.items():
             if rd.random()<0.06 or what != "Brent":
                 Q1, Q2 = [], []
@@ -406,6 +422,7 @@ def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
               -what: get from Brent, rbfn or from cmaes controllers
 
     '''
+    plt.figure(1, figsize=(16,9))
     if what == "OPTI":
         name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
         imageFolder = rs.OPTIpath + "/ImageBank/"
@@ -432,7 +449,6 @@ def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
                 u5.append(el1[i][4])
                 u6.append(el1[i][5])
 
-            plt.figure()
             plt.plot(t, u1, label = "U1")
             plt.plot(t, u2, label = "U2")
             plt.plot(t, u3, label = "U3")
@@ -531,7 +547,7 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.title("Cost map for " + what)
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+'_costmap'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.svg', bbox_inches='tight')
+    plt.savefig(imageFolder+'costmap.svg', bbox_inches='tight')
     plt.show(block = True)
     
     
@@ -610,7 +626,7 @@ def plotCostColorMapFor12(what, rs, foldername = "None", targetSize = "All"):
         plt.title("Cost map U 1 and 2 for " + what)
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+'_costmapU12'+foldername+time.strftime('%d\%m-%H:%M:%S',time.localtime())+'.svg', bbox_inches='tight')
+    plt.savefig(imageFolder+'costmapU.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-------------------------- time maps ----------------------------------------------
@@ -690,7 +706,7 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
         plt.ylabel("Y (m)")
 
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+what+'_timemap'+foldername+'.svg', bbox_inches='tight')
+    plt.savefig(imageFolder+'timemap.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -721,7 +737,7 @@ def plotTimeDistanceTarget(foldername,rs):
     for key in sorted(dicoTime.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoTime[key].keys())], [np.mean(dicoTime[key][i]) for i in sorted(dicoTime[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig(rs.OPTIpath+"/ImageBank/timedist"+foldername+'.svg', bbox_inches='tight')
+    plt.savefig(rs.OPTIpath+'/ImageBank/timedist.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -750,13 +766,13 @@ def plotPerfSizeDist(foldername, rs):
     for key in sorted(dicoCost.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoCost[key].keys())], [np.mean(dicoCost[key][i]) for i in sorted(dicoCost[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig(rs.OPTIpath+"/ImageBank/perfdist"+foldername+".svg", bbox_inches='tight')
+    plt.savefig(rs.OPTIpath+"/ImageBank/perfdist.svg", bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
             
 def plotFittsLaw(foldername, rs, rbfn = False):
-
+    plt.figure(1, figsize=(16,9))
     timeDistWidth = []
     for i in range(len(rs.sizeOfTarget)):
         name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
@@ -776,7 +792,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
         DI.append(np.log2(el[0]/el[1]))
     slope, intercept, r_value, _, _ = stats.linregress(DI,MT)
     yLR = slope * np.asarray(DI) + intercept
-    plt.figure()
+
 
     for el in timeDistWidth:
             if el[0]<=0.15:
@@ -792,7 +808,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
     plt.ylabel("Movement time (s)")
     imageFolder = rs.OPTIpath + "/ImageBank/"
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+"fitts"+foldername+".svg", bbox_inches='tight')
+    plt.savefig(imageFolder+"Fitts.svg", bbox_inches='tight')
     plt.show(block = True)
  
 # ---------------- hit dispersion ---------------------------------------
@@ -815,12 +831,12 @@ def plotHitDispersion(foldername,sizeT, rs):
     plt.ylabel("Y (m)")
     imageFolder = rs.OPTIpath + sizeT +"/ImageBank/"
     checkIfFolderExists(imageFolder)  
-    plt.savefig(imageFolder+"hit" + str(sizeT) +foldername + ".svg", bbox_inches='tight')
+    plt.savefig(imageFolder+"hitDispersion.svg", bbox_inches='tight')
     plt.show(block = True)
 
 def plotScattergram(what,foldername,rs):
     data = {}
-
+    plt.figure(1, figsize=(16,9))
     if what=="OPTI":
         for i in range(len(rs.sizeOfTarget)):
             name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/finalX/"
@@ -832,7 +848,6 @@ def plotScattergram(what,foldername,rs):
 
             data[rs.sizeOfTarget[i]] = tabx
 
-        plt.figure(1, figsize=(16,9))
 
         for i in range(len(rs.sizeOfTarget)):
             ax = plt.subplot2grid((4,1), (i,0))
@@ -1062,12 +1077,27 @@ def plotDDPGOnePointTimeProgress(rs, ts, point):
     
 
 def plotExperimentSetup(rs):
-    plt.figure(1, figsize=(16,9))
+    fig=plt.figure(1, figsize=(16,9))
+    ax = fig.add_subplot(111)
     arm = ArmType[rs.arm]()
-    q1 = np.linspace(-0.6, 2.6, 100, True)
-    q2 = np.linspace(-0.2, 3, 100, True)
+    q1 = np.linspace(-0.6, 2.6, 50, True)
+    q2 = np.linspace(-0.2, 3, 50, True)
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    xi, yi = [], []
+
+    
+    pos = []
+    for i in range(len(q1)):
+        for j in range(len(q2)):
+            coordHa = arm.mgdEndEffector(np.array([q1[i], q2[j]]))
+            pos.append(coordHa)
+            #ax.add_artist(Rectangle(xy=(coordHa[0],coordHa[1] ), color="blue", width=0.05, height=0.05))
+            #ax.scatter(coordHa[0],coordHa[1], c='blue',  edgecolor = 'none', s=80)
+
+    pos=np.array(pos)
+
+
+    ax.scatter(pos[:,0], pos[:,1], c='0.6',  edgecolor = 'none', s=320)
+
     xb, yb = [0], [0]
     t = 0
     for el in posIni:
@@ -1079,23 +1109,17 @@ def plotExperimentSetup(rs):
             xb.append(b1[0])
             yb.append(a1[1])
             yb.append(b1[1])
-        xi.append(el[0])
-        yi.append(el[1])
-    pos = []
-    for i in range(len(q1)):
-        for j in range(len(q2)):
-            coordHa = arm.mgdEndEffector(np.array([[q1[i]], [q2[j]]]))
-            pos.append(coordHa)
-    x, y = [], []
-    for el in pos:
-        x.append(el[0])
-        y.append(el[1])
+        if el[1]<=0.35:
+            ax.scatter(el[0],el[1], c ='red',s=60)
+        elif el[1]<=0.5:
+            ax.scatter(el[0],el[1], c ='green',s=60)
+        else:
+            ax.scatter(el[0],el[1], c ='blue',s=60) 
 
-    plt.scatter(x, y)
-    plt.scatter(xi, yi, c = 'r')
-    plt.scatter(0, 0.6175, c = "r", marker=u'*', s = 200)
-    plt.plot(xb, yb, c = 'r')
-    plt.plot([-0.3,0.3], [0.6175, 0.6175], c = 'g')
+    
+    ax.scatter(0, 0.6175, c = "r", marker=u'*', s = 200)
+    ax.plot(xb, yb, c = 'r', linewidth = 3)
+    ax.plot([-0.3,0.3], [0.6175, 0.6175], c = 'g')
     plt.savefig("ImageBank/setup.svg", bbox_inches='tight')
     plt.show(block = True)
 
