@@ -35,7 +35,7 @@
     <maxIteration>1000</maxIteration>
     <numberRepetition>50</numberRepetition>
     <resultPath>~/stage/ArmModelPython/Data/CMAESK10gamma3/</resultPath>
-    <sigma>0.05</sigma>
+    <sigma>0.005</sigma>
     <popsize>30</popsize>
   </optimisation>
   <target>
