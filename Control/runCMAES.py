@@ -11,7 +11,7 @@ Description: script to run cmaes
 
 
 
-from Main.MainCMAES import checkAllPoint, launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.MainCMAES import lauchCMAESForListOfPoints, checkAllPoint, launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Plot.plotFunctions import plotCostColorMapFor12, plotCMAESOnePointProgress, plotEstimatorPoint, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 from GlobalVariables import pathDataFolder
@@ -192,6 +192,7 @@ def chooseFunction(choix, rs):
         launchCMAESForAllPoint(rs,float(tSize),save)
         c.stop()
     elif choix == 25:
+        #TODO: Test!
         rorc = input("enter 1 if General CMAES, 2 if from scratch, anything if from previous CMAES point: ")
         save = False
         rorc = int(rorc)
@@ -200,9 +201,8 @@ def chooseFunction(choix, rs):
         elif rorc==2:
             save=None
         tSize = raw_input('Target Size: ')
-        point=int(raw_input('Point: '))
-        posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-        launchCMAESForSpecificTargetSizeAndSpeceficPointMulti(float(tSize), rs, save, [point,posIni[point]])
+        points=int(raw_input('Point(s): ')).split()
+        lauchCMAESForListOfPoints(float(tSize), rs, save, points)
     elif choix == 26:
         size=raw_input('Target Size: ')
         while True:

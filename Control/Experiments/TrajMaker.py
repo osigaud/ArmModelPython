@@ -42,6 +42,8 @@ class TrajMaker:
     	'''
         self.arm = ArmType[rs.arm]()
         self.arm.setDT(rs.dt)
+        if(not rs.det and rs.noise!=None):
+            self.arm.setNoise(rs.noise)
         self.controller = initController(rs,thetaFile)
         self.trajCost= CostCMAES(rs)
         self.costU12=0

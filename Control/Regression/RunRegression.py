@@ -110,6 +110,7 @@ def UnitTestController(fileName):
 
 # a replacer plus intelligemment
 
+#depreciated
 def UnitTestArmModel(fileName):
     '''
     Tests the next state 

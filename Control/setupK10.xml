@@ -3,7 +3,7 @@
   <data>
   	<inputSize>4</inputSize>
   	<outputSize>6</outputSize>
-  	<noise>yes</noise>
+  	<noise type="no/float">1.</noise>
   </data>
   <regression>
     <NeuralNet>

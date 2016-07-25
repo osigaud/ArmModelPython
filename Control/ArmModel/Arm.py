@@ -38,7 +38,7 @@ class Arm(object):
         self.__dotq0 = value
         
     def setNoise(self, noise):
-        self.muscleP.knoiseU=noise
+        self.musclesP.knoiseU=noise
         
     def jointStop(self,q):
         '''

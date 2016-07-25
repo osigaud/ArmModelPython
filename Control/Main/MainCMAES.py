@@ -206,10 +206,16 @@ def checkAllPoint(rs, sizeTarget):
 
 #--------------------------- multiprocessing -------------------------------------------------------
 
-
+def lauchCMAESForListOfPoints(sizeOfTarget, rs, save, points):
+    p = ThreadPool(processes=len(points))
+    posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, sizeOfTarget, rs, save), [[i, posIni[i]] for i in points])
+    p.close()
+    p.join()
+    
+    
 def launchCMAESForSpecificTargetSizeAndSpeceficPointMulti(sizeOfTarget, rs, save, point):
-    '''filename2 = self.foldername + "Best.theta"
-                np.savetxt(filename2, self.theta)
+    '''
     Run cmaes for a specific target size
 
     Input:    -sizeOfTarget, size of the target, float

@@ -101,6 +101,19 @@ class Arm26(Arm):
                     [self.armP.l[0]*np.cos(q[0]) + self.armP.l[1]*np.cos(q[0] + q[1]),
                      self.armP.l[1]*np.cos(q[0] + q[1])]])
         return J
+    
+    def mgdEndEffector(self, q):
+        '''
+        Direct geometric model of the arm
+    
+        Inputs:     -q: (2,1) numpy array, the joint coordinates
+    
+        Outputs:
+        -coordHand: hand coordinate
+        '''
+        coordHand = [self.armP.l[0]*np.cos(q[0])+self.armP.l[1]*np.cos(q[0] + q[1]), 
+                     self.armP.l[0]*np.sin(q[0]) + self.armP.l[1]*np.sin(q[0] + q[1])]
+        return coordHand
 
 
     def estimError(self,state, estimState):
@@ -131,17 +144,6 @@ class Arm26(Arm):
         J = self.jacobian(q)
         return np.linalg.norm(np.dot(J,qdot))
 
-    def mgdEndEffector(self, q):
-        '''
-        Direct geometric model of the arm
-    
-        Inputs:     -q: (2,1) numpy array, the joint coordinates
-    
-        Outputs:
-        -coordHand: hand coordinate
-        '''
-        coordHand = [self.armP.l[0]*np.cos(q[0])+self.armP.l[1]*np.cos(q[0] + q[1]), self.armP.l[0]*np.sin(q[0]) + self.armP.l[1]*np.sin(q[0] + q[1])]
-        return coordHand
 
     def mgi(self, xi, yi):
         '''

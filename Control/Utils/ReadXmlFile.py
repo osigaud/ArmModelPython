@@ -33,6 +33,10 @@ class ReadXmlFile(object):
         self.inputDim=int(dataElement[0].text)
         self.outputDim=int(dataElement[1].text)
         self.det="no"==dataElement[2].text
+        if(not self.det and dataElement[2].text!= 'yes'):
+            self.noise = float(dataElement[2].text)
+        else :
+            self.noise=None
         self.arm="Arm"+str(self.inputDim/2)+str(self.outputDim)
            
     def regressionParse(self, reg):

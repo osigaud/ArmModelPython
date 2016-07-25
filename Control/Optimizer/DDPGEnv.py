@@ -20,8 +20,8 @@ from Experiments.StateEstimatorNoFeedBack import StateEstimatorNoFeedBack
 from GlobalVariables import pathDataFolder
 import random as rd
 import numpy as np
-from Experiments.CostDDPG import CostDDPG
-from Experiments import CostCMAES.Cost
+from Cost.CostDDPG import CostDDPG
+from Cost.Cost import Cost
 from multiprocess.pool import Pool
 from functools import partial
 
@@ -34,6 +34,8 @@ class DDPGEnv(Env):
         self.posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
         self.arm=ArmType[arm]()
         self.arm.setDT(rs.dt)
+        if(not self.det):
+            self.arm.setNoise(rs.noise)
         self.trajCost=CostDDPG(rs)
         if(len(self.posIni.shape)==1):
             self.posIni=self.posIni.reshape((1,self.posIni.shape[0]))
