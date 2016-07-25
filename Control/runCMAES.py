@@ -201,7 +201,8 @@ def chooseFunction(choix, rs):
         elif rorc==2:
             save=None
         tSize = raw_input('Target Size: ')
-        points=int(raw_input('Point(s): ')).split()
+        points=map(int, raw_input('Point(s): ').split())
+        print points
         lauchCMAESForListOfPoints(float(tSize), rs, save, points)
     elif choix == 26:
         size=raw_input('Target Size: ')
