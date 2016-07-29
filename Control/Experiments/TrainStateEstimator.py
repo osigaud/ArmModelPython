@@ -1,12 +1,14 @@
 from Utils.FileReading import loadTrajForModel
 from GlobalVariables import  pathDataFolder
 import numpy as np
-from Regression.RunRegression import regressionDict
+
 import os
 from Regression.NeuralNet import NeuralNet
 import sys
 
-
+#for avoid circular import problem 
+def typeImport():
+    from Regression.RunRegression import regressionDict
 
 
 
@@ -24,7 +26,7 @@ def run(regressionSetup, delay):
     
     
     stateAndCommand, nextState = loadTrajForModel(pathDataFolder + "Brent/", delay)
-    
+
     
     
     

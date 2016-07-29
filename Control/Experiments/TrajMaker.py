@@ -22,6 +22,7 @@ from StateEstimatorRegression import StateEstimatorRegression
 
 from StateEstimatorHyb import StateEstimatorHyb
 from StateEstimatorNoFeedBack import StateEstimatorNoFeedBack
+from Cost.CostType import CostType
 from Cost.CostCMAES import CostCMAES
 
 
@@ -45,7 +46,10 @@ class TrajMaker:
         if(not rs.det and rs.noise!=None):
             self.arm.setNoise(rs.noise)
         self.controller = initController(rs,thetaFile)
-        self.trajCost= CostCMAES(rs)
+        if(rs.costClass==None):
+            self.trajCost= CostCMAES(rs)
+        else :
+            self.trajCost=rs.costClass(rs)
         self.costU12=0
         #put theta to a one dimension numpy array, ie row vector form
         #theta = matrixToVector(theta)

@@ -9,7 +9,7 @@ Description: plot data from CMAES
 from Utils.ReadXmlFile import ReadXmlFile
 from Plot.plotFunctions import *
 
-fileName="setupK10gamma9.xml"
+fileName="setupK10gamma3.xml"
 folder="Best"
 
 rs = ReadXmlFile(fileName)

@@ -6,12 +6,16 @@ Author: Corentin Arnaud
 
 Module: ReadXmlFile
 
-Description: read a setup xml file
+Description: read a glabal xml setup file
 '''
 
 from lxml import etree
 from os import path
 import math
+from Cost.CostType import CostType
+from Experiments.StateEstimatorType import StateEstimatorType
+from Cost.CostType import CostType
+from Experiments.StateEstimatorType import StateEstimatorType
 
 class ReadXmlFile(object):
     def __init__(self, xmlFile):
@@ -72,6 +76,8 @@ class ReadXmlFile(object):
         self.fromStruct = rbfnElement[2].text == "yes"
         
     def costFunctionParse(self, cf):
+        self.costClass=cf.get('type')
+        if(self.costClass!=None):self.costClass=CostType[self.costClass]
         self.gammaCF=float(cf[0].text)
         self.rhoCF  =float(cf[1].text)
         self.upsCF  =float(cf[2].text)
@@ -109,11 +115,16 @@ class ReadXmlFile(object):
         self.dt=float(trajectoryElement[2].text)
         
     def kalmanParse(self, kalmanElement):
-        self.delayUKF=int(kalmanElement.text)
+        self.estimationType=kalmanElement.get("type")
+        if(self.estimationType==None):
+            self.estimationType=StateEstimatorType['Inv']
+        else :
+            self.estimationType=StateEstimatorType[self.estimationType]
+        self.delayUKF=int(kalmanElement[0].text)
         
     def plotParse(self, plotElement):
         self.period=float(plotElement[0].text)
       
     def getDistanceToTarget(self, x, y):
         return math.sqrt((x - self.XTarget)**2 + (y - self.YTarget)**2) 
-     
+    

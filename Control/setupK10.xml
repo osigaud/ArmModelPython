@@ -3,7 +3,7 @@
   <data>
   	<inputSize>4</inputSize>
   	<outputSize>6</outputSize>
-  	<noise type="no/float">1.</noise>
+  	<noise type="no/yes/float">1.</noise>
   </data>
   <regression>
     <NeuralNet>
@@ -26,7 +26,7 @@
     <thetaFile>NN1th</thetaFile>
     <resultPath>~/stage/ArmModelPython/Data/NNth/</resultPath>
   </regression>
-  <costFunction>
+  <costFunction type='CostCMAES'>
     <gamma>0.6</gamma>
     <rho>3000</rho>
     <upsilon>1</upsilon>
@@ -55,7 +55,9 @@
     <maxStep>300</maxStep>
     <timeStep>0.002</timeStep>
   </trajectory>
-  <kalmanFilter>10</kalmanFilter>
+  <estimation type='Inv'>
+  	<kalmanFilter>10</kalmanFilter>
+  </estimation>
   <plot>
     <period>10</period>
   </plot>

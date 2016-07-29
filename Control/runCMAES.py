@@ -48,7 +48,7 @@ def printMainMenu():
     print('        22 plot Manipulability')
     print('        23 plot Estimation')
     print('        24 train CMAES one point')
-    print('        25 train CMAES one point for one target')
+    print('        25 train CMAES one point for a list of points')
     print('        26 plot CMAES One point cost progress')
     print('        27 generate results from CMAES One point')
     print('        28 plot XY  for one target')  

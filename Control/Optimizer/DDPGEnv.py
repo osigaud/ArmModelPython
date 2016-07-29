@@ -36,7 +36,10 @@ class DDPGEnv(Env):
         self.arm.setDT(rs.dt)
         if(not self.det):
             self.arm.setNoise(rs.noise)
-        self.trajCost=CostDDPG(rs)
+        if(rs.costClass==None):
+            self.trajCost=CostDDPG(rs)
+        else:
+            self.trajCost=rs.costClass(rs)
         if(len(self.posIni.shape)==1):
             self.posIni=self.posIni.reshape((1,self.posIni.shape[0]))
         if estim=="Inv" :

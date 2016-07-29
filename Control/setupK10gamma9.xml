@@ -55,7 +55,9 @@
     <maxStep>300</maxStep>
     <timeStep>0.002</timeStep>
   </trajectory>
-  <kalmanFilter>10</kalmanFilter>
+  <estimation type='Inv'>
+    <kalmanFilter>10</kalmanFilter>
+  </estimation>
   <plot>
     <period>10</period>
   </plot>

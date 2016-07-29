@@ -31,7 +31,7 @@ class CostCMAES(Cost):
                     
         Output:        -cost: final cost , float
         '''
-        cost=0
+
         
         cost = self.computePerpendCost(arm)
         #print coordHand[0]

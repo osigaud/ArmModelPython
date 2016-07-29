@@ -3,7 +3,7 @@
   <data>
   	<inputSize>4</inputSize>
   	<outputSize>6</outputSize>
-  	<noise>yes</noise>
+  	<noise>1.</noise>
   </data>
   <regression>
     <NeuralNet>
@@ -55,7 +55,9 @@
     <maxStep>300</maxStep>
     <timeStep>0.002</timeStep>
   </trajectory>
-  <kalmanFilter>10</kalmanFilter>
+  <estimation type='Inv'>
+  	<kalmanFilter>10</kalmanFilter>
+  </estimation>
   <plot>
     <period>10</period>
   </plot>

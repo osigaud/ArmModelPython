@@ -10,5 +10,5 @@
 		<handFlexor name="fmax7">50</handFlexor>
 		<handExtensor name="fmax8">50</handExtensor>
 	</MaximumForce>
-	<Knoise type="int">0.8</Knoise>
+	<Knoise utility="deprecated" type="int">0.8</Knoise>
 </Muscle>
