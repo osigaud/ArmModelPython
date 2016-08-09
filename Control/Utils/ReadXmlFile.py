@@ -6,14 +6,12 @@ Author: Corentin Arnaud
 
 Module: ReadXmlFile
 
-Description: read a glabal xml setup file
+Description: reads a global xml setup file
 '''
 
 from lxml import etree
 from os import path
 import math
-from Cost.CostType import CostType
-from Experiments.StateEstimatorType import StateEstimatorType
 from Cost.CostType import CostType
 from Experiments.StateEstimatorType import StateEstimatorType
 
