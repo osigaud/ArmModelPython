@@ -5,6 +5,6 @@
 #PBS -l walltime=00:04:00
 #PBS -l ncpus=1
 #PBS -V
-dir=/home/corentin.arnaud/stage/ArmModelPython/Control
+dir=/home/sigaud/ArmModelPython/Control
 python $dir/cluster.py $dir/setupNN1th.xml
 #echo "import pybrain" | python

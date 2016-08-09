@@ -5,5 +5,5 @@
 #PBS -l walltime=48:00:00
 #PBS -l ncpus=15
 #PBS -V
-#PBS -d /home/corentin.arnaud/stage/ArmModelPython/Control/
+#PBS -d /home/sigaud/ArmModelPython/Control/
 python clusterOneTargetNController.py setupK10gamma6.xml $TARGET
