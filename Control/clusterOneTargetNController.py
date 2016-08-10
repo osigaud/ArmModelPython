@@ -13,4 +13,4 @@ from Main.MainCMAES import launchCMAESForAllPoint
 
 if __name__ == '__main__':
     rs = ReadXmlFile(sys.argv[1])
-    launchCMAESForAllPoint(rs, float(sys.argv[2]),False)
+    launchCMAESForAllPoint(rs, float(sys.argv[2]),True)
