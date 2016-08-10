@@ -24,7 +24,7 @@
       <momentum>0</momentum>
     </NeuralNet>
     <thetaFile>NN1th</thetaFile>
-    <resultPath>~/ArmModelPython/Data/NNth/</resultPath>
+    <resultPath>../Data/NNth/</resultPath>
   </regression>
   <costFunction>
     <gamma>0.6</gamma>
@@ -34,7 +34,7 @@
   <optimisation type="CMAES">
     <maxIteration>5000</maxIteration>
     <numberRepetition>1</numberRepetition>
-    <resultPath>~/ArmModelPython/Data/CMAESDet/</resultPath>
+    <resultPath>../Data/CMAESDet/</resultPath>
     <sigma>0.005</sigma>
     <popsize>30</popsize>
   </optimisation>
