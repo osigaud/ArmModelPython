@@ -12,7 +12,7 @@
       <fromStruct>no</fromStruct>
     </RBFN>
     <thetaFile>NNtest</thetaFile>
-    <resultPath>/home/arnaud/stage/ArmModelPython/Data/RBFN/</resultPath>
+    <resultPath>~/ArmModelPython/Data/RBFN/</resultPath>
   </regression>
   <costFunction>
     <gamma>0.01</gamma>
@@ -24,7 +24,7 @@
     <maxIteration>50000</maxIteration>
     <popsize>30</popsize>
     <numberRepetition>1</numberRepetition>
-    <resultPath>/home/arnaud/stage/ArmModelPython/Data/CMAES/</resultPath>
+    <resultPath>~/ArmModelPython/Data/CMAES/</resultPath>
   </optimization>
   <target>
     <sizes>

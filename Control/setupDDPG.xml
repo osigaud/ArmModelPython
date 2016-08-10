@@ -28,7 +28,7 @@
       <momentum>0</momentum>
     </NeuralNet>
     <thetaFile>NN1th</thetaFile>
-    <resultPath>~/stage/ArmModelPython/Data/NNth/</resultPath>
+    <resultPath>~/ArmModelPython/Data/NNth/</resultPath>
   </regression>
   <costFunction type='CostDDPG'>
     <gamma>0.6</gamma>
@@ -38,7 +38,7 @@
   <optimisation type="DDPG">
     <maxIteration>100000</maxIteration>
     <numberRepetition>1</numberRepetition>
-    <resultPath>~/stage/ArmModelPython/Data/DDPG/</resultPath>
+    <resultPath>~/ArmModelPython/Data/DDPG/</resultPath>
   </optimisation>
   <target>
     <sizes>

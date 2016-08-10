@@ -12,7 +12,7 @@ import Utils.Compare as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
-experimentalFolder="/home/arnaud/stage/ArmModelPython/Data/ExperimentalHits/"
+experimentalFolder="~/ArmModelPython/Data/ExperimentalHits/"
 
 experiment1 = np.loadtxt(experimentalFolder+"hits0.005")[:,1]
 experiment2 = np.loadtxt(experimentalFolder+"hits0.01")[:,1]
@@ -21,7 +21,7 @@ experiment4 = np.loadtxt(experimentalFolder+"hits0.04")[:,1]
 
 print(experiment1.shape[0])
 
-resultPath="/home/arnaud/stage/ArmModelPython/Data/CMAESK20/"
+resultPath="~/ArmModelPython/Data/CMAESK20/"
 resultName="50/finalX/x.last"
 
 result1= np.loadtxt(resultPath+"0.005/"+resultName)
