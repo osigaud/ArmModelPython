@@ -6,4 +6,4 @@
 #PBS -l ncpus=15
 #PBS -V
 #PBS -d /home/sigaud/ArmModelPython/Control/
-python clusterOneTargetNController.py setupK10gamma6.xml $TARGET
+python clusterOneTargetNController.py setupK10gamma3.xml $TARGET
