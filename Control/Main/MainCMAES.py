@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-Author: Thomas Beucher
+Author: Corentin Arnaud + Olivier Sigaud
 
 Module: Main
 
@@ -32,6 +32,12 @@ def copyRegressiontoCMAES(rs, name, size):
         copyfile(savenamestruct, cmaname + name + ".struct")
 
 def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
+    '''
+    Generate Data from a given theta file
+
+    Input:    -sizeOfTarget, size of the target, float
+            -save: do we save the results (false when running CMAES)? True = Yes, False = No
+    '''
     os.system("rm "+foldername+"Log/*.log 2>/dev/null")
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost, time = exp.runTrajectoriesForResultsGeneration(repeat)
@@ -42,6 +48,12 @@ def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save)
         exp.saveCost()
         
 def GenerateDataFromThetaNController(rs, sizeOfTarget, foldername, thetaFile, repeat, save,noise=None):
+    '''
+    Generate Data from a given theta file
+
+    Input:    -sizeOfTarget, size of the target, float
+            -save: do we save the results (false when running CMAES)? True = Yes, False = No
+    '''
     os.system("rm "+foldername+"/Log/*.log 2>/dev/null")
     exp = Experiments(rs, sizeOfTarget, save, foldername,None,rs.popsizeCmaes,rs.period)
     if(noise!=None): exp.setNoise(noise)
@@ -53,6 +65,12 @@ def GenerateDataFromThetaNController(rs, sizeOfTarget, foldername, thetaFile, re
         exp.saveCost()
         
 def GenerateDataFromThetaOnePoint(rs, sizeOfTarget, foldername, thetaFile, repeat, point):
+    '''
+    Generate Data from a given theta file
+
+    Input:    -sizeOfTarget, size of the target, float
+            -save: do we save the results (false when running CMAES)? True = Yes, False = No
+    '''
     os.system("rm "+foldername+"/Log/*.log 2>/dev/null")
     exp = Experiments(rs, sizeOfTarget, True, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost, time = exp.runTrajectoriesForResultsGenerationOnePoint(repeat,point)
@@ -62,6 +80,12 @@ def GenerateDataFromThetaOnePoint(rs, sizeOfTarget, foldername, thetaFile, repea
 
 
 def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
+    '''
+    Generate Data from a given theta file
+
+    Input:    -sizeOfTarget, size of the target, float
+            -save: do we save the results (false when running CMAES)? True = Yes, False = No
+    '''
     os.system("rm "+foldername+"Log/*.log")
     exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost = exp.runRichTrajectories(repeat)
@@ -119,9 +143,10 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
     '''
     Run cmaes for a specific target size
 
-    Input:	-sizeOfTarget, size of the target, float
+    Input:	
+            -sizeOfTarget, size of the target, float
             -setuFile, file of setup, string
-            -save, for saving result, bool
+            -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
     '''
     print("Starting the CMAES Optimization for target " + str(sizeOfTarget) + " !")
     foldername = rs.OPTIpath + str(sizeOfTarget) + "/"
@@ -140,13 +165,13 @@ def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
     cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) + " !")
     
-def launchCMAESForSpecificTargetSizeAndSpeceficPoint(sizeOfTarget, rs, save, point, noise=None):
+def launchCMAESForSpecificTargetSizeAndSpecificPoint(sizeOfTarget, rs, save, point, noise=None):
     '''
     Run cmaes for a specific target size
 
     Input:    -sizeOfTarget, size of the target, float
             -setuFile, file of setup, string
-            -save, for saving result, bool
+            -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
             noise: noise on muscle, if None, defalt noise from muscle setup, float
     '''
     pos=point[0]
@@ -209,18 +234,18 @@ def checkAllPoint(rs, sizeTarget):
 def lauchCMAESForListOfPoints(sizeOfTarget, rs, save, points):
     p = ThreadPool(processes=len(points))
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, sizeOfTarget, rs, save), [[i, posIni[i]] for i in points])
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpecificPointMulti, sizeOfTarget, rs, save), [[i, posIni[i]] for i in points])
     p.close()
     p.join()
     
     
-def launchCMAESForSpecificTargetSizeAndSpeceficPointMulti(sizeOfTarget, rs, save, point):
+def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(sizeOfTarget, rs, save, point):
     '''
     Run cmaes for a specific target size
 
     Input:    -sizeOfTarget, size of the target, float
             -setuFile, file of setup, string
-            -save, for saving result, bool
+            -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
     '''
     pos=point[0]
     x=point[1][0]
@@ -255,14 +280,14 @@ def launchCMAESForAllPoint(rs, sizeTarget, save, noise=None):
         input:
                     rs: setup file
                     sizeTarget: size of the target
-                    save: for save expérience log
+                    save: for save experience log
                     noise: noise on muscle, if None, defalt noise from muscle setup
     
     """
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForSpecificTargetSizeAndSpeceficPoint, sizeTarget, rs, save, noise=noise), enumerate(posIni))
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpecificPoint, sizeTarget, rs, save, noise=noise), enumerate(posIni))
     p.close()
     p.join()
     
