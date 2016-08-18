@@ -13,8 +13,8 @@ from MainCMAES import GenerateDataFromTheta, GenerateRichDataFromTheta
 from Optimizer.DDPGEnv import DDPGEnv
 from DDPG.core.DDPG_core import DDPG
 from DDPG.core.networks.simple_actor_network import simple_actor_network
-from Utils.FileWritting import writeArray 
-from Utils.FileWritting import checkIfFolderExists
+from Utils.FileWriting import writeArray, checkIfFolderExists
+
 from shutil import copyfile
 import numpy as np
 import os

@@ -6,7 +6,7 @@ Author: Corentin Arnaud
 Module: NeuralNet
 
 Description: A eficient fastforward NeuralNet
-             Can not be train, use NeuralNetTF for that
+             Cannot be trained, use NeuralNetTF for that
 '''
 
 import numpy as np

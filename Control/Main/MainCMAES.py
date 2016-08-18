@@ -18,8 +18,7 @@ from GlobalVariables import pathDataFolder
 from Utils.Chrono import Chrono
 
 from Experiments.Experiments import Experiments
-from Utils.FileWritting import checkIfFolderExists
-
+from Utils.FileWriting import checkIfFolderExists
 
 def copyRegressiontoCMAES(rs, name, size):
     cmaname =  rs.OPTIpath + str(size) + "/"

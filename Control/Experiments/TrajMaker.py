@@ -13,7 +13,7 @@ import numpy as np
 from Utils.CreateVectorUtil import createVector
 from ArmModel.ArmType import ArmType
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
-from Utils.FileWritting import findDataFilename
+from Utils.FileWriting import findDataFilename
 
 from Regression.RunRegression import initController
 

@@ -10,7 +10,7 @@ from DDPG.environement.env import Env
 from Utils.CreateVectorUtil import createVector
 from ArmModel.ArmType import ArmType
 from ArmModel.MuscularActivation import getNoisyCommand, muscleFilter
-from Utils.FileWritting import checkIfFolderExists, findDataFilename, writeArray
+from Utils.FileWriting import checkIfFolderExists, findDataFilename, writeArray
 
 from Experiments.StateEstimator import StateEstimator
 from Experiments.StateEstimatorRegression import StateEstimatorRegression

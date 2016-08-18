@@ -11,7 +11,7 @@ Description: Script to change the initial position
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-from Utils.FileWritting import writeArray
+from Utils.FileWriting import writeArray
 
 def changeExperimentCircular():
     x0, y0 = 0, 0.6175

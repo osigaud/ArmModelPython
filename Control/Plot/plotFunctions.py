@@ -17,7 +17,7 @@ from matplotlib import animation
 from matplotlib.mlab import griddata
 from matplotlib.patches import Rectangle
 import time
-from Utils.FileWritting import checkIfFolderExists, findDataFilename
+from Utils.FileWriting import checkIfFolderExists, findDataFilename
 
 
 from Utils.FileReading import getStateData, getEstimatedXYHandData, getXYHandData, getXYEstimError, getXYEstimErrorOfSpeed, getXYElbowData, getNoiselessCommandData, getInitPos, getCostData,  getTrajTimeData, getLastXData

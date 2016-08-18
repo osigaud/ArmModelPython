@@ -25,7 +25,7 @@ class NeuralNet(regression):
     
     
     '''
-    #depreciated
+    #deprecated
     def __init__(self, inputDim, outputDim):
         \'''
 	Initializes class parameters
