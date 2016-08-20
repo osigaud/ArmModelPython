@@ -237,7 +237,6 @@ def lauchCMAESForListOfPoints(sizeOfTarget, rs, save, points):
     p.close()
     p.join()
     
-    
 def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(sizeOfTarget, rs, save, point):
     '''
     Run cmaes for a specific target size
@@ -271,6 +270,38 @@ def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(sizeOfTarget, rs, save
     #run the optimization (cmaes)
     cma.fmin(partial(exp.runTrajectoriesCMAESOnePointMulti, x, y), thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':0, 'verb_disp':0,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) +  " for point "+ str(pos)+" !")
+    
+def launchCMAESForVariousGamma(sizeOfTarget, rs, save, gamma, point):
+    '''
+    Run cmaes for a specific target size
+
+    Input:    -sizeOfTarget, size of the target, float
+            -setuFile, file of setup, string
+            -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
+    '''
+    rs.gamma = gamma/10.0
+    pos=point[0]
+    x=point[1][0]
+    y=point[1][1]
+    print("Starting the CMAES Optimization for gamma = "+ str(gamma) + ",target " + str(sizeOfTarget) + " for point "+ str(pos)+" !")
+    foldername = rs.OPTIpath + "gamma" + str(gamma) + "/"+str(sizeOfTarget)+"/"+str(pos)+"/"
+
+    thetaname = foldername + "Best"
+    if save:
+        checkIfFolderExists(foldername)
+        copyfile(rs.OPTIpath + "gamma" + str(gamma) + "/" + str(sizeOfTarget)+"/" + "Best.theta",foldername + "Best.theta")
+    elif save==None:
+        thetaname=None
+
+
+    #Initializes all the classes used to generate trajectory
+    exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
+    theta = exp.tm.controller.getTheta()
+    thetaCMA = theta.flatten()
+
+    #run the optimization (cmaes)
+    cma.fmin(partial(exp.runTrajectoriesCMAESOnePointMulti, x, y), thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':0, 'verb_disp':0,'termination_callback':term()})
+    print("End of optimization for gamma = "+ str(gamma) + ",target " + str(sizeOfTarget) + " for point "+ str(pos)+" !")
 
 
 def launchCMAESForAllPoint(rs, sizeTarget, save, noise=None):
