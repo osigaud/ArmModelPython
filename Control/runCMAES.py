@@ -11,10 +11,12 @@ Description: script to run cmaes
 
 
 
-from Main.MainCMAES import lauchCMAESForListOfPoints, checkAllPoint, launchCMAESForSpecificTargetSizeAndSpeceficPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
+from Main.MainCMAES import lauchCMAESForListOfPoints, checkAllPoint, launchCMAESForSpecificTargetSizeAndSpecificPointMulti, generateFromCMAESonePoint, generateFromCMAESNController, launchCMAESForAllPoint, launchCMAESForAllTargetSizesMulti, generateFromCMAES, generateRichDataFromRegression, generateRichDataFromCMAES, launchCMAESForAllTargetSizes, launchCMAESForSpecificTargetSize
 
 from Plot.plotFunctions import plotCostColorMapFor12, plotCMAESOnePointProgress, plotEstimatorPoint, trajectoriesAnimation, plotCostColorMap, plotTimeColorMap, plotTimeDistanceTarget, plotFittsLaw, plotPerfSizeDist, plotVelocityProfile, plotXYPositions, plotXYEstimError, plotXYEstimErrorOfSpeed, plotArticularPositions, plotInitPos, plotMuscularActivations, plotScattergram, plotHitDispersion, plotExperimentSetup, plotCMAESProgress, plotTrajsInRepo, plotManipulability, plotManipulability2
 from GlobalVariables import pathDataFolder
+
+from test_map import launch_missing_theta_files
 import numpy as np
 from Utils.Chrono import Chrono
 from Utils.ReadXmlFile import ReadXmlFile
@@ -55,6 +57,7 @@ def printMainMenu():
     print('        29 generate results for one target')
     print('        30 plot cost Map of muscles 1 and 2')
     print('        31 check CMAES progression')
+    print('        32 launch missing theta files')
     
 def runChoice():
     checkL = True
@@ -239,6 +242,8 @@ def chooseFunction(choix, rs):
     elif choix == 31:
         size=raw_input('Target Size: ')
         checkAllPoint(rs, size)
+    elif choix == 32:
+        launch_missing_theta_files(rs)
     else :
         return 0
     return 1
