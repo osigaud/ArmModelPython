@@ -271,7 +271,7 @@ def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(sizeOfTarget, rs, save
     cma.fmin(partial(exp.runTrajectoriesCMAESOnePointMulti, x, y), thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':0, 'verb_disp':0,'termination_callback':term()})
     print("End of optimization for target " + str(sizeOfTarget) +  " for point "+ str(pos)+" !")
     
-def launchCMAESForVariousGamma(sizeOfTarget, rs, save, gamma, point):
+def launchCMAESMissing(sizeOfTarget, rs, save, gamma, point):
     '''
     Run cmaes for a specific target size
 

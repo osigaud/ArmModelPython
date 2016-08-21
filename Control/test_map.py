@@ -26,18 +26,25 @@ def launch_missing_theta_files(rs):
         launch(rs,gamma)
 
 def launch(rs,gamma):
-    count=0
+    all_points = []
     for targetsize in [0.005, 0.01, 0.02, 0.04]:
         points = []
         for i in range(15):
             if not check_if_theta_file_exists(gamma,targetsize,i):
                 points.append(i)
-        launchCMAESForListOfPoints(targetsize, rs, True, gamma, points)
-    return count
+        all_points.append(points)
+    launchCMAESForListOfPoints(rs, True, gamma, all_points)
 
-def launchCMAESForListOfPoints(sizeOfTarget, rs, save, gamma, points):
-    p = ThreadPool(processes=len(points))
+def launchCMAESForListOfPoints(rs, save, gamma, all_points):
+    nb_proc = 0
+    for i in range(len(all_points)):
+        nb_proc+=len(all_points[i])
+    print('nb processes',nb_proc)
+    p = ThreadPool(processes=nb_proc)
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForVariousGamma, sizeOfTarget, rs, save, gamma), [[i, posIni[i]] for i in points])
+    tgt = 0
+    for targetsize in [0.005, 0.01, 0.02, 0.04]:
+        points = all_points[tgt]
+        p.map(partial(launchCMAESMissing, targetsize, rs, save, gamma), [[i, posIni[i]] for i in points])
     p.close()
     p.join()
