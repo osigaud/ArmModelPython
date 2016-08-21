@@ -101,9 +101,9 @@ class ReadXmlFile(object):
         self.OPTIpath=path.abspath(path.expanduser(ddpgElement[2].text))+"/"
         
     def targetParse(self, targetElement):
-        self.sizeOfTarget = []
+        self.target_size = []
         for size in targetElement[0]:
-            self.sizeOfTarget.append(float(size.text))
+            self.target_size.append(float(size.text))
         self.XTarget = float(targetElement[1][0].text)
         self.YTarget = float(targetElement[1][1].text)
         

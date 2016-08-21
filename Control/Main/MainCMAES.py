@@ -30,15 +30,15 @@ def copyRegressiontoCMAES(rs, name, size):
         savenamestruct = rs.path + name + ".struct"
         copyfile(savenamestruct, cmaname + name + ".struct")
 
-def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
+def GenerateDataFromTheta(rs, target_size, foldername, thetaFile, repeat, save):
     '''
     Generate Data from a given theta file
 
-    Input:    -sizeOfTarget, size of the target, float
+    Input:    -target_size, size of the target, float
             -save: do we save the results (false when running CMAES)? True = Yes, False = No
     '''
     os.system("rm "+foldername+"Log/*.log 2>/dev/null")
-    exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost, time = exp.runTrajectoriesForResultsGeneration(repeat)
     print("Average cost: ", cost)
     print("Average time: ", time)
@@ -46,15 +46,15 @@ def GenerateDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save)
     if (save):
         exp.saveCost()
         
-def GenerateDataFromThetaNController(rs, sizeOfTarget, foldername, thetaFile, repeat, save,noise=None):
+def GenerateDataFromThetaNController(rs, target_size, foldername, thetaFile, repeat, save,noise=None):
     '''
     Generate Data from a given theta file
 
-    Input:    -sizeOfTarget, size of the target, float
+    Input:    -target_size, size of the target, float
             -save: do we save the results (false when running CMAES)? True = Yes, False = No
     '''
     os.system("rm "+foldername+"/Log/*.log 2>/dev/null")
-    exp = Experiments(rs, sizeOfTarget, save, foldername,None,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, save, foldername,None,rs.popsizeCmaes,rs.period)
     if(noise!=None): exp.setNoise(noise)
     cost, time = exp.runTrajectoriesForResultsGenerationNController(repeat,thetaFile)
     print("Average cost: ", cost)
@@ -63,30 +63,30 @@ def GenerateDataFromThetaNController(rs, sizeOfTarget, foldername, thetaFile, re
     if (save):
         exp.saveCost()
         
-def GenerateDataFromThetaOnePoint(rs, sizeOfTarget, foldername, thetaFile, repeat, point):
+def GenerateDataFromThetaOnePoint(rs, target_size, foldername, thetaFile, repeat, point):
     '''
     Generate Data from a given theta file
 
-    Input:    -sizeOfTarget, size of the target, float
+    Input:    -target_size, size of the target, float
             -save: do we save the results (false when running CMAES)? True = Yes, False = No
     '''
     os.system("rm "+foldername+"/Log/*.log 2>/dev/null")
-    exp = Experiments(rs, sizeOfTarget, True, foldername,thetaFile,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, True, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost, time = exp.runTrajectoriesForResultsGenerationOnePoint(repeat,point)
     print("Average cost: ", cost)
     print("Average time: ", time)
     print("foldername : ", foldername)
 
 
-def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, save):
+def GenerateRichDataFromTheta(rs, target_size, foldername, thetaFile, repeat, save):
     '''
     Generate Data from a given theta file
 
-    Input:    -sizeOfTarget, size of the target, float
+    Input:    -target_size, size of the target, float
             -save: do we save the results (false when running CMAES)? True = Yes, False = No
     '''
     os.system("rm "+foldername+"Log/*.log")
-    exp = Experiments(rs, sizeOfTarget, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, save, foldername,thetaFile,rs.popsizeCmaes,rs.period)
     cost = exp.runRichTrajectories(repeat)
     print("Average cost: ", cost)
     print("foldername : ", foldername)
@@ -94,7 +94,7 @@ def GenerateRichDataFromTheta(rs, sizeOfTarget, foldername, thetaFile, repeat, s
         exp.saveCost()
 
 def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
-    for el in rs.sizeOfTarget:
+    for el in rs.target_size:
         c = Chrono()
         thetaName = rs.OPTIpath + str(el) + "/" + thetaFile
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
@@ -103,7 +103,7 @@ def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     print("CMAES:End of generation")
     
 def generateFromCMAESNController(repeat, rs, thetaFile, saveDir = 'Data', noise=None):
-    for el in rs.sizeOfTarget:
+    for el in rs.target_size:
         c = Chrono()
         thetaName = rs.OPTIpath + str(el)+"/*/"+thetaFile
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
@@ -120,7 +120,7 @@ def generateFromCMAESonePoint(repeat, rs, thetaFile, saveDir = 'Data', size=0.04
     print("CMAES:End of generation")
 
 def generateRichDataFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
-    for el in rs.sizeOfTarget:
+    for el in rs.target_size:
         thetaName = rs.OPTIpath + str(el) + "/" + thetaFile
         saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
@@ -138,37 +138,37 @@ def generateRichDataFromRegression(repeat, rs,thetaFile, saveDir):
     GenerateRichDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")
 
-def launchCMAESForSpecificTargetSize(sizeOfTarget, rs, save):
+def launchCMAESForSpecificTargetSize(target_size, rs, save):
     '''
     Run cmaes for a specific target size
 
     Input:	
-            -sizeOfTarget, size of the target, float
+            -target_size, size of the target, float
             -setuFile, file of setup, string
             -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
     '''
-    print("Starting the CMAES Optimization for target " + str(sizeOfTarget) + " !")
-    foldername = rs.OPTIpath + str(sizeOfTarget) + "/"
+    print("Starting the CMAES Optimization for target " + str(target_size) + " !")
+    foldername = rs.OPTIpath + str(target_size) + "/"
     if save:
         thetaname = foldername + rs.thetaFile
-        copyRegressiontoCMAES(rs, rs.thetaFile, sizeOfTarget)
+        copyRegressiontoCMAES(rs, rs.thetaFile, target_size)
     else:
         thetaname = foldername + "Best"
 
     #Initializes all the class used to generate trajectory
-    exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
     theta = exp.tm.controller.getTheta()
     thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)
     cma.fmin(exp.runTrajectoriesCMAES, thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':50, 'verb_disp':1,'termination_callback':term()})
-    print("End of optimization for target " + str(sizeOfTarget) + " !")
+    print("End of optimization for target " + str(target_size) + " !")
     
-def launchCMAESForSpecificTargetSizeAndSpecificPoint(sizeOfTarget, rs, save, point, noise=None):
+def launchCMAESForSpecificTargetSizeAndSpecificPoint(target_size, rs, save, point, noise=None):
     '''
     Run cmaes for a specific target size
 
-    Input:    -sizeOfTarget, size of the target, float
+    Input:    -target_size, size of the target, float
             -setuFile, file of setup, string
             -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
             noise: noise on muscle, if None, defalt noise from muscle setup, float
@@ -176,14 +176,14 @@ def launchCMAESForSpecificTargetSizeAndSpecificPoint(sizeOfTarget, rs, save, poi
     pos=point[0]
     x=point[1][0]
     y=point[1][1]
-    print("Starting the CMAES Optimization for target " + str(sizeOfTarget) + " for point "+ str(pos)+" !")
-    foldername = rs.OPTIpath + str(sizeOfTarget)+"/"+str(pos)+"/"
+    print("Starting the CMAES Optimization for target " + str(target_size) + " for point "+ str(pos)+" !")
+    foldername = rs.OPTIpath + str(target_size)+"/"+str(pos)+"/"
     
 
     thetaname = foldername + "Best"
     if save:
         checkIfFolderExists(foldername)
-        copyfile(rs.OPTIpath + str(sizeOfTarget)+"/" + "Best.theta",foldername + "Best.theta")
+        copyfile(rs.OPTIpath + str(target_size)+"/" + "Best.theta",foldername + "Best.theta")
     elif save==None:
         thetaname=None
 
@@ -191,7 +191,7 @@ def launchCMAESForSpecificTargetSizeAndSpecificPoint(sizeOfTarget, rs, save, poi
 
 
     #Initializes all the class used to generate trajectory
-    exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
     if(noise!=None):
         exp.setNoise(noise)
     theta = exp.tm.controller.getTheta()
@@ -199,11 +199,11 @@ def launchCMAESForSpecificTargetSizeAndSpecificPoint(sizeOfTarget, rs, save, poi
 
     #run the optimization (cmaes)
     cma.fmin(partial(exp.runTrajectoriesCMAESOnePoint, x, y), thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':0, 'verb_disp':0,'termination_callback':term()})
-    print("End of optimization for target " + str(sizeOfTarget) +  " for point "+ str(pos)+" !")
+    print("End of optimization for target " + str(target_size) +  " for point "+ str(pos)+" !")
     
     
 def launchCMAESForAllTargetSizes(rs, save):
-    for el in rs.sizeOfTarget:
+    for el in rs.target_size:
         launchCMAESForSpecificTargetSize(el, rs,save)
 
 def term():
@@ -230,32 +230,32 @@ def checkAllPoint(rs, sizeTarget):
 
 #--------------------------- multiprocessing -------------------------------------------------------
 
-def lauchCMAESForListOfPoints(sizeOfTarget, rs, save, points):
+def lauchCMAESForListOfPoints(target_size, rs, save, points):
     p = ThreadPool(processes=len(points))
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForSpecificTargetSizeAndSpecificPointMulti, sizeOfTarget, rs, save), [[i, posIni[i]] for i in points])
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpecificPointMulti, target_size, rs, save), [[i, posIni[i]] for i in points])
     p.close()
     p.join()
     
-def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(sizeOfTarget, rs, save, point):
+def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(target_size, rs, save, point):
     '''
     Run cmaes for a specific target size
 
-    Input:    -sizeOfTarget, size of the target, float
+    Input:    -target_size, size of the target, float
             -setuFile, file of setup, string
             -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
     '''
     pos=point[0]
     x=point[1][0]
     y=point[1][1]
-    print("Starting the CMAES Optimization for target " + str(sizeOfTarget) + " for point "+ str(pos)+" !")
-    foldername = rs.OPTIpath + str(sizeOfTarget)+"/"+str(pos)+"/"
+    print("Starting the CMAES Optimization for target " + str(target_size) + " for point "+ str(pos)+" !")
+    foldername = rs.OPTIpath + str(target_size)+"/"+str(pos)+"/"
     
 
     thetaname = foldername + "Best"
     if save:
         checkIfFolderExists(foldername)
-        copyfile(rs.OPTIpath + str(sizeOfTarget)+"/" + "Best.theta",foldername + "Best.theta")
+        copyfile(rs.OPTIpath + str(target_size)+"/" + "Best.theta",foldername + "Best.theta")
     elif save==None:
         thetaname=None
 
@@ -263,19 +263,19 @@ def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(sizeOfTarget, rs, save
 
 
     #Initializes all the class used to generate trajectory
-    exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
     theta = exp.tm.controller.getTheta()
     thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)
     cma.fmin(partial(exp.runTrajectoriesCMAESOnePointMulti, x, y), thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':0, 'verb_disp':0,'termination_callback':term()})
-    print("End of optimization for target " + str(sizeOfTarget) +  " for point "+ str(pos)+" !")
+    print("End of optimization for target " + str(target_size) +  " for point "+ str(pos)+" !")
     
-def launchCMAESMissing(sizeOfTarget, rs, save, gamma, point):
+def launchCMAESMissing(rs, save, gamma, point):
     '''
     Run cmaes for a specific target size
 
-    Input:    -sizeOfTarget, size of the target, float
+    Input:    -target_size, size of the target, float
             -setuFile, file of setup, string
             -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
     '''
@@ -283,33 +283,34 @@ def launchCMAESMissing(sizeOfTarget, rs, save, gamma, point):
     pos=point[0]
     x=point[1][0]
     y=point[1][1]
-    print("Starting the CMAES Optimization for gamma = "+ str(gamma) + ",target " + str(sizeOfTarget) + " for point "+ str(pos)+" !")
-    foldername = rs.OPTIpath + "gamma" + str(gamma) + "/"+str(sizeOfTarget)+"/"+str(pos)+"/"
+    target_size = point[2]
+    print("Starting the CMAES Optimization for gamma = "+ str(gamma) + ",target " + str(target_size) + " for point "+ str(pos)+" !")
+    foldername = rs.OPTIpath + "gamma" + str(gamma) + "/"+str(target_size)+"/"+str(pos)+"/"
 
     thetaname = foldername + "Best"
     if save:
         checkIfFolderExists(foldername)
-        copyfile(rs.OPTIpath + "gamma" + str(gamma) + "/" + str(sizeOfTarget)+"/" + "Best.theta",foldername + "Best.theta")
+        copyfile(rs.OPTIpath + "gamma" + str(gamma) + "/" + str(target_size)+"/" + "Best.theta",foldername + "Best.theta")
     elif save==None:
         thetaname=None
 
 
     #Initializes all the classes used to generate trajectory
-    exp = Experiments(rs, sizeOfTarget, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
+    exp = Experiments(rs, target_size, False, foldername, thetaname,rs.popsizeCmaes,rs.period)
     theta = exp.tm.controller.getTheta()
     thetaCMA = theta.flatten()
 
     #run the optimization (cmaes)
     cma.fmin(partial(exp.runTrajectoriesCMAESOnePointMulti, x, y), thetaCMA, rs.sigmaCmaes, options={'maxiter':rs.maxIterCmaes, 'popsize':rs.popsizeCmaes, 'CMA_diagonal':True, 'verb_log':0, 'verb_disp':0,'termination_callback':term()})
-    print("End of optimization for gamma = "+ str(gamma) + ",target " + str(sizeOfTarget) + " for point "+ str(pos)+" !")
+    print("End of optimization for gamma = "+ str(gamma) + ",target " + str(target_size) + " for point "+ str(pos)+" !")
 
 
-def launchCMAESForAllPoint(rs, sizeTarget, save, noise=None):
+def launchCMAESForAllPoint(rs, target_size, save, noise=None):
     """
         Launch in parallel (on differents processor) the cmaes optimization for each point
         input:
                     rs: setup file
-                    sizeTarget: size of the target
+                    target_size: size of the target
                     save: for save experience log
                     noise: noise on muscle, if None, defalt noise from muscle setup
     
@@ -317,7 +318,7 @@ def launchCMAESForAllPoint(rs, sizeTarget, save, noise=None):
     p = ThreadPool(processes=15)
     #run cmaes on each targets size on separate processor
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESForSpecificTargetSizeAndSpecificPoint, sizeTarget, rs, save, noise=noise), enumerate(posIni))
+    p.map(partial(launchCMAESForSpecificTargetSizeAndSpecificPoint, target_size, rs, save, noise=noise), enumerate(posIni))
     p.close()
     p.join()
     
@@ -329,6 +330,6 @@ def launchCMAESForAllTargetSizesMulti(rs):
     #initializes a pool of worker, ie multiprocessing
     p = ThreadPool(processes=4)
     #run cmaes on each targets size on separate processor
-    p.map(partial(launchCMAESForSpecificTargetSize, rs=rs, save=False), rs.sizeOfTarget)
+    p.map(partial(launchCMAESForSpecificTargetSize, rs=rs, save=False), rs.target_size)
     p.close()
     p.join()
