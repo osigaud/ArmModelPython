@@ -81,5 +81,16 @@ class Cost():
             xi = xi/norm
         return 500-1000*xi[0]*xi[0]
     
+    def computeHitVelocityCost(self, arm): 
+        '''
+        compute the hit velocity cost for one trajectory
+        
+        Ouput :        -cost, the hit velocity cost
+        ''' 
+        speed = arm.cartesianSpeed(arm.getState())
+        norm=np.linalg.norm(speed)
+        print (norm)
+        return -1000*norm
+    
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):
         return 0
