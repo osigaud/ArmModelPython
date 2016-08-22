@@ -5,22 +5,14 @@ Author: Corentin Arnaud
 
 Module: Cost
 
-Description: Class to calcul reward 
+Description: Class to copute the movement cost/reward 
 '''
 import numpy as np
 from Cost import Cost
 
-
-
-
-
-
 class CostCMAES(Cost):
     def __init__(self, rs):
         self.rs=rs
-
-
-   
 
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):
         '''
@@ -31,9 +23,8 @@ class CostCMAES(Cost):
                     
         Output:        -cost: final cost , float
         '''
-
-        
         cost = self.computePerpendCost(arm)
+        cost += self.computeHitVelocityCost(arm)
         #print coordHand[0]
         #check if the Ordinate of the target is reached and give the reward if yes
         if coordHand[1] >= self.rs.YTarget:
