@@ -5,15 +5,9 @@ Author: Corentin Arnaud
 
 Module: Cost
 
-Description: Class to calcul reward 
+Description: Class to compute partial costs
 '''
 import numpy as np
-
-
-
-
-
-
 
 class Cost():
     def __init__(self, rs):
@@ -93,4 +87,5 @@ class Cost():
         return -1000*norm
     
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):
+        print('Cost::computeFinalReward : should not be called')
         return 0

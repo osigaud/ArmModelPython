@@ -5,7 +5,7 @@ Author: Corentin Arnaud
 
 Module: Cost
 
-Description: Class to copute the movement cost/reward 
+Description: Class to compute the movement cost/reward 
 '''
 import numpy as np
 from Cost import Cost
