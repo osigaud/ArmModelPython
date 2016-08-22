@@ -22,13 +22,13 @@ def check_if_theta_file_exists(gamma,target_size,num):
     return os.path.isdir(dir)
 
 def launch(rs,gamma):
+    gamma = int(gamma)
     all_points = []
     for target_size in [0.005, 0.01, 0.02, 0.04]:
         for i in range(15):
             if not check_if_theta_file_exists(gamma,target_size,i):
                 all_points.append([i, target_size])
 
-    print('nb processes',len(all_points))
     p = ThreadPool(processes=len(all_points))
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
     p.map(partial(launchCMAESMissing, rs, True, gamma), [[point[0], posIni[point[0]], point[1]] for point in all_points])

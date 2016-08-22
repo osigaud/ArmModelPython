@@ -83,7 +83,6 @@ class Cost():
         ''' 
         speed = arm.cartesianSpeed(arm.getState())
         norm=np.linalg.norm(speed)
-        print (norm)
         return -1000*norm
     
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):
