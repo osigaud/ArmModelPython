@@ -30,7 +30,7 @@ def launch(rs):
 
     p = ThreadPool(processes=len(all_points))
     posIni = np.loadtxt(pathDataFolder + rs.experimentFilePosIni)
-    p.map(partial(launchCMAESMissing, rs, True, 0.6), [[point[0], posIni[point[0]], point[1]] for point in all_points])
+    p.map(partial(launchCMAESMissing, rs, True, 6), [[point[0], posIni[point[0]], point[1]] for point in all_points])
     p.close()
     p.join()
 
