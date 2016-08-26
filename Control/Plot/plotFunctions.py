@@ -33,7 +33,7 @@ plt.rc("figure", facecolor="white")
 
 def trajectoriesAnimation(what, rs,foldername = "None", targetSize = "0.05"):
     if what == "OPTI":
-        name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
+        name = rs.OPTIpathfull + targetSize + "/" + foldername + "/Log/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
     else:
@@ -59,7 +59,7 @@ def trajectoriesAnimation(what, rs,foldername = "None", targetSize = "0.05"):
     plt.xlim(-0.7, 0.7)
     plt.ylim(-0.7,0.7)
     plt.plot([-0.7,0.7], [rs.YTarget, rs.YTarget])
-    plt.scatter([-rs.sizeOfTarget[3]/2, rs.sizeOfTarget[3]/2], [rs.YTarget, rs.YTarget], c ='g', marker='o', s=50)
+    plt.scatter([-rs.target_size[3]/2, rs.target_size[3]/2], [rs.YTarget, rs.YTarget], c ='g', marker='o', s=50)
     plt.scatter([el[0] for el in posIni],[el[1] for el in posIni], c='b')
     
     def init():
@@ -141,12 +141,12 @@ def plotVelocityProfile(what, rs, foldername = "None"):
     if what == "OPTI":
         for i in range(4):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/Log/"
             makeVelocityData(rs,arm,name,ax)
             ax.set_xlabel("time (s)")
             ax.set_ylabel("Instantaneous velocity (m/s)")
-            ax.set_title(str("Velocity profiles for target " + str(rs.sizeOfTarget[i])))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.set_title(str("Velocity profiles for target " + str(rs.target_size[i])))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
     else:
         if what == "Brent":
             name = BrentTrajectoriesFolder
@@ -258,26 +258,26 @@ def plotXYPositions(what, rs, foldername = "None", targetSize = "All", plotEstim
         plotName+="zoom"        
     plt.figure(1, figsize=(16,9))
     if (what == "OPTI")  and targetSize == "All":
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
             if zoom==True:
-                ax.set_xlim([-rs.sizeOfTarget[i],rs.sizeOfTarget[i]])
-                scale=rs.sizeOfTarget[i]*18/16
+                ax.set_xlim([-rs.target_size[i],rs.target_size[i]])
+                scale=rs.target_size[i]*18/16
                 ax.set_ylim([rs.YTarget-3*scale/4,rs.YTarget+scale/4])
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
-            ax.plot([rs.XTarget-rs.sizeOfTarget[i]/2, rs.XTarget+rs.sizeOfTarget[i]/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/Log/"
+            ax.plot([rs.XTarget-rs.target_size[i]/2, rs.XTarget+rs.target_size[i]/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
             plotPos(name, ax, plotEstim,rs)
             
             #makeInitPlot(rs)
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
-            ax.set_title("XY Positions for target " + str(rs.sizeOfTarget[i]))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.set_title("XY Positions for target " + str(rs.target_size[i]))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
     else:
         plt.plot([rs.XTarget-float(targetSize)/2, rs.XTarget+float(targetSize)/2], [rs.YTarget, rs.YTarget], color="r", linewidth=4.0)
         if (what == "OPTI"):
-            name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
-            imageFolder =rs.OPTIpath + targetSize + "/ImageBank/"
+            name = rs.OPTIpathfull + targetSize + "/" + foldername + "/Log/"
+            imageFolder =rs.OPTIpathfull + targetSize + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
             imageFolder ="ImageBank/"
@@ -300,21 +300,21 @@ def plotXYEstimError(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
 
     if what == "OPTI" and targetSize == "All":
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/Log/"
             plotEstimError(rs,name, ax)
 
             #makeInitPlot(rs)
             ax.set_xlabel("Time (s)")
             ax.set_ylabel("Estimation error (m)")
-            ax.set_title("Estimation error for target " + str(rs.sizeOfTarget[i]))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.set_title("Estimation error for target " + str(rs.target_size[i]))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
 
     else:
         if what == "OPTI":
-            name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
-            imageFolder =rs.OPTIpath + targetSize + "/ImageBank/"
+            name = rs.OPTIpathfull + targetSize + "/" + foldername + "/Log/"
+            imageFolder =rs.OPTIpathfull + targetSize + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
             imageFolder ="ImageBank/"
@@ -337,20 +337,20 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
     plt.figure(1, figsize=(16,9))
 
     if what == "OPTI" and targetSize == "All":
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/Log/"
             plotEstimErrorOfSpeed(name, ax)
 
             #makeInitPlot(rs)
             ax.set_xlabel("Velocity (m/s)")
             ax.set_ylabel("Estimation error (m)")
-            ax.set_title("Estimation error function of velocity for target " + str(rs.sizeOfTarget[i]))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.set_title("Estimation error function of velocity for target " + str(rs.target_size[i]))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
     else:
         if what == "OPTI":
-            name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
-            imageFolder = rs.OPTIpath + "/ImageBank/"
+            name = rs.OPTIpathfull + targetSize + "/" + foldername + "/Log/"
+            imageFolder = rs.OPTIpathfull + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
             imageFolder = "ImageBank/"
@@ -372,9 +372,9 @@ def plotXYEstimErrorOfSpeed(what, rs,foldername = "None", targetSize = "All"):
 def plotArticularPositions(what, rs,foldername = "None"):
     plt.figure(1, figsize=(16,9))          
     if what == "OPTI":
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Log/"
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/Log/"
             state = getStateData(name)
             for _,v in state.items():
                 Q1, Q2 = [], []
@@ -384,8 +384,8 @@ def plotArticularPositions(what, rs,foldername = "None"):
                 ax.plot(Q1,Q2, c ='b')
             ax.set_xlabel("Q1 (rad)")
             ax.set_ylabel("Q2 (rad)")
-            ax.set_title("Articular positions for " + str(rs.sizeOfTarget[i]))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.set_title("Articular positions for " + str(rs.target_size[i]))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
     else :
         if what == "Brent":
             name = BrentTrajectoriesFolder
@@ -424,8 +424,8 @@ def plotMuscularActivations(what, rs, foldername = "None", targetSize = "0.05"):
     '''
     plt.figure(1, figsize=(16,9))
     if what == "OPTI":
-        name = rs.OPTIpath + targetSize + "/" + foldername + "/Log/"
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+        name = rs.OPTIpathfull + targetSize + "/" + foldername + "/Log/"
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
     elif what == "Brent":
         name = BrentTrajectoriesFolder
         imageFolder = "ImageBank/"
@@ -481,9 +481,9 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
     fig = plt.figure(1, figsize=(16,9))
 
     if what == "OPTI" and targetSize == "All":
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/Cost/"
             costs = getCostData(name)
 
             x0 = []
@@ -507,13 +507,13 @@ def plotCostColorMap(what, rs, foldername = "None", targetSize = "All"):
             t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
-            ax.set_title(str("Cost map for target " + str(rs.sizeOfTarget[i])))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.set_title(str("Cost map for target " + str(rs.target_size[i])))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
 
     else:
         if what == "OPTI":
-            name = rs.OPTIpath + targetSize + "/" + foldername + "/Cost/"
-            imageFolder = rs.OPTIpath + "/ImageBank/"
+            name = rs.OPTIpathfull + targetSize + "/" + foldername + "/Cost/"
+            imageFolder = rs.OPTIpathfull + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
             imageFolder = "ImageBank/"
@@ -560,9 +560,9 @@ def plotCostColorMapFor12(what, rs, foldername = "None", targetSize = "All"):
     fig = plt.figure(1, figsize=(16,9))
 
     if what == "OPTI" and targetSize == "All":
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/CostU12/"
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/CostU12/"
             costs = getCostData(name)
 
             x0 = []
@@ -586,13 +586,13 @@ def plotCostColorMapFor12(what, rs, foldername = "None", targetSize = "All"):
             t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
-            ax.set_title(str("Cost map U 1 and 2 for target " + str(rs.sizeOfTarget[i])))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.set_title(str("Cost map U 1 and 2 for target " + str(rs.target_size[i])))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
 
     else:
         if what == "OPTI":
-            name = rs.OPTIpath + targetSize + "/" + foldername + "/CostU12/"
-            imageFolder = rs.OPTIpath + "/ImageBank/"
+            name = rs.OPTIpathfull + targetSize + "/" + foldername + "/CostU12/"
+            imageFolder = rs.OPTIpathfull + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
             imageFolder = "ImageBank/"
@@ -640,9 +640,9 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
     fig = plt.figure(1, figsize=(16,9))
 
     if what == "OPTI" and targetSize == "All":
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((2,2), (i/2,i%2))
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/TrajTime/"
             times = getTrajTimeData(name)
 
             x0 = []
@@ -664,16 +664,16 @@ def plotTimeColorMap(what, rs, foldername = "None", targetSize = "All"):
             ax.contourf(xi, yi, zi, 15, cmap=cm.get_cmap('RdYlBu'))
             ax.set_xlabel("X (m)")
             ax.set_ylabel("Y (m)")
-            ax.set_title(str("Time map for target " + str(rs.sizeOfTarget[i])))
+            ax.set_title(str("Time map for target " + str(rs.target_size[i])))
             fig.colorbar(t1, shrink=0.5, aspect=5)
             t1 = ax.scatter(x0, y0, c='b', marker=u'o', s=20)
             
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
 
     else:
         if what == "OPTI":
-            name = rs.OPTIpath + targetSize + "/" + foldername + "/TrajTime/"
-            imageFolder = rs.OPTIpath + "/ImageBank/"
+            name = rs.OPTIpathfull + targetSize + "/" + foldername + "/TrajTime/"
+            imageFolder = rs.OPTIpathfull + "/ImageBank/"
         elif what == "Brent":
             name = BrentTrajectoriesFolder
             imageFolder = "ImageBank/"
@@ -715,8 +715,8 @@ def plotTimeDistanceTarget(foldername,rs):
 
     dicoTime = {}
  
-    for i in range(len(rs.sizeOfTarget)):
-        name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
+    for i in range(len(rs.target_size)):
+        name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/TrajTime/"
 
         trajTimes = getTrajTimeData(name)
 
@@ -725,9 +725,9 @@ def plotTimeDistanceTarget(foldername,rs):
                 distance = round(rs.getDistanceToTarget(v[j][0],v[j][1]),2)
                 if not distance in dicoTime.keys():
                     dicoTime[distance] = {}
-                if not rs.sizeOfTarget[i] in dicoTime[distance].keys():
-                    dicoTime[distance][rs.sizeOfTarget[i]] = []
-                dicoTime[distance][rs.sizeOfTarget[i]].append(v[j][2])
+                if not rs.target_size[i] in dicoTime[distance].keys():
+                    dicoTime[distance][rs.target_size[i]] = []
+                dicoTime[distance][rs.target_size[i]].append(v[j][2])
  
     plotTab = []
 
@@ -737,7 +737,7 @@ def plotTimeDistanceTarget(foldername,rs):
     for key in sorted(dicoTime.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoTime[key].keys())], [np.mean(dicoTime[key][i]) for i in sorted(dicoTime[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig(rs.OPTIpath+'/ImageBank/timedist.svg', bbox_inches='tight')
+    plt.savefig(rs.OPTIpathfull+'/ImageBank/timedist.svg', bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -745,8 +745,8 @@ def plotTimeDistanceTarget(foldername,rs):
 def plotPerfSizeDist(foldername, rs):
     dicoCost = {}
  
-    for i in range(len(rs.sizeOfTarget)):
-        name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/Cost/"
+    for i in range(len(rs.target_size)):
+        name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/Cost/"
 
         costs = getCostData(name)
 
@@ -755,9 +755,9 @@ def plotPerfSizeDist(foldername, rs):
                 distance = round(rs.getDistanceToTarget(v[j][0],v[j][1]),2)
                 if not distance in dicoCost.keys():
                     dicoCost[distance] = {}
-                if not rs.sizeOfTarget[i] in dicoCost[distance].keys():
-                    dicoCost[distance][rs.sizeOfTarget[i]] = []
-                dicoCost[distance][rs.sizeOfTarget[i]].append(v[j][2])
+                if not rs.target_size[i] in dicoCost[distance].keys():
+                    dicoCost[distance][rs.target_size[i]] = []
+                dicoCost[distance][rs.target_size[i]].append(v[j][2])
 
     plotTab = []
     plt.figure(1, figsize=(16,9))
@@ -766,7 +766,7 @@ def plotPerfSizeDist(foldername, rs):
     for key in sorted(dicoCost.keys()):
         plotTab.append(plt.plot([i for i in sorted(dicoCost[key].keys())], [np.mean(dicoCost[key][i]) for i in sorted(dicoCost[key].keys())], label = str("Distance: " + str(key))))
     plt.legend(loc = 0)
-    plt.savefig(rs.OPTIpath+"/ImageBank/perfdist.svg", bbox_inches='tight')
+    plt.savefig(rs.OPTIpathfull+"/ImageBank/perfdist.svg", bbox_inches='tight')
     plt.show(block = True)
 
 #-----------------------------------------------------------------------------------------------------------
@@ -774,8 +774,8 @@ def plotPerfSizeDist(foldername, rs):
 def plotFittsLaw(foldername, rs, rbfn = False):
     plt.figure(1, figsize=(16,9))
     timeDistWidth = []
-    for i in range(len(rs.sizeOfTarget)):
-        name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/TrajTime/"
+    for i in range(len(rs.target_size)):
+        name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/TrajTime/"
 
         trajTimes = getTrajTimeData(name)
 
@@ -783,7 +783,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
             for j in range(len(v)):
                 distance = rs.getDistanceToTarget(v[j][0],v[j][1])
                 trajtime = v[j][2]
-                size = rs.sizeOfTarget[i]
+                size = rs.target_size[i]
                 timeDistWidth.append((distance, size, trajtime))
             
     MT, DI = [], []
@@ -806,7 +806,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
     plt.title("a = " + str(slope) + " b = " + str(intercept) + " r^2 = " + str(r_value**2))
     plt.xlabel("log(D/W)/log(2)")
     plt.ylabel("Movement time (s)")
-    imageFolder = rs.OPTIpath + "/ImageBank/"
+    imageFolder = rs.OPTIpathfull + "/ImageBank/"
     checkIfFolderExists(imageFolder)  
     plt.savefig(imageFolder+"Fitts.svg", bbox_inches='tight')
     plt.show(block = True)
@@ -814,7 +814,7 @@ def plotFittsLaw(foldername, rs, rbfn = False):
 # ---------------- hit dispersion ---------------------------------------
 
 def plotHitDispersion(foldername,sizeT, rs):
-    name =  rs.OPTIpath + sizeT + "/" + foldername + "/finalX/"
+    name =  rs.OPTIpathfull + sizeT + "/" + foldername + "/finalX/"
     data = getLastXData(name)
 
     tabx, taby = [], []
@@ -824,12 +824,12 @@ def plotHitDispersion(foldername,sizeT, rs):
             taby.append(rs.YTarget)
 
     plt.figure(1, figsize=(16,9))
-    plt.plot([-rs.sizeOfTarget[0]/2, rs.sizeOfTarget[0]/2], [rs.YTarget, rs.YTarget], c = 'r')
-    plt.scatter([-rs.sizeOfTarget[0]/2, rs.sizeOfTarget[0]/2], [rs.YTarget, rs.YTarget], marker=u'|', s = 100)
+    plt.plot([-rs.target_size[0]/2, rs.target_size[0]/2], [rs.YTarget, rs.YTarget], c = 'r')
+    plt.scatter([-rs.target_size[0]/2, rs.target_size[0]/2], [rs.YTarget, rs.YTarget], marker=u'|', s = 100)
     plt.scatter(tabx, taby, c = 'b')
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
-    imageFolder = rs.OPTIpath + sizeT +"/ImageBank/"
+    imageFolder = rs.OPTIpathfull + sizeT +"/ImageBank/"
     checkIfFolderExists(imageFolder)  
     plt.savefig(imageFolder+"hitDispersion.svg", bbox_inches='tight')
     plt.show(block = True)
@@ -838,25 +838,25 @@ def plotScattergram(what,foldername,rs):
     data = {}
     plt.figure(1, figsize=(16,9))
     if what=="OPTI":
-        for i in range(len(rs.sizeOfTarget)):
-            name =  rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/" + foldername + "/finalX/"
+        for i in range(len(rs.target_size)):
+            name =  rs.OPTIpathfull + str(rs.target_size[i]) + "/" + foldername + "/finalX/"
             tmp = getLastXData(name)
             tabx = []
             for el in tmp.values():
                 for j in range(len(el)):
                     tabx.append(el[j])
 
-            data[rs.sizeOfTarget[i]] = tabx
+            data[rs.target_size[i]] = tabx
 
 
-        for i in range(len(rs.sizeOfTarget)):
+        for i in range(len(rs.target_size)):
             ax = plt.subplot2grid((4,1), (i,0))
             ax.set_xlim([-0.03,0.03])
-            ax.hist(data[rs.sizeOfTarget[i]], 100)
-            ax.axvline(x=rs.sizeOfTarget[i]/2, c = 'r', linewidth = 3)
-            ax.axvline(x=-rs.sizeOfTarget[i]/2, c = 'r', linewidth = 3)
-            ax.set_title(str("Hit Dispersion for Target " + str(rs.sizeOfTarget[i])))
-        imageFolder = rs.OPTIpath + "/ImageBank/"
+            ax.hist(data[rs.target_size[i]], 100)
+            ax.axvline(x=rs.target_size[i]/2, c = 'r', linewidth = 3)
+            ax.axvline(x=-rs.target_size[i]/2, c = 'r', linewidth = 3)
+            ax.set_title(str("Hit Dispersion for Target " + str(rs.target_size[i])))
+        imageFolder = rs.OPTIpathfull + "/ImageBank/"
 
     elif what=="RBFN":
         name =  rs.path + foldername + "/finalX/"
@@ -866,9 +866,9 @@ def plotScattergram(what,foldername,rs):
             for j in range(len(el)):
                 tabx.append(el[j])
         plt.hist(tabx, 20)
-        for i in range(len(rs.sizeOfTarget)):
-            plt.plot([-rs.sizeOfTarget[i]/2, -rs.sizeOfTarget[i]]/2, [0, 20], c = 'r', linewidth = 3)
-            plt.plot([rs.sizeOfTarget[i]/2, rs.sizeOfTarget[i]]/2, [0, 20], c = 'r', linewidth = 3)
+        for i in range(len(rs.target_size)):
+            plt.plot([-rs.target_size[i]/2, -rs.target_size[i]]/2, [0, 20], c = 'r', linewidth = 3)
+            plt.plot([rs.target_size[i]/2, rs.target_size[i]]/2, [0, 20], c = 'r', linewidth = 3)
         plt.xlabel("X (m)")
         plt.ylabel("Y (m)")
         plt.title("Hit Dispersion for "+rs.regression)
@@ -887,9 +887,9 @@ def plotCMAESProgress(rs):
 def plotCMAESCostProgress(rs):
     plt.figure(1, figsize=(16,9))
 
-    for i in range(len(rs.sizeOfTarget)):
+    for i in range(len(rs.target_size)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
-        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesCost.log"
+        name = rs.OPTIpathfull + str(rs.target_size[i]) + "/Cost/cmaesCost.log"
         data = np.loadtxt(name)
 
         x,w,m,b = [],[],[],[]
@@ -902,9 +902,9 @@ def plotCMAESCostProgress(rs):
         ax.plot(x, m, c = 'g')
         ax.plot(x, b, c = 'r')
 
-        ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
+        ax.set_title(str("Cost Target " + str(rs.target_size[i])))
 
-    imageFolder = rs.OPTIpath + "/ImageBank/"
+    imageFolder = rs.OPTIpathfull + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
     plt.savefig(imageFolder+rs.thetaFile+"costProgress.svg")
     plt.show(block = True)
@@ -912,10 +912,10 @@ def plotCMAESCostProgress(rs):
 def plotCMAESTimeProgress(rs):
     plt.figure(1, figsize=(16,9))
 
-    for i in range(len(rs.sizeOfTarget)):
+    for i in range(len(rs.target_size)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
 
-        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/cmaesTime.log"
+        name = rs.OPTIpathfull + str(rs.target_size[i]) + "/Cost/cmaesTime.log"
         data = np.loadtxt(name)
 
         x,w,m,b = [],[],[],[]
@@ -928,9 +928,9 @@ def plotCMAESTimeProgress(rs):
         ax.plot(x, m, c = 'g')
         ax.plot(x, b, c = 'r')
 
-        ax.set_title(str("Time Target " + str(rs.sizeOfTarget[i])))
+        ax.set_title(str("Time Target " + str(rs.target_size[i])))
 
-    imageFolder = rs.OPTIpath + "/ImageBank/"
+    imageFolder = rs.OPTIpathfull + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
     plt.savefig(imageFolder+"timeProgress.svg")
     plt.show(block = True)
@@ -944,7 +944,7 @@ def plotCMAESOnePointCostProgress(rs, ts, point):
     plt.figure(1, figsize=(16,9))
 
 
-    name = rs.OPTIpath + str(ts)+"/"+str(point)+ "/Cost/cmaesCost.log"
+    name = rs.OPTIpathfull + str(ts)+"/"+str(point)+ "/Cost/cmaesCost.log"
     data = np.loadtxt(name)
 
     x,w,m,b = [],[],[],[]
@@ -964,7 +964,7 @@ def plotCMAESOnePointCostProgress(rs, ts, point):
 def plotCMAESOnePointTimeProgress(rs, ts, point):
     plt.figure(1, figsize=(16,9))
 
-    name = rs.OPTIpath + str(ts)+"/"+str(point) + "/Cost/cmaesTime.log"
+    name = rs.OPTIpathfull + str(ts)+"/"+str(point) + "/Cost/cmaesTime.log"
     data = np.loadtxt(name)
 
     x,w,m,b = [],[],[],[]
@@ -989,10 +989,10 @@ def plotDDPGProgress(rs):
 def plotDDPGCostProgress(rs):
     plt.figure(1, figsize=(16,9))
 
-    for i in range(len(rs.sizeOfTarget)):
+    for i in range(len(rs.target_size)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
-        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgCost.log"
-        nameProgress = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgProg.log"
+        name = rs.OPTIpathfull + str(rs.target_size[i]) + "/Cost/ddpgCost.log"
+        nameProgress = rs.OPTIpathfull + str(rs.target_size[i]) + "/Cost/ddpgProg.log"
         data = np.loadtxt(name)
         #progress = np.loadtxt(nameProgress)
 
@@ -1005,9 +1005,9 @@ def plotDDPGCostProgress(rs):
         for j in progress.shape[0]:
             ax.plot(progress[j],np.random.uniform(-0.8,1.2,100),'r')
         """
-        ax.set_title(str("Cost Target " + str(rs.sizeOfTarget[i])))
+        ax.set_title(str("Cost Target " + str(rs.target_size[i])))
 
-    imageFolder = rs.OPTIpath + "/ImageBank/"
+    imageFolder = rs.OPTIpathfull + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
     plt.savefig(imageFolder+rs.thetaFile+"DDPGcostProgress.svg")
     plt.show(block = True)
@@ -1015,10 +1015,10 @@ def plotDDPGCostProgress(rs):
 def plotDDPGTimeProgress(rs):
     plt.figure(1, figsize=(16,9))
 
-    for i in range(len(rs.sizeOfTarget)):
+    for i in range(len(rs.target_size)):
         ax = plt.subplot2grid((2,2), (i/2,i%2))
 
-        name = rs.OPTIpath + str(rs.sizeOfTarget[i]) + "/Cost/ddpgTime.log"
+        name = rs.OPTIpathfull + str(rs.target_size[i]) + "/Cost/ddpgTime.log"
         data = np.loadtxt(name)
 
         x,w = [],[]
@@ -1027,9 +1027,9 @@ def plotDDPGTimeProgress(rs):
             w.append(data[j])
         ax.plot(x, w, c = 'b')
 
-        ax.set_title(str("DDPG Time Target " + str(rs.sizeOfTarget[i])))
+        ax.set_title(str("DDPG Time Target " + str(rs.target_size[i])))
     
-    imageFolder = rs.OPTIpath + "/ImageBank/"
+    imageFolder = rs.OPTIpathfull + "/ImageBank/"
     checkIfFolderExists(imageFolder) 
     plt.savefig(imageFolder+"DDPGTimeProgress.svg")
     plt.show(block = True)
@@ -1044,7 +1044,7 @@ def plotDDPGOnePointCostProgress(rs, ts, point):
     plt.figure(1, figsize=(16,9))
 
 
-    name = rs.OPTIpath + str(ts)+"/"+str(point)+ "/Cost/ddpgCost.log"
+    name = rs.OPTIpathfull + str(ts)+"/"+str(point)+ "/Cost/ddpgCost.log"
     data = np.loadtxt(name)
 
     x,w,m,b = [],[],[],[]
@@ -1061,7 +1061,7 @@ def plotDDPGOnePointCostProgress(rs, ts, point):
 def plotDDPGOnePointTimeProgress(rs, ts, point):
     plt.figure(1, figsize=(16,9))
 
-    name = rs.OPTIpath + str(ts)+"/"+str(point) + "/Cost/ddpgTime.log"
+    name = rs.OPTIpathfull + str(ts)+"/"+str(point) + "/Cost/ddpgTime.log"
     data = np.loadtxt(name)
 
     x,w,m,b = [],[],[],[]
@@ -1211,17 +1211,17 @@ def plotManipulability2(rs):
 
 
 
-def plotEstimatorGeneral(setupFile, sizeOfTarget,x, y):
+def plotEstimatorGeneral(setupFile, target_size,x, y):
     """
         blue wihtout noise
         red wiht noise
         green wihtout estimation
     
     """
-    thetaName = setupFile.OPTIpath + str(sizeOfTarget) + "/" + "Best"
-    plotEstimator(setupFile, sizeOfTarget, thetaName,x, y)
+    thetaName = setupFile.OPTIpathfull + str(target_size) + "/" + "Best"
+    plotEstimator(setupFile, target_size, thetaName,x, y)
     
-def plotEstimatorPoint(setupFile, sizeOfTarget,point):
+def plotEstimatorPoint(setupFile, target_size,point):
     """
         blue wihtout noise
         red wiht noise
@@ -1229,20 +1229,20 @@ def plotEstimatorPoint(setupFile, sizeOfTarget,point):
     
     """
     posIni = np.loadtxt(pathDataFolder + setupFile.experimentFilePosIni)
-    thetaName = setupFile.OPTIpath + str(sizeOfTarget) + "/"+str(point)+"/" + "Best"
-    plotEstimator(setupFile, sizeOfTarget, thetaName,posIni[point][0], posIni[point][1])
+    thetaName = setupFile.OPTIpathfull + str(target_size) + "/"+str(point)+"/" + "Best"
+    plotEstimator(setupFile, target_size, thetaName,posIni[point][0], posIni[point][1])
     
-def plotEstimator(setupFile, sizeOfTarget, thetaName,x, y):
+def plotEstimator(setupFile, target_size, thetaName,x, y):
     arm = ArmType["Arm26"]()
     
     setupFile.det = True
-    tm=TrajMaker(setupFile, sizeOfTarget, False, thetaName, "Inv")
+    tm=TrajMaker(setupFile, target_size, False, thetaName, "Inv")
     state1,_,_,_=tm.runTrajectoryForPlot(x, y)
     
     setupFile.det = False
     state2,_,_,_=tm.runTrajectoryForPlot(x, y)
     
-    tm=TrajMaker(setupFile, sizeOfTarget, False, thetaName, "No")
+    tm=TrajMaker(setupFile, target_size, False, thetaName, "No")
     state3,_,_,_=tm.runTrajectoryForPlot(x, y)
     
     plt.figure(1, figsize=(16,9))
@@ -1267,7 +1267,7 @@ def plotEstimator(setupFile, sizeOfTarget, thetaName,x, y):
     
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
-    imageFolder = setupFile.OPTIpath + "/ImageBank/"
+    imageFolder = setupFile.OPTIpathfull + "/ImageBank/"
     name=findDataFilename(imageFolder, "Estimation", ".svg")
     plt.savefig(name, bbox_inches='tight')
     plt.show(block = True)

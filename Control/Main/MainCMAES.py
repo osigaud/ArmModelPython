@@ -20,8 +20,8 @@ from Utils.Chrono import Chrono
 from Experiments.Experiments import Experiments
 from Utils.FileWriting import checkIfFolderExists
 
-def copyRegressiontoCMAES(rs, name, size):
-    cmaname =  rs.OPTIpath + str(size) + "/"
+def copyRegressiontoCMAES(rs, name, target_size):
+    cmaname =  rs.OPTIpathfull + str(target_size) + "/"
     checkIfFolderExists(cmaname)
     savenametheta = rs.path + name + ".theta"
     copyfile(savenametheta, cmaname + name + ".theta")
@@ -96,8 +96,8 @@ def GenerateRichDataFromTheta(rs, target_size, foldername, thetaFile, repeat, sa
 def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.target_size:
         c = Chrono()
-        thetaName = rs.OPTIpath + str(el) + "/" + thetaFile
-        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
+        thetaName = rs.OPTIpathfull + str(el) + "/" + thetaFile
+        saveName = rs.OPTIpathfull + str(el) + "/" + saveDir + "/"
         GenerateDataFromTheta(rs,el,saveName,thetaName,repeat,True)
         c.stop()
     print("CMAES:End of generation")
@@ -105,36 +105,36 @@ def generateFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
 def generateFromCMAESNController(repeat, rs, thetaFile, saveDir = 'Data', noise=None):
     for el in rs.target_size:
         c = Chrono()
-        thetaName = rs.OPTIpath + str(el)+"/*/"+thetaFile
-        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
+        thetaName = rs.OPTIpathfull + str(el)+"/*/"+thetaFile
+        saveName = rs.OPTIpathfull + str(el) + "/" + saveDir + "/"
         GenerateDataFromThetaNController(rs,el, saveName,thetaName,repeat,True,noise)
         c.stop()
     print("CMAES:End of generation")
     
 def generateFromCMAESonePoint(repeat, rs, thetaFile, saveDir = 'Data', size=0.04, point=0):
     c = Chrono()
-    thetaName = rs.OPTIpath + str(size)+"/"+str(point)+"/"+thetaFile
-    saveName = rs.OPTIpath + str(size) + "/" + saveDir + "/"
+    thetaName = rs.OPTIpathfull + str(size)+"/"+str(point)+"/"+thetaFile
+    saveName = rs.OPTIpathfull + str(size) + "/" + saveDir + "/"
     GenerateDataFromThetaOnePoint(rs,size, saveName,thetaName,repeat, point)
     c.stop()
     print("CMAES:End of generation")
 
 def generateRichDataFromCMAES(repeat, rs, thetaFile, saveDir = 'Data'):
     for el in rs.target_size:
-        thetaName = rs.OPTIpath + str(el) + "/" + thetaFile
-        saveName = rs.OPTIpath + str(el) + "/" + saveDir + "/"
+        thetaName = rs.OPTIpathfull + str(el) + "/" + thetaFile
+        saveName = rs.OPTIpathfull + str(el) + "/" + saveDir + "/"
         GenerateRichDataFromTheta(rs,el,saveName,thetaName,repeat,True)
     print("CMAES:End of generation")
 
 def generateFromRegression(repeat, rs, saveDir):
-    thetaName = rs.path + rs.thetaFile
-    saveName = rs.path + saveDir + "/"
+    thetaName = rs.pathfull + rs.thetaFile
+    saveName = rs.pathfull + saveDir + "/"
     GenerateDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")
 
 def generateRichDataFromRegression(repeat, rs,thetaFile, saveDir):
-    thetaName = rs.path + thetaFile
-    saveName = rs.path + saveDir + "/"        
+    thetaName = rs.pathfull + thetaFile
+    saveName = rs.pathfull + saveDir + "/"        
     GenerateRichDataFromTheta(rs,0.05,saveName,thetaName,repeat,True)
     print("Regression:End of generation")
 
@@ -148,7 +148,7 @@ def launchCMAESForSpecificTargetSize(target_size, rs, save):
             -save: do we use a previous Best.theta file? True = Yes, False = use current controller, None = random controller
     '''
     print("Starting the CMAES Optimization for target " + str(target_size) + " !")
-    foldername = rs.OPTIpath + str(target_size) + "/"
+    foldername = rs.OPTIpathfull + str(target_size) + "/"
     if save:
         thetaname = foldername + rs.thetaFile
         copyRegressiontoCMAES(rs, rs.thetaFile, target_size)
@@ -177,13 +177,13 @@ def launchCMAESForSpecificTargetSizeAndSpecificPoint(target_size, rs, save, poin
     x=point[1][0]
     y=point[1][1]
     print("Starting the CMAES Optimization for target " + str(target_size) + " for point "+ str(pos)+" !")
-    foldername = rs.OPTIpath + str(target_size)+"/"+str(pos)+"/"
+    foldername = rs.OPTIpathfull + str(target_size)+"/"+str(pos)+"/"
     
 
     thetaname = foldername + "Best"
     if save:
         checkIfFolderExists(foldername)
-        copyfile(rs.OPTIpath + str(target_size)+"/" + "Best.theta",foldername + "Best.theta")
+        copyfile(rs.OPTIpathfull + str(target_size)+"/" + "Best.theta",foldername + "Best.theta")
     elif save==None:
         thetaname=None
 
@@ -216,7 +216,7 @@ def checkAllPoint(rs, sizeTarget):
     maxR = np.zeros(posIni.shape[0])
     gap= np.zeros(posIni.shape[0])
     for i in range(posIni.shape[0]):
-        name = rs.OPTIpath + str(sizeTarget)+"/"+str(i)+ "/Cost/cmaesCost.log"
+        name = rs.OPTIpathfull + str(sizeTarget)+"/"+str(i)+ "/Cost/cmaesCost.log"
         data = np.loadtxt(name)
         maxR[i]=data[:,-1].max()
         gap[i]=data[-1][-1]-data[-1][0]
@@ -249,13 +249,13 @@ def launchCMAESForSpecificTargetSizeAndSpecificPointMulti(target_size, rs, save,
     x=point[1][0]
     y=point[1][1]
     print("Starting the CMAES Optimization for target " + str(target_size) + " for point "+ str(pos)+" !")
-    foldername = rs.OPTIpath + str(target_size)+"/"+str(pos)+"/"
+    foldername = rs.OPTIpathfull + str(target_size)+"/"+str(pos)+"/"
     
 
     thetaname = foldername + "Best"
     if save:
         checkIfFolderExists(foldername)
-        copyfile(rs.OPTIpath + str(target_size)+"/" + "Best.theta",foldername + "Best.theta")
+        copyfile(rs.OPTIpathfull + str(target_size)+"/" + "Best.theta",foldername + "Best.theta")
     elif save==None:
         thetaname=None
 
