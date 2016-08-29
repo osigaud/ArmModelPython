@@ -19,7 +19,6 @@ class ReadXmlFile(object):
     def __init__(self, xmlFile):
         self.parse(xmlFile)
 
-
     def parse(self, xmlFile):
         tree = etree.parse(xmlFile).getroot()
         self.dataParse(tree[0])
@@ -91,8 +90,8 @@ class ReadXmlFile(object):
     def CMAESParse(self, cmaesElement):
         self.maxIterCmaes           =int  (cmaesElement[0].text)
         self.numberOfRepeatEachTraj =int  (cmaesElement[1].text)
-        self.OPTIpath=path.abspath(path.expanduser(cmaesElement[2].text))
-        self.OPTIpathfull=path.abspath(path.expanduser(cmaesElement[2].text))+"/"
+        self.OPTIpath=path.abspath(path.expanduser(cmaesElement[2].text))+"/"
+        self.OPTIpathMissing=path.abspath(path.expanduser(cmaesElement[2].text))
         self.sigmaCmaes             =float(cmaesElement[3].text)
         self.popsizeCmaes           =int  (cmaesElement[4].text)
         
