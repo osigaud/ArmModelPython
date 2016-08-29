@@ -45,7 +45,7 @@ class Cost():
     
     def computeStateTransitionCostU12(self, U):
         '''
-        Computes the cost on one step of the trajectory
+        Computes the cost on one step of the trajectory based on 2 muscles only
         
         Input:    -cost: cost at time t, float
                 -U: muscular activation vector, numpy array (6,1)
@@ -82,7 +82,7 @@ class Cost():
         Ouput :        -cost, the hit velocity cost
         ''' 
         speed = arm.cartesianSpeed(arm.getState())
-        norm=np.linalg.norm(speed)
+        norm = np.linalg.norm(speed)
         return -1000*norm
     
     def computeFinalReward(self, arm, t, coordHand, sizeOfTarget):

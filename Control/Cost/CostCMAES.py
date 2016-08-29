@@ -34,7 +34,7 @@ class CostCMAES(Cost):
                 cost += np.exp(-t/self.rs.gammaCF)*self.rs.rhoCF
             else:
                 #cost += -500-500000*(coordHand[0]*coordHand[0])
-                cost+= -50000+50000*(1-coordHand[0]**2)
+                cost+= -50000+50000*(1-coordHand[0]*coordHand[0])
         else:
             cost += -10000+10000*(coordHand[1]*coordHand[1])
         return cost
